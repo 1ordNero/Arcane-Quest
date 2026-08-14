@@ -33,12 +33,14 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Raumtypen: Ereignis, normaler Kampf, Elitekampf, Ruheschrein, Schatzkammer und Endboss
 - sichtbarer 10-Raum-Fortschritt
 - Ereignisentscheidungen zeigen konkrete Erfolgschance, Charakterattribut, Risikoeinschätzung und mögliche Konsequenzen
+- Kraft, Geschick und Wissen besitzen zusätzlich konkrete Aktionsbeschreibungen, damit vor der Auswahl klar ist, wie der Held die Situation lösen will
 - aktuelle ungesicherte Dungeon-Beute mit Gold, XP und Items bleibt während des Runs sichtbar
 - freiwilliger Ausstieg sichert die bisherige Beute
 - Niederlage verliert die ungesicherte Dungeon-Beute
 - Risiko-/Belohnungsanzeige ab den tieferen Ebenen
-- Ruheschrein in Raum 6 besitzt wieder eine funktionierende Aktion und stellt 25 % der maximalen HP wieder her
-- Schatzkammer in Raum 9 besitzt eine eigene funktionierende Ansicht mit garantierter Zwischenbelohnung vor dem Boss
+- Raum 6 zeigt den Schrein der Stille zuverlässig als eigene Szene mit Beschreibung und Rast-Aktion; er stellt 25 % der maximalen HP wieder her
+- Raum 9 zeigt die Schatzkammer zuverlässig als eigene Szene mit garantierter Zwischenbelohnung vor dem Boss
+- spezielle Dungeon-Räume werden unabhängig vom alten 5-Raum-Renderer explizit eingeblendet, damit der Ablauf ab Raum 6 nicht mehr leer bleibt
 - Elitegegner „Grabritter“ als Zwischenprüfung
 - sämtliche Dungeon-Kämpfe laufen automatisch ab
 - in automatischen Kämpfen stehen die Lebensbalken von Gegner und Held jetzt im oberen Fokusbereich
