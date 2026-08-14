@@ -57,7 +57,13 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - ein Schlüssel wird beim Betreten verbraucht
 - erste spielbare Expedition mit fünf aufeinanderfolgenden Räumen
 - Mischung aus Attributs-Ereignissen, normalen Kämpfen und einem Endboss
-- Ereignisräume verwenden STR-, AGI- oder INT-Proben und können Gold, Beute oder HP-Verlust erzeugen
+- Ereignisräume verwenden STR-, AGI- oder INT-Proben
+- jede Dungeon-Entscheidung zeigt vor der Auswahl die konkrete Erfolgschance sowie eine Einschätzung wie „sehr günstig“, „günstig“, „ausgeglichen“ oder „riskant“
+- Entscheidungen zeigen außerdem die erwartete Konsequenz: Erfolg kann Gold/Beute bringen, Fehlschlag verursacht HP-Verlust
+- Erfolgschancen basieren auf den aktuell berechneten Charakterwerten inklusive Ausrüstung
+- bereits gefundene Dungeon-Beute wird während des gesamten Runs sichtbar angezeigt
+- die Beuteanzeige zeigt Gegenstände, Gold und XP, damit vor weiteren Räumen bzw. Bossen klar ist, was bei einer Niederlage verloren gehen kann
+- Item-Rahmen in der Dungeon-Beute verwenden dieselbe farbliche Seltenheitsdarstellung wie das Held-Inventar
 - Kampfräume besitzen Angriffs- und Verteidigungsphasen sowie angekündigte gegnerische Angriffe
 - drei Angriffsvarianten und Blocken, Ausweichen oder Standhalten als Verteidigung
 - HP bleiben über die gesamte Expedition erhalten
