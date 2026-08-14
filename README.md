@@ -43,7 +43,10 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Rüstung, Block, Ausweichen, Krit und Ausrüstung beeinflussen den Kampf
 
 ### Dungeons – Katakomben v1
-- gemäß GDD ab Stufe 10 über einen gefundenen Schlüssel zugänglich
+- gemäß GDD regulär ab Stufe 10 über einen gefundenen Schlüssel zugänglich
+- für die aktuelle Beta-Testphase ist der Dungeon unabhängig von der Charakterstufe direkt freigeschaltet
+- beim ersten Laden werden für den Beta-Test mindestens 5 Katakomben-Schlüssel bereitgestellt
+- sind alle Testschlüssel verbraucht und kein Dungeon aktiv, werden automatisch 5 neue Testschlüssel bereitgestellt
 - ein Schlüssel wird beim Betreten verbraucht
 - erste spielbare Expedition mit fünf aufeinanderfolgenden Räumen
 - Mischung aus Attributs-Ereignissen, normalen Kämpfen und einem Endboss
