@@ -1,0 +1,60 @@
+(()=>{
+const SKILLS={
+Krieger:[
+{id:'shieldbash',icon:'🛡️',name:'Schildschlag',type:'attack',cost:12,mult:.9,desc:'Kontrollierter Schildstoß mit defensivem Vorteil.',effect:'guard'},
+{id:'heavy',icon:'⚔️',name:'Schwerer Hieb',type:'attack',cost:18,mult:1.45,desc:'Langsamer, harter Schlag für hohen Schaden.'},
+{id:'wall',icon:'🧱',name:'Schildwall',type:'defense',cost:22,mult:.55,desc:'GDD-Kernskill: reduziert den nächsten erlittenen Schaden stark.',effect:'guard'},
+{id:'execute',icon:'🩸',name:'Hinrichtung',type:'attack',cost:28,mult:1.15,desc:'Verursacht deutlich mehr Schaden gegen verwundete Gegner.',effect:'execute'},
+{id:'rage',icon:'🔥',name:'Kampfrausch',type:'buff',cost:16,mult:1.05,desc:'Erhöht kurzfristig die offensive Wirkung.',effect:'rage'},
+{id:'charge',icon:'💥',name:'Ansturm',type:'attack',cost:14,mult:1.1,desc:'Schneller Eröffnungsangriff mit guter Zuverlässigkeit.'}],
+Magier:[
+{id:'spark',icon:'✨',name:'Arkanschlag',type:'attack',cost:12,mult:1.0,desc:'Zuverlässiger magischer Basisangriff.'},
+{id:'meteor',icon:'☄️',name:'Arkaner Meteor',type:'attack',cost:30,mult:1.75,desc:'GDD-Kernskill: massiver Burst mit teilweiser Rüstungsignorierung.',effect:'pierce'},
+{id:'ward',icon:'🔷',name:'Runenschild',type:'defense',cost:20,mult:.6,desc:'Magische Barriere gegen den nächsten Treffer.',effect:'guard'},
+{id:'burn',icon:'🔥',name:'Sternenbrand',type:'attack',cost:22,mult:1.05,desc:'Verursacht Brand. Erneuter Treffer erneuert nur die Dauer.',status:'burn'},
+{id:'focus',icon:'🌀',name:'Arkane Sammlung',type:'buff',cost:10,mult:1.12,desc:'Bündelt Mana für den folgenden Angriff.',effect:'rage'},
+{id:'lance',icon:'💠',name:'Manalanze',type:'attack',cost:18,mult:1.25,desc:'Präziser Zauber mit hoher Durchschlagskraft.',effect:'pierce'}],
+Druide:[
+{id:'shift',icon:'🐻',name:'Gestaltwechsel',type:'buff',cost:14,mult:1.05,desc:'GDD-Kernskill: wechselt zwischen Bär, Katze und Mensch.',effect:'shift'},
+{id:'claw',icon:'🐾',name:'Wildklaue',type:'attack',cost:16,mult:1.2,desc:'Schneller Nahkampfangriff der Katzengestalt.'},
+{id:'bark',icon:'🌳',name:'Rindenhaut',type:'defense',cost:18,mult:.65,desc:'Natürlicher Schutz gegen den nächsten Treffer.',effect:'guard'},
+{id:'thorn',icon:'🌿',name:'Dornenriss',type:'attack',cost:20,mult:1.05,desc:'Verursacht Bluten. Erneuter Treffer erneuert nur die Dauer.',status:'bleed'},
+{id:'heal',icon:'🍃',name:'Lebensquell',type:'heal',cost:24,mult:0,desc:'Regeneriert einen kleinen Teil der maximalen Lebenspunkte.',effect:'heal'},
+{id:'maul',icon:'🐻',name:'Bärenhieb',type:'attack',cost:25,mult:1.45,desc:'Schwerer Angriff aus der Bärengestalt.'}],
+Waldläufer:[
+{id:'quick',icon:'🏹',name:'Schnellschuss',type:'attack',cost:10,mult:.9,desc:'Sehr schneller und zuverlässiger Angriff.'},
+{id:'volley',icon:'🌧️',name:'Pfeilhagel',type:'attack',cost:24,mult:1.45,desc:'GDD-Kernskill: mehrere schnelle Treffer in kurzer Folge.',effect:'multi'},
+{id:'evade',icon:'💨',name:'Seitwärtsschritt',type:'defense',cost:16,mult:.7,desc:'Erhöht kurzfristig die Chance, dem nächsten Angriff auszuweichen.',effect:'dodge'},
+{id:'poison',icon:'☠️',name:'Giftpfeil',type:'attack',cost:18,mult:1.0,desc:'Verursacht Gift. Neuer Treffer erneuert die Dauer statt zu stapeln.',status:'poison'},
+{id:'mark',icon:'🎯',name:'Jägermarke',type:'buff',cost:14,mult:1.1,desc:'Markiert das Ziel für stärkere Folgetreffer.',effect:'rage'},
+{id:'pierce',icon:'➶',name:'Durchschuss',type:'attack',cost:22,mult:1.3,desc:'Ignoriert einen Teil der gegnerischen Rüstung.',effect:'pierce'}],
+Hexenmeister:[
+{id:'curse',icon:'🕯️',name:'Verderbnisfluch',type:'attack',cost:15,mult:1.0,desc:'Schwächt das Ziel und erneuert den Fluch bei erneutem Treffer.',status:'curse'},
+{id:'drain',icon:'🩸',name:'Seelenentzug',type:'attack',cost:22,mult:1.15,desc:'GDD-Kernskill: verursacht Schaden und heilt einen Teil davon.',effect:'lifesteal'},
+{id:'shade',icon:'🌑',name:'Schattenschleier',type:'defense',cost:18,mult:.68,desc:'Dämpft den nächsten gegnerischen Treffer.',effect:'guard'},
+{id:'rot',icon:'☠️',name:'Seelenfäule',type:'attack',cost:20,mult:1.05,desc:'Verursacht einen erneuerbaren Schaden-über-Zeit-Effekt.',status:'poison'},
+{id:'pact',icon:'🔗',name:'Dunkler Pakt',type:'buff',cost:14,mult:1.12,desc:'Stärkt den nächsten offensiven Skill.',effect:'rage'},
+{id:'lash',icon:'⚡',name:'Leerenpeitsche',type:'attack',cost:24,mult:1.35,desc:'Harter arkaner Schlag gegen geschwächte Ziele.'}],
+Totenbeschwörer:[
+{id:'bone',icon:'🦴',name:'Knochenspeer',type:'attack',cost:14,mult:1.05,desc:'Direkter nekromantischer Fernangriff.'},
+{id:'skeleton',icon:'💀',name:'Skelett-Diener',type:'defense',cost:22,mult:.6,desc:'GDD-Kernskill: ein Diener fängt einen Teil des nächsten Schadens ab.',effect:'guard'},
+{id:'grave',icon:'⚰️',name:'Griff des Grabes',type:'attack',cost:20,mult:1.15,desc:'Nekrotischer Angriff mit Kontrollwirkung.'},
+{id:'rot',icon:'🪦',name:'Grabesfäule',type:'attack',cost:18,mult:1.0,desc:'Erneuerbarer Schaden-über-Zeit-Effekt.',status:'poison'},
+{id:'harvest',icon:'🌘',name:'Essenzernte',type:'buff',cost:12,mult:1.12,desc:'Sammelt Todesessenz für den nächsten Angriff.',effect:'rage'},
+{id:'army',icon:'☠️',name:'Totenmarsch',type:'attack',cost:28,mult:1.55,desc:'Mehrere Diener stürmen gleichzeitig auf das Ziel.',effect:'multi'}]
+};
+const RES={Krieger:['Wut','🔥'],Magier:['Mana','🔷'],Druide:['Naturfokus','🌿'],Waldläufer:['Energie','⚡'],Hexenmeister:['Seelenfragmente','🕯️'],Totenbeschwörer:['Essenz des Todes','💀']};
+function clsSkills(){return SKILLS[S.cls]||SKILLS.Krieger}
+function init(){S.skillSystem=S.skillSystem||{};let ids=clsSkills().map(x=>x.id);let old=S.skillSystem.cls;if(old!==S.cls||!Array.isArray(S.skillSystem.loadout)){S.skillSystem={cls:S.cls,loadout:ids.slice(0,4),resource:100,maxResource:100,rotation:0};save()}S.skillSystem.loadout=S.skillSystem.loadout.filter(x=>ids.includes(x)).slice(0,4);while(S.skillSystem.loadout.length<4){let n=ids.find(x=>!S.skillSystem.loadout.includes(x));if(!n)break;S.skillSystem.loadout.push(n)}}
+function byId(id){return clsSkills().find(x=>x.id===id)}
+function swap(slot,id){init();let arr=S.skillSystem.loadout,other=arr.indexOf(id);if(other>=0){let t=arr[slot];arr[slot]=id;arr[other]=t}else arr[slot]=id;S.skillSystem.rotation=0;save();render()}
+function next(ctx={}){init();let ss=S.skillSystem,arr=ss.loadout.map(byId).filter(Boolean);if(!arr.length)return null;let start=ss.rotation%arr.length,chosen=null,idx=start;for(let i=0;i<arr.length;i++){idx=(start+i)%arr.length;let sk=arr[idx];if((ss.resource||0)>=sk.cost){chosen=sk;break}}if(!chosen){ss.resource=Math.min(ss.maxResource,ss.resource+22);chosen={id:'basic',icon:'⚔️',name:'Basisangriff',type:'attack',cost:0,mult:.72,desc:'Ressourcenarme Ersatzaktion.'};return chosen}ss.resource=Math.max(0,ss.resource-chosen.cost);ss.rotation=(idx+1)%arr.length;ss.resource=Math.min(ss.maxResource,ss.resource+8);save();return chosen}
+function apply(base,skill,ctx={}){if(!skill)return{damage:base,name:'Basisangriff',log:'Basisangriff'};let d=Math.max(1,Math.round(base*(skill.mult||1)));if(skill.effect==='execute'&&Number(ctx.enemyPct||100)<35)d=Math.round(d*1.65);if(skill.effect==='multi')d=Math.round(d*1.2);if(skill.effect==='rage')d=Math.round(d*1.1);let status=skill.status||null;return{damage:d,name:skill.name,icon:skill.icon,status,effect:skill.effect,guard:skill.effect==='guard',dodge:skill.effect==='dodge',heal:skill.effect==='heal',lifesteal:skill.effect==='lifesteal',pierce:skill.effect==='pierce'}}
+function statusTick(target){if(!target?.skillStatuses)return 0;let dmg=0;Object.keys(target.skillStatuses).forEach(k=>{let s=target.skillStatuses[k];if(s.turns>0){dmg+=s.damage||2;s.turns--}if(s.turns<=0)delete target.skillStatuses[k]});return dmg}
+function addStatus(target,type,damage=2){if(!type||!target)return;target.skillStatuses=target.skillStatuses||{};target.skillStatuses[type]={turns:3,damage};}
+function loadoutHtml(){init();let res=RES[S.cls]||['Ressource','◆'],ss=S.skillSystem;return `<div class="sk-wrap"><div class="sk-head"><div><b>Fertigkeiten</b><small>Automatische Reihenfolge für Arena & Katakomben</small></div><div class="sk-res">${res[1]} ${res[0]} <b>${ss.resource}/${ss.maxResource}</b></div></div><div class="sk-rotation">${ss.loadout.map((id,i)=>{let x=byId(id);return `<button onclick="skillOpenSlot(${i})"><em>${i+1}</em><span>${x.icon}</span><b>${x.name}</b><small>${x.cost} ${res[0]}</small></button>${i<3?'<i>›</i>':''}`}).join('')}</div><div class="sk-note">Die vier Skills werden im automatischen Kampf nacheinander ausgelöst. Reicht die Klassenressource nicht, wird ein schwacher Basisangriff verwendet.</div></div>`}
+function picker(slot){let res=RES[S.cls]||['Ressource','◆'];return `<div class="modal" onclick="skillClosePicker()"><div class="sheet sk-sheet" onclick="event.stopPropagation()"><div class="sk-picker-title"><div><small>SLOT ${slot+1} · ${S.cls}</small><h2>Fertigkeit wählen</h2></div><button onclick="skillClosePicker()">×</button></div><div class="sk-list">${clsSkills().map(x=>`<button class="${S.skillSystem.loadout[slot]===x.id?'selected':''}" onclick="skillSetSlot(${slot},'${x.id}')"><span>${x.icon}</span><div><b>${x.name}</b><small>${x.type.toUpperCase()} · ${x.cost} ${res[0]}</small><p>${x.desc}</p></div></button>`).join('')}</div></div></div>`}
+window.skillOpenSlot=slot=>{S.skillPicker=slot;save();render()};window.skillClosePicker=()=>{delete S.skillPicker;save();render()};window.skillSetSlot=(slot,id)=>{swap(slot,id);delete S.skillPicker;save();render()};window.getNextCombatSkill=next;window.applyCombatSkill=apply;window.applySkillStatus=addStatus;window.tickSkillStatuses=statusTick;window.getSkillLoadout=()=>{init();return S.skillSystem.loadout.map(byId)};window.SKILL_DATA=SKILLS;
+const oldChar=window.char;window.char=function(){init();let h=oldChar();h=h.replace(/<div class="card pg-section"><div class="pg-title"><b>✦ Fähigkeiten<\/b>[\s\S]*?<\/div><\/div>/,`<div class="card pg-section">${loadoutHtml()}</div>`);if(S.skillPicker!==undefined)h+=picker(Number(S.skillPicker));return h};
+const css=document.createElement('style');css.textContent=`.sk-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.sk-head>b,.sk-head small{display:block}.sk-head b{font-size:12px}.sk-head small{font-size:7px;color:var(--muted)}.sk-res{font-size:7px;background:#ffffff08;padding:5px 7px;border-radius:8px}.sk-res b{font-size:8px}.sk-rotation{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:4px;align-items:center;margin-top:8px}.sk-rotation>button{min-width:0;background:#ffffff07;border:1px solid #ffffff10;box-shadow:none;padding:7px 3px;text-align:center}.sk-rotation>button em,.sk-rotation>button span,.sk-rotation>button b,.sk-rotation>button small{display:block}.sk-rotation>button em{font-style:normal;font-size:7px;color:var(--gold)}.sk-rotation>button span{font-size:18px;margin:2px}.sk-rotation>button b{font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sk-rotation>button small{font-size:6px;color:var(--muted)}.sk-rotation>i{font-style:normal;color:var(--muted)}.sk-note{font-size:7px;color:var(--muted);margin-top:6px}.sk-sheet{max-height:82vh}.sk-picker-title{display:flex;justify-content:space-between;align-items:center}.sk-picker-title h2{font-size:18px;margin:2px}.sk-picker-title small{font-size:8px;color:var(--muted)}.sk-picker-title button{background:#ffffff08;box-shadow:none;padding:6px 10px}.sk-list{display:grid;gap:6px;margin-top:8px}.sk-list>button{display:grid;grid-template-columns:42px 1fr;gap:8px;text-align:left;background:#ffffff07;border:1px solid #ffffff10;box-shadow:none;padding:9px}.sk-list>button.selected{border-color:var(--gold);background:#f4c15d0b}.sk-list>button>span{font-size:25px;text-align:center}.sk-list b,.sk-list small{display:block}.sk-list b{font-size:10px}.sk-list small{font-size:7px;color:var(--gold)}.sk-list p{font-size:8px;color:var(--muted);margin:4px 0 0}@media(max-width:420px){.sk-rotation>i{display:none}.sk-rotation{grid-template-columns:repeat(4,1fr)}}`;document.head.appendChild(css);init();
+})();
