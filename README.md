@@ -8,6 +8,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - fünf feste Hauptbereiche: Taverne, Katakomben, Held, Schmiede und Arena
 - Held als zentraler, runder Hauptbutton hervorgehoben
 - Inventar und Ausrüstung vollständig im Held-Bereich
+- der zusätzliche Katakomben-Button innerhalb der Taverne wurde entfernt; die Katakomben werden ausschließlich über ihren eigenen Tab geöffnet
 
 ### Charakter
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
@@ -18,7 +19,8 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Standard-, Ereignis-, Kopfgeld- und Risikoquests
 - Wahrscheinlichkeitsproben mit Charakterwerten
 - Feedback nach Entscheidungen
-- neuer kurzer automatischer Miniboss „Knochenwache“ für 16 Abenteuerlust mit reduzierter Beute
+- kurzer automatischer Miniboss „Knochenwache“ für 16 Abenteuerlust mit reduzierter Beute
+- die Knochenwache ist standardmäßig eingeklappt und wird wie andere Questkarten erst per Tipp geöffnet
 - Miniboss-Kämpfe zeigen sichtbare Lebensbalken und ein laufendes Kampfprotokoll
 - „Der Knochenhauer“ ist das teuerste Tavernen-Kopfgeld mit 36 Abenteuerlust
 - Knochenhauer besitzt die hochwertigste Belohnungsstufe innerhalb der Tavernen-Quests
@@ -35,12 +37,12 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - freiwilliger Ausstieg sichert die bisherige Beute
 - Niederlage verliert die ungesicherte Dungeon-Beute
 - Risiko-/Belohnungsanzeige ab den tieferen Ebenen
-- Ruheschrein in Raum 6 stellt 25 % der maximalen HP wieder her
-- Schatzkammer in Raum 9 bietet eine garantierte Zwischenbelohnung vor dem Boss
+- Ruheschrein in Raum 6 besitzt wieder eine funktionierende Aktion und stellt 25 % der maximalen HP wieder her
+- Schatzkammer in Raum 9 besitzt eine eigene funktionierende Ansicht mit garantierter Zwischenbelohnung vor dem Boss
 - Elitegegner „Grabritter“ als Zwischenprüfung
-- sämtliche Dungeon-Kämpfe laufen jetzt automatisch ab
-- während automatischer Kämpfe bleiben Held- und Gegner-Lebensbalken sichtbar
-- ein Kampfprotokoll zeigt Treffer, Verteidigung, Schaden und besondere Ereignisse laufend an
+- sämtliche Dungeon-Kämpfe laufen automatisch ab
+- in automatischen Kämpfen stehen die Lebensbalken von Gegner und Held jetzt im oberen Fokusbereich
+- direkt unter den Lebensbalken folgt das Kampfprotokoll mit Treffern, Verteidigung, Schaden und besonderen Ereignissen
 - die automatische Logik wählt Angriffe und Verteidigungen anhand der vorhandenen Stats und gegnerischen Angriffsvorschau
 - Endboss „Hüter der Katakomben“ mit Phasenschild
 - Boss-Schaden trifft zunächst das Phasenschild, bevor Lebenspunkte reduziert werden
