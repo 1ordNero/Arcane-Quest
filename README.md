@@ -2,19 +2,69 @@
 
 Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Smartphone-Bedienung optimiert. Sie lässt sich in Chrome/Edge auf Android über „Zum Startbildschirm hinzufügen“ wie eine App installieren.
 
-## Enthaltene Beta-Systeme
-- Comic-/Lore-artiger Einstiegstext und Tavernen-Hub
-- Charaktereditor: 6 Völker, 6 Klassen, 4 Hintergründe
-- Abenteuerlust, Standard-/Event-/Risiko-Quests
-- XP, Leveling, Gold und Offline-Wachdienst bis 12h
-- Automatisches rundenbasiertes Kampfsystem mit Skill-Sequenz-Gefühl
-- Rucksack und Auto-Verwertung
+## Aktueller Entwicklungsstand
+
+### Charakter
+- Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
+- kompakte, mobile Charaktererstellung
+- Abschlussbildschirm mit dynamischer Heldengeschichte
+- Zusammenfassung von Stärken, Klassenfokus und Schwächen
+- Volk, Klasse und Attribute beeinflussen spätere Proben und Kämpfe
+- kompakter Heldenscreen mit Charakterwerten, Ausrüstung und Inventar
+
+### Quests & Abenteuerlust
+- tägliche Abenteuerlust mit Reset nach Tageswechsel
+- Questkarten als aufklappbare Accordion-Ansicht
+- immer nur eine aktive Quest gleichzeitig
+- Quest-Timer läuft tabübergreifend weiter
+- Standard-, Ereignis-, Kopfgeld- und Risikoquests
+- Quest-Abschlussbildschirm mit Gold, XP, Materialien, Items und Level-Up
+
+### Ereignisquests
+- mehrstufige Ereignisse mit unterschiedlichen Entscheidungen
+- unsichtbares Zufalls-/Wahrscheinlichkeitssystem statt sichtbarer Würfel
+- STR-, AGI- und INT-Proben
+- Erfolgschancen werden durch Charakterwerte, Volk, Klasse und Ausrüstung beeinflusst
+- kritischer Erfolg, Erfolg, Fehlschlag und kritischer Fehlschlag
+- eigener Feedback-Screen nach jeder Entscheidung
+- Entscheidungen beeinflussen Questbelohnungen und mögliche Beute
+
+### Kopfgeld & Kampf
+- Mini-Boss-Kampfsystem am Beispiel „Der Knochenhauer“
+- rundenbasierte Kämpfe mit Spieler- und Gegner-HP
+- Angreifen, Blocken, Ausweichen und Klassenaktion
+- klassenspezifische Fähigkeiten
+- Treffer-, Krit-, Block- und Ausweichwahrscheinlichkeiten
+- direktes Feedback nach jeder Kampfrunde
+- Rüstung reduziert eingehenden Schaden
+- Sieg, Niederlage und Kopfgeldbelohnungen
+
+### Inventar & Ausrüstung
+- vereinheitlichtes Item- und Ausrüstungsmodell
+- Ausrüstungs-Slots für Rüstung, Waffen, Schmuck und Nebenhand
+- Items können ausgerüstet, ersetzt und wieder abgelegt werden
+- Itemvergleich mit aktuell getragener Ausrüstung
+- Gegenstände besitzen konkrete Boni wie STR, AGI, INT, HP, Rüstung, Schaden, Krit, Block und Ausweichen
+- zentrale Final-Stats aus Charakter und Ausrüstung
+- Ausrüstung beeinflusst Ereignisproben und Kopfgeldkämpfe
+- Kopfgelder können echte ausrüstbare seltene Gegenstände droppen
+
+### Weitere vorhandene Beta-Systeme
+- XP, Leveling und Gold
+- Rucksack / Inventar
 - Ahnen-Schmiede-Prototyp
 - Arena-Prototyp
 - Feature-Gating gemäß GDD
 - lokaler Spielstand via localStorage
 
 ## Android
-`index.html`, `app.js`, `manifest.webmanifest` und `icon.svg` auf einen Webserver legen oder lokal öffnen. Für die komfortable Installation auf Android: Chrome → Menü → „Zum Startbildschirm hinzufügen“ / „App installieren“.
 
-Für einen echten APK-Build kann dieses Web-Frontend anschließend in eine WebView/Capacitor/TWA-Hülle gepackt werden.
+Die Beta läuft aktuell als PWA über GitHub Pages. Auf Android kann sie in Chrome über „Zum Startbildschirm hinzufügen“ bzw. „App installieren“ installiert werden.
+
+**Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
+
+Für einen späteren echten APK-Build kann das Web-Frontend in eine Capacitor-, TWA- oder vergleichbare Android-Hülle integriert werden.
+
+## Entwicklungsregel
+
+Nach neuen spielbaren Features oder relevanten Änderungen wird diese README aktualisiert, damit der aktuelle Funktionsumfang des Projekts nachvollziehbar bleibt.
