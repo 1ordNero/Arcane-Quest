@@ -5,8 +5,9 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 ## Aktueller Entwicklungsstand
 
 ### Navigation & Mobile UI
-- fünf feste Hauptbereiche: Taverne, Katakomben, Held, Schmiede und Arena
+- feste Hauptbereiche: Taverne, Katakomben, Stadt, Held, Schmiede und Arena
 - Held als zentraler, runder Hauptbutton hervorgehoben
+- Stadt bündelt Händler und Bank
 - Inventar und Ausrüstung vollständig im Held-Bereich
 
 ### Charakter
@@ -28,13 +29,11 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Endboss mit Phasenschild und Enrage
 
 ### Loot, Inventar & Ausrüstung
-- 11 Ausrüstungsslots gemäß GDD
 - feste Item-Level entsprechend dem Charakterlevel beim Fund
 - Item-Level, Seltenheit und Schmiedestufe bestimmen gemeinsam die Gegenstandsstärke
 - ▲ / = / ▼ zeigen Vergleiche mit aktuell ausgerüsteten Items
 - kompakte Ausrüstungsicons mit anklickbaren Itemdetails
 - vollständige Itemstats im Inventar und bei angelegter Ausrüstung
-- Seltenheitsreihenfolge: Gewöhnlich → Selten → Magisch → Episch → Mythisch → Legendär
 - Legendär kann nicht regulär droppen
 
 ### Ahnen-Schmiede v2
@@ -48,21 +47,30 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Ahnenwerk zeigt das spätere Legendär-Rezept
 
 ### Arena v2
-- asynchrones Arena-Konzept mit drei gleichzeitig angebotenen Gegnern
-- Gegnerkategorien: Einfach, Ebenbürtig und Herausforderer
-- Gegner zeigen Level, Klasse, Kampfstärke und erwartete Belohnung
-- drei Kampfhaltungen gemäß GDD: Aggressiv, Defensiv und Konter
-- Aggressiv erhöht Krit um 15 % und reduziert die wirksame Rüstung um 10 %
-- Defensiv erhöht die wirksame Rüstung um 20 % und reduziert den verursachten Schaden um 10 %
-- Konter erhöht Ausweichen um 15 % und verursacht bei erfolgreichem Ausweichen zusätzlichen Konterschaden
-- Arena-Kämpfe laufen automatisch mit sichtbaren HP-Balken und laufendem Kampfprotokoll
-- Charakterwerte und Ausrüstung fließen in Kampfstärke, Schaden, Krit, Rüstung und Ausweichen ein
-- Herausforderer sind stärker, geben dafür deutlich mehr Ruhm und Ruhmesmünzen
-- erste Liga-Progression: Bronze → Silber → Gold → Platin → Legende
-- Siege erhöhen Ruhm und Ruhmesmünzen; Niederlagen können etwas Ruhm kosten
-- nach jedem Kampf werden neue Gegner generiert
+- drei Gegner: Einfach, Ebenbürtig und Herausforderer
+- Aggressiv, Defensiv und Konter als Kampfhaltungen gemäß GDD
+- automatische Kämpfe mit HP-Balken und Kampfprotokoll
+- Ruhm, Ruhmesmünzen und Liga-Progression Bronze → Silber → Gold → Platin → Legende
 
-> Arena-Balancing: Konkrete Ruhmesgrenzen und Belohnungshöhen sind Beta-Werte und können nach Tests angepasst werden.
+### Händler v1
+- gemäß GDD ab Stufe 3 freigeschaltet
+- eigenes Stadt-Menü mit Händler und Bank
+- Händler bietet sechs levelskalierte Ausrüstungsgegenstände an
+- Item-Level, Stats, Macht, Seltenheit und Vergleich zum angelegten Item werden vor dem Kauf angezeigt
+- Sortiment kann regelmäßig neu generiert werden
+- Gegenstände können direkt aus dem Rucksack verkauft werden
+- Verkaufspreise liegen bewusst bei ungefähr 10–15 % des Gegenstandswerts gemäß GDD-Wirtschaftsprinzip
+- Verwerten bleibt dadurch gegenüber dem reinen Verkauf relevant
+
+> Händler-Balancing: Konkrete Kaufpreise, Sortimentsgröße, Seltenheitsverteilung und Aktualisierungszeit sind Beta-Implementierungswerte; das GDD legt diese Zahlen nicht fest.
+
+### Bank v1
+- gemäß GDD ab Stufe 10 freigeschaltet
+- 100 feste Tresorplätze
+- Gegenstände können zwischen Rucksack und Bank verschoben werden
+- Einlagern verbraucht keinen Rucksackplatz; Entnehmen benötigt einen freien Rucksackplatz
+- Bankgegenstände behalten Item-Level, Seltenheit, Stats und Schmiedestufe
+- kompakte Umschaltung zwischen Tresor und Rucksack
 
 ### Technische Bereinigung
 - veraltete Kopfgeld-Kampfversionen v1–v3 entfernt
