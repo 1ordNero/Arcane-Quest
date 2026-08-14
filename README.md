@@ -1,101 +1,56 @@
 # Arcane Tavern & Quest – Android Beta
 
-Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Smartphone-Bedienung optimiert. Sie lässt sich in Chrome/Edge auf Android über „Zum Startbildschirm hinzufügen“ wie eine App installieren.
+Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Smartphone-Bedienung optimiert.
 
 ## Aktueller Entwicklungsstand
 
 ### Navigation & Mobile UI
-- fünf feste Hauptbereiche in der unteren Navigation: Taverne, Katakomben, Held, Schmiede und Arena
-- Held ist als zentraler, runder und über die Navigationsleiste hinausragender Hauptbutton hervorgehoben
-- Taverne und Katakomben liegen links vom Held; Schmiede und Arena rechts
-- Katakomben besitzen zusätzlich eine sichtbare Zurück-/Verlassen-Navigation
-- der separate Rucksack-Tab ist entfernt; Inventar und Ausrüstung befinden sich vollständig im Held-Bereich
+- fünf feste Hauptbereiche: Taverne, Katakomben, Held, Schmiede und Arena
+- Held als zentraler, runder Hauptbutton hervorgehoben
+- Inventar und Ausrüstung vollständig im Held-Bereich
 
 ### Charakter
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
-- kompakte, mobile Charaktererstellung
-- Abschlussbildschirm mit dynamischer Heldengeschichte
-- Zusammenfassung von Stärken, Klassenfokus und Schwächen
-- Volk, Klasse und Attribute beeinflussen spätere Proben und Kämpfe
-- kompakter Heldenscreen mit Charakterwerten, Ausrüstung und vollständig integriertem Inventar
+- dynamische Heldengeschichte und Charakterzusammenfassung
+- Charakterwerte und Ausrüstung beeinflussen Proben und Kämpfe
 
-### Quests & Abenteuerlust
-- tägliche Abenteuerlust mit Reset nach Tageswechsel
-- Questkarten als aufklappbare Accordion-Ansicht
-- immer nur eine aktive Quest gleichzeitig
-- Quest-Timer läuft tabübergreifend weiter
+### Quests & Kampf
 - Standard-, Ereignis-, Kopfgeld- und Risikoquests
-- Quest-Abschlussbildschirm mit Gold, XP, Materialien, Items und Level-Up
-- Ereignis- und Risikoquests verwenden das zentrale Loot-System statt Platzhalter-Beute
+- Wahrscheinlichkeitsproben mit Charakterwerten
+- Feedback nach Entscheidungen
+- Knochenhauer-Kampf mit Angriff/Verteidigung, Fokus, Verwundbarkeit, Bossphasen und Kampfwertung
+- kostenloser Basisangriff verhindert festgefahrene Kämpfe
 
-### Ereignisquests
-- mehrstufige Ereignisse mit unterschiedlichen Entscheidungen
-- unsichtbares Zufalls-/Wahrscheinlichkeitssystem statt sichtbarer Würfel
-- STR-, AGI- und INT-Proben
-- Erfolgschancen werden durch Charakterwerte, Volk, Klasse und Ausrüstung beeinflusst
-- kritischer Erfolg, Erfolg, Fehlschlag und kritischer Fehlschlag
-- eigener Feedback-Screen nach jeder Entscheidung
-- Entscheidungen beeinflussen Questbelohnungen und mögliche Beute
-
-### Kopfgeld & Kampf
-- Mini-Boss-Kampfsystem am Beispiel „Der Knochenhauer“
-- rundenbasierte Kämpfe mit Spieler- und Gegner-HP
-- klar getrennte Angriffs- und Verteidigungsphasen
-- Ablauf: Angriff → gegnerische Angriffsvorschau → Verteidigung → nächster Angriff
-- kostenloser Basisangriff „Einfacher Schlag“ ohne Ladungen und ohne Fokuskosten
-- Angriffsoptionen mit begrenzten Ladungen: schneller Angriff, schwerer Angriff und Klassenaktion
-- Verteidigungsoptionen mit begrenzten Ladungen: Blocken, Ausweichen und Standhalten
-- Fokus-System, Boss-Verwundbarkeit, drei Bossphasen und laufende Kampfwertung von S bis C
-- höhere Kampfwertung erhöht Gold, XP, Essenzen und die Chance auf bessere Loot-Seltenheit
-- Rüstung, Block, Ausweichen, Krit und Ausrüstung beeinflussen den Kampf
-
-### Dungeons – Katakomben v1
-- gemäß GDD regulär ab Stufe 10 über einen gefundenen Schlüssel zugänglich
-- für die aktuelle Beta-Testphase ist der Dungeon unabhängig von der Charakterstufe direkt freigeschaltet
-- beim Laden werden für den Beta-Test mindestens 5 Katakomben-Schlüssel bereitgestellt; verbrauchte Testschlüssel werden bei Bedarf wieder aufgefüllt
-- der Eintrittsbutton ist während der Beta unabhängig vom Level aktiv
-- ein Schlüssel wird beim Betreten verbraucht
-- erste spielbare Expedition mit fünf aufeinanderfolgenden Räumen
-- Mischung aus Attributs-Ereignissen, normalen Kämpfen und einem Endboss
-- Ereignisräume verwenden STR-, AGI- oder INT-Proben
-- jede Dungeon-Entscheidung zeigt vor der Auswahl die konkrete Erfolgschance sowie eine Einschätzung wie „sehr günstig“, „günstig“, „ausgeglichen“ oder „riskant“
-- Entscheidungen zeigen außerdem die erwartete Konsequenz: Erfolg kann Gold/Beute bringen, Fehlschlag verursacht HP-Verlust
-- Erfolgschancen basieren auf den aktuell berechneten Charakterwerten inklusive Ausrüstung
-- bereits gefundene Dungeon-Beute wird während des gesamten Runs sichtbar angezeigt
-- die Beuteanzeige zeigt Gegenstände, Gold und XP, damit vor weiteren Räumen bzw. Bossen klar ist, was bei einer Niederlage verloren gehen kann
-- Item-Rahmen in der Dungeon-Beute verwenden dieselbe farbliche Seltenheitsdarstellung wie das Held-Inventar
-- Kampfräume besitzen Angriffs- und Verteidigungsphasen sowie angekündigte gegnerische Angriffe
-- drei Angriffsvarianten und Blocken, Ausweichen oder Standhalten als Verteidigung
-- HP bleiben über die gesamte Expedition erhalten
-- Gold, XP und gefundene Items werden während des Runs als Dungeon-Beute gesammelt
-- freiwilliges Verlassen sichert die bis dahin gesammelte Beute; Niederlage verliert ungesicherte Dungeon-Beute
-- Endboss „Hüter der Katakomben“ schließt die erste Expedition ab
-- Dungeon-Loot nutzt das bestehende Item-System; Legendär bleibt von regulären Drops ausgeschlossen
-- die im GDD vorgesehene vollständige 10-Ebenen-Struktur mit Phasenschilden, Enrage und Immunitäten ist für die nächste Dungeon-Ausbaustufe vorgesehen
+### Dungeons – Katakomben v2
+- regulär gemäß GDD ab Stufe 10 und über Schlüssel; während der Beta direkt testbar
+- 10 aufeinanderfolgende Räume statt der ursprünglichen fünf
+- Raumtypen: Ereignis, normaler Kampf, Elitekampf, Ruheschrein, Schatzkammer und Endboss
+- sichtbarer 10-Raum-Fortschritt
+- Ereignisentscheidungen zeigen konkrete Erfolgschance, Charakterattribut, Risikoeinschätzung und mögliche Konsequenzen
+- aktuelle ungesicherte Dungeon-Beute mit Gold, XP und Items bleibt während des Runs sichtbar
+- freiwilliger Ausstieg sichert die bisherige Beute
+- Niederlage verliert die ungesicherte Dungeon-Beute
+- Risiko-/Belohnungsanzeige ab den tieferen Ebenen; zunehmende Tiefe signalisiert steigenden Loot-Wert
+- Ruheschrein in Raum 6 stellt 25 % der maximalen HP wieder her
+- Schatzkammer in Raum 9 bietet eine garantierte Zwischenbelohnung vor dem Boss
+- Elitegegner „Grabritter“ als Zwischenprüfung
+- Endboss „Hüter der Katakomben“ mit Phasenschild
+- Boss-Schaden trifft zunächst das Phasenschild, bevor Lebenspunkte reduziert werden
+- Boss-Enrage ab Runde 7 erhöht den verursachten Schaden
+- Boss besitzt mehrere angekündigte Angriffe mit unterschiedlichen sinnvollen Verteidigungen
+- Dungeon-Loot nutzt das zentrale Item-System; Legendär bleibt von regulären Drops ausgeschlossen
 
 ### Loot, Inventar & Ausrüstung
-- Inventar ist vollständig in den Held-Tab integriert; der separate Rucksack-Tab wurde aus der Navigation entfernt
-- GDD-Ausrüstung mit 11 Slots: Kopf, Brust, Schulter, Beine, Gürtel, Stiefel, Amulett, Ring 1, Ring 2, Haupthand und Zweithand
-- Items können direkt im Held-Tab betrachtet, verglichen, ausgerüstet, ersetzt und abgelegt werden
-- Gegenstände besitzen konkrete Boni wie STR, AGI, INT, HP, Rüstung, Schaden, Krit, Block und Ausweichen
-- zentrale Final-Stats aus Charakter und Ausrüstung
-- Seltenheit wird im Inventar primär über farbige Item-Rahmen und Leuchteffekte dargestellt statt über ausgeschriebene Seltenheitsnamen
-- aktuelle Progressionsreihenfolge: Gewöhnlich → Selten → Magisch → Episch → Mythisch → Legendär
-- Gewöhnlich ist häufig; Selten, Magisch und Episch werden stufenweise seltener; Mythisch ist die seltenste reguläre Drop-Stufe
-- Mythisch bildet gemäß GDD das Maximum der regulären Kampfwerte mit 2,3× Multiplikator
-- Legendär besitzt gemäß GDD dieselben Kampfwerte wie Mythisch und ist als Prestige-Stufe für die Ahnen-Schmiede vorgesehen
-- Legendäre Gegenstände werden nicht mehr als reguläre Quest-, Kopfgeld- oder Dungeon-Drops erzeugt
-- spätere Legendär-Herstellung ist an die Ahnen-Schmiede, eine mythische +10 Basis, legendäre Essenzen, Seelensteine und ein Relikt der Urahnen gebunden
-- Questtyp-spezifische Loot-Pools für Standard, Ereignis, Risiko und Kopfgeld
-- Risiko-, Kopfgeld- und Dungeon-Inhalte besitzen höhere Chancen auf bessere reguläre Seltenheitsstufen
-- Lootwerte skalieren mit Charakterlevel und Seltenheit
-
-> Hinweis: Die zusätzliche Stufe „Episch“ und die Reihenfolge „Selten vor Magisch“ wurden auf Basis der aktuellen Produktentscheidung ergänzt. Das GDD selbst nennt für Auto-Verwerten gewöhnliche und magische Items sowie Mythisch und Legendär als Endgame-Stufen, definiert aber keine vollständige Zwischenstufen-Reihenfolge.
+- 11 Ausrüstungsslots gemäß GDD
+- Seltenheitsreihenfolge: Gewöhnlich → Selten → Magisch → Episch → Mythisch → Legendär
+- Seltenheit wird primär durch farbige Item-Rahmen dargestellt
+- Mythisch ist die höchste regulär findbare Stufe
+- Legendär bleibt Prestige-Ausrüstung für spätere Reinkarnation/Ahnenschmiede und kann nicht regulär droppen
+- Itemwerte beeinflussen Final-Stats, Ereignisproben und Kämpfe
 
 ### Technische Bereinigung
-- veraltete Kopfgeld-Kampfversionen v1, v2 und v3 wurden aus dem Repository entfernt
-- `index.html` lädt nur noch die aktuell benötigten Kampfmodule v4 und v5
-- weitere Module werden erst entfernt, wenn ihre noch benötigte Logik vollständig konsolidiert wurde
+- veraltete Kopfgeld-Kampfversionen v1–v3 entfernt
+- weitere Patch-Module werden schrittweise konsolidiert
 
 ### Weitere vorhandene Beta-Systeme
 - XP, Leveling und Gold
@@ -106,12 +61,10 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ## Android
 
-Die Beta läuft aktuell als PWA über GitHub Pages. Auf Android kann sie in Chrome über „Zum Startbildschirm hinzufügen“ bzw. „App installieren“ installiert werden.
-
 **Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
 
-Für einen späteren echten APK-Build kann das Web-Frontend in eine Capacitor-, TWA- oder vergleichbare Android-Hülle integriert werden.
+Die Beta läuft aktuell als PWA über GitHub Pages.
 
 ## Entwicklungsregel
 
-Nach neuen spielbaren Features oder relevanten Änderungen wird diese README aktualisiert, damit der aktuelle Funktionsumfang des Projekts nachvollziehbar bleibt.
+Nach neuen spielbaren Features oder relevanten Änderungen wird diese README aktualisiert.
