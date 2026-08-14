@@ -14,6 +14,18 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - bestehende fünfteilige symmetrische Fußnavigation bleibt erhalten
 - Farben werden stärker semantisch verwendet: Violett für primäre Aktionen, Gold für Wert/Belohnung, Grün für Erfolg und Rot für Gefahr
 
+### Arena UX v3
+- Arena folgt nun derselben mobilen Designsprache wie Held, Taverne, Katakomben und Stadt
+- Liga, Ruhm und Ruhmesmünzen werden in einer kompakten Rangübersicht gebündelt
+- Fortschritt bis zur nächsten Liga wird über eine eigene Fortschrittsleiste sichtbar
+- Kampfhaltungen besitzen größere Touchflächen und klarere Beschreibungen
+- die aktuell gewählte Haltung ist visuell deutlich markiert
+- Gegnerkarten zeigen Name, Klasse, Level, Kampfstärke, Schwierigkeit und Belohnung in einer klaren Hierarchie
+- die Gegnerwahl kommuniziert deutlicher, dass höheres Risiko mehr Ruhm und Münzen bringt
+- automatische Arena-Kämpfe stellen die beiden Lebensbalken stärker in den Mittelpunkt
+- Kampfprotokoll und Ergebnisansicht verwenden größere, mobil lesbare Schrift
+- auf Smartphones werden Haltung und Gegnerinformationen einspaltig bzw. platzsparend angeordnet
+
 ### Stadt UX v3
 - Stadt, Händler, Bank und Ahnen-Schmiede verwenden nun dieselbe visuelle Hierarchie
 - die Stadt ist als zentraler Hub aufgebaut und zeigt Händler, Schmiede und Bank als große, gut lesbare Gebäudezeilen
