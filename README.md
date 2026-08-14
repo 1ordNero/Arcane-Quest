@@ -9,7 +9,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Held sitzt exakt zentral und bleibt als größerer, runder Hauptbutton hervorgehoben
 - die Schmiede wurde aus der Fußleiste entfernt und in die Stadt integriert
 - Stadt dient als eigener Hub für Händler, Ahnen-Schmiede, Bank und spätere Verwaltungsfunktionen
-- Inventar und Ausrüstung vollständig im Held-Bereich
+- Inventar, Ausrüstung und Skills sind vollständig im Held-Bereich gebündelt
 
 ### Stadt v2
 - kompakte Gebäudeübersicht
@@ -18,14 +18,20 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Bank ab Stufe 10
 - gesperrte Gebäude zeigen ihre Freischaltstufe direkt an
 
-### Charakter
+### Charakter / Held-Screen v2
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
 - dynamische Heldengeschichte und Charakterzusammenfassung
-- Charakterwerte und Ausrüstung beeinflussen Proben und Kämpfe
+- kompakter Held-Kopf mit HP, Rüstung und Schaden
+- zusätzliche kompakte Übersicht für STR, AGI, INT, Krit, Ausweichen und Block
+- Ausrüstung bleibt als kompaktes Icon-Raster mit anklickbaren Itemdetails dargestellt
+- Itemdetails zeigen Item-Level, Macht, Bonuswerte und Vergleich zur aktuell ausgerüsteten Ausrüstung
+- Skillrotation ist nun sichtbar zwischen Ausrüstung und Inventar integriert
+- Inventar bleibt direkt darunter verfügbar und zeigt Item-Level, Macht, Kernstats sowie ▲ / = / ▼ Vergleich
 
 ### Skill-System v1
 - basiert auf dem GDD-Prinzip einer vor dem Kampf festgelegten Rotation aus 3–4 Skills
-- im Held-Screen stehen vier aktive Skill-Slots zur Verfügung; die Reihenfolge bestimmt die automatische Auslösung
+- im Held-Screen stehen vier aktive Skill-Slots sichtbar in der Reihenfolge 1 → 2 → 3 → 4 zur Verfügung
+- jeder Slot kann angetippt und aus den sechs Klassenskills neu belegt werden
 - jede der sechs Klassen besitzt für die Beta sechs eigene Fertigkeiten
 - GDD-Kernskills sind integriert: Schildwall, Arkaner Meteor, Gestaltwechsel, Pfeilhagel, Seelenentzug und Skelett-Diener
 - Klassenressourcen gemäß GDD: Wut, Mana, Naturfokus, Energie, Seelenfragmente und Essenz des Todes
@@ -93,7 +99,10 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ### Technische Bereinigung
 - veraltete Kopfgeld-Kampfversionen v1–v3 entfernt
-- weitere Patch-Module werden schrittweise konsolidiert
+- `character-profile.js` entfernt, weil der Held-Screen nun vollständig durch die aktuelle Item-/Hero-Oberfläche abgedeckt wird
+- `city-nav-fix-v1.js` entfernt, weil `city-hub-v2.js` Navigation und Zurückführung vollständig übernimmt
+- `auto-combat-v1.js` entfernt, weil es nicht mehr geladen wurde und durch die aktuelle Auto-Combat-Logik ersetzt ist
+- weitere Patch-Module bleiben vorerst bestehen, solange sie noch aktive Spiellogik liefern; die nächste Bereinigung sollte erst nach einem gezielten Konsolidierungstest erfolgen
 
 ### Weitere vorhandene Beta-Systeme
 - XP, Leveling und Gold
