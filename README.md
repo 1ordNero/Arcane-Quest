@@ -35,17 +35,21 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - rundenbasierte Kämpfe mit Spieler- und Gegner-HP
 - klar getrennte Angriffs- und Verteidigungsphasen
 - Ablauf: Angriff → gegnerische Angriffsvorschau → Verteidigung → nächster Angriff
-- Angriffsoptionen: schneller Angriff, schwerer Angriff und Klassenaktion
-- Verteidigungsoptionen: Blocken, Ausweichen und Standhalten
-- jede Fähigkeit besitzt begrenzte Ladungen, wodurch unterschiedliche Aktionen genutzt werden müssen
-- verbrauchte Aktionsgruppen laden sich reduziert wieder auf, sobald alle Optionen erschöpft sind
-- gegnerische Angriffe werden vor der Verteidigung angekündigt
-- Block- und Ausweichwahrscheinlichkeiten verändern sich abhängig vom angekündigten Angriff
+- Angriffsoptionen mit begrenzten Ladungen: schneller Angriff, schwerer Angriff und Klassenaktion
+- Verteidigungsoptionen mit begrenzten Ladungen: Blocken, Ausweichen und Standhalten
+- Bossangriffe werden vor der Verteidigung angekündigt und besitzen unterschiedliche Eigenschaften wie schwer, frontal, schnell, linear oder Flächenangriff
+- Block-, Ausweich- und Standhalten-Chancen verändern sich abhängig vom angekündigten Angriff
+- Fokus-System: gute Angriffe und perfekte Verteidigung bauen Fokus auf
+- Klassenaktion kostet Fokus und kann deshalb nicht durchgehend verwendet werden
+- perfekte Verteidigung kann den Boss aus dem Gleichgewicht bringen und ein verstärktes Schadensfenster öffnen
+- drei Bossphasen abhängig von verbleibenden HP; spätere Phasen verändern Angriffsmuster und Schaden
+- laufende Kampfwertung von S bis C
+- Kampfwertung berücksichtigt unter anderem erhaltenen Schaden, Fehler, perfekte Verteidigungen und Kampfdauer
+- höhere Kampfwertung erhöht Gold, XP, Essenzen und die Chance auf bessere Loot-Seltenheit
 - klassenspezifische Angriffsaktionen
-- Treffer-, Krit-, Block- und Ausweichwahrscheinlichkeiten
+- Rüstung, Block, Ausweichen, Krit und Ausrüstung beeinflussen den Kampf
 - direktes Feedback nach jeder Angriffs- und Verteidigungsentscheidung
-- Rüstung reduziert eingehenden Schaden
-- Sieg, Niederlage und Kopfgeldbelohnungen
+- Sieg, Niederlage und wertungsabhängige Kopfgeldbelohnungen
 
 ### Loot, Inventar & Ausrüstung
 - vereinheitlichtes Item- und Ausrüstungsmodell
