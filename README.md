@@ -14,17 +14,26 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - bestehende fünfteilige symmetrische Fußnavigation bleibt erhalten
 - Farben werden stärker semantisch verwendet: Violett für primäre Aktionen, Gold für Wert/Belohnung, Grün für Erfolg und Rot für Gefahr
 
+### Taverne & Quests UX v3
+- Taverne ist jetzt konsequent auf Abenteuerlust, aktive Quest und Quest-Auswahl fokussiert
+- geschlossene Questkarten zeigen nur die entscheidungsrelevanten Informationen: Name, Typ, Kurzbeschreibung, Dauer, AL-Kosten und Belohnung
+- Questdetails werden erst durch Antippen aufgeklappt; der Start erfolgt anschließend direkt innerhalb derselben Karte
+- Risiko-/Auftragstypen werden über kompakte Status-Chips unterschieden
+- Knochenhauer ist visuell als besonders gefährliches Premium-Kopfgeld hervorgehoben
+- Knochenwache ist standardmäßig geschlossen und wird wie die übrigen Aufträge erst durch Antippen geöffnet
+- aktive Quests stellen Restzeit und Fortschritt deutlich stärker in den Mittelpunkt
+- Ereignisentscheidungen und Wahrscheinlichkeiten wurden für Smartphone-Lesbarkeit vergrößert
+- wichtige Questtexte verwenden keine extrem kleinen 6–9-px-Schriften mehr
+- Abenteuerlust wird weiterhin erst beim tatsächlichen Start eines Auftrags abgezogen
+
 ### Held-Screen UX v3
 - der Held-Screen ist jetzt ein kompaktes Dashboard statt einer langen untereinander gestapelten Seite
 - oben bleiben Charaktername, Level, Volk, Klasse sowie HP, Schaden und Rüstung ständig sichtbar
 - STR, AGI, INT, Krit, Ausweichen und Block werden in einer kompakten Stat-Zeile dargestellt
 - drei interne Bereiche reduzieren Scrollen deutlich: **Ausrüstung · Skills · Inventar**
 - Ausrüstung zeigt nur die 11 kompakten Slot-Icons; Itemdetails öffnen sich erst nach Antippen
-- Itemdetails zeigen Item-Level, Macht, Bonuswerte, Vergleich und Ausrüsten/Ablegen
 - Skills besitzen einen eigenen Bereich mit der aktiven 4-Slot-Rotation
-- jeder Skill-Slot kann direkt angetippt und neu belegt werden
 - Inventar verwendet eine kompakte Listenansicht mit Seltenheitsrahmen, Item-Level, Macht, Stats und ▲ / = / ▼ Vergleich
-- der gewählte Held-Unterbereich bleibt beim Wechsel zu anderen Hauptscreens gespeichert
 
 ### Navigation & Mobile UI
 - fünf symmetrische Hauptbereiche in der Fußleiste: Taverne, Katakomben, Held, Stadt und Arena
@@ -47,10 +56,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 ### Skill-System v1
 - basiert auf dem GDD-Prinzip einer vor dem Kampf festgelegten Rotation aus 3–4 Skills
 - im Held-Screen stehen vier aktive Skill-Slots in der Reihenfolge 1 → 2 → 3 → 4 zur Verfügung
-- jeder Slot kann angetippt und aus den sechs Klassenskills neu belegt werden
 - jede der sechs Klassen besitzt für die Beta sechs eigene Fertigkeiten
-- GDD-Kernskills sind integriert: Schildwall, Arkaner Meteor, Gestaltwechsel, Pfeilhagel, Seelenentzug und Skelett-Diener
-- Klassenressourcen gemäß GDD: Wut, Mana, Naturfokus, Energie, Seelenfragmente und Essenz des Todes
 - Skillrotation wird in automatischen Arena- und Katakomben-Kämpfen verwendet
 - der Knochenhauer bleibt weiterhin manuell
 
@@ -70,7 +76,6 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - feste Item-Level entsprechend dem Charakterlevel beim Fund
 - Item-Level, Seltenheit und Schmiedestufe bestimmen gemeinsam die Gegenstandsstärke
 - ▲ / = / ▼ zeigen Vergleiche mit aktuell ausgerüsteten Items
-- vollständige Itemstats im Inventar und bei angelegter Ausrüstung
 - Legendär kann nicht regulär droppen
 
 ### Ahnen-Schmiede v2
