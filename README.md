@@ -19,6 +19,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Quest-Timer läuft tabübergreifend weiter
 - Standard-, Ereignis-, Kopfgeld- und Risikoquests
 - Quest-Abschlussbildschirm mit Gold, XP, Materialien, Items und Level-Up
+- Ereignis- und Risikoquests verwenden das zentrale Loot-System statt Platzhalter-Beute
 
 ### Ereignisquests
 - mehrstufige Ereignisse mit unterschiedlichen Entscheidungen
@@ -32,10 +33,17 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 ### Kopfgeld & Kampf
 - Mini-Boss-Kampfsystem am Beispiel „Der Knochenhauer“
 - rundenbasierte Kämpfe mit Spieler- und Gegner-HP
-- Angreifen, Blocken, Ausweichen und Klassenaktion
-- klassenspezifische Fähigkeiten
+- klar getrennte Angriffs- und Verteidigungsphasen
+- Ablauf: Angriff → gegnerische Angriffsvorschau → Verteidigung → nächster Angriff
+- Angriffsoptionen: schneller Angriff, schwerer Angriff und Klassenaktion
+- Verteidigungsoptionen: Blocken, Ausweichen und Standhalten
+- jede Fähigkeit besitzt begrenzte Ladungen, wodurch unterschiedliche Aktionen genutzt werden müssen
+- verbrauchte Aktionsgruppen laden sich reduziert wieder auf, sobald alle Optionen erschöpft sind
+- gegnerische Angriffe werden vor der Verteidigung angekündigt
+- Block- und Ausweichwahrscheinlichkeiten verändern sich abhängig vom angekündigten Angriff
+- klassenspezifische Angriffsaktionen
 - Treffer-, Krit-, Block- und Ausweichwahrscheinlichkeiten
-- direktes Feedback nach jeder Kampfrunde
+- direktes Feedback nach jeder Angriffs- und Verteidigungsentscheidung
 - Rüstung reduziert eingehenden Schaden
 - Sieg, Niederlage und Kopfgeldbelohnungen
 
