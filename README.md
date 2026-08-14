@@ -42,6 +42,21 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - höhere Kampfwertung erhöht Gold, XP, Essenzen und die Chance auf bessere Loot-Seltenheit
 - Rüstung, Block, Ausweichen, Krit und Ausrüstung beeinflussen den Kampf
 
+### Dungeons – Katakomben v1
+- gemäß GDD ab Stufe 10 über einen gefundenen Schlüssel zugänglich
+- ein Schlüssel wird beim Betreten verbraucht
+- erste spielbare Expedition mit fünf aufeinanderfolgenden Räumen
+- Mischung aus Attributs-Ereignissen, normalen Kämpfen und einem Endboss
+- Ereignisräume verwenden STR-, AGI- oder INT-Proben und können Gold, Beute oder HP-Verlust erzeugen
+- Kampfräume besitzen Angriffs- und Verteidigungsphasen sowie angekündigte gegnerische Angriffe
+- drei Angriffsvarianten und Blocken, Ausweichen oder Standhalten als Verteidigung
+- HP bleiben über die gesamte Expedition erhalten
+- Gold, XP und gefundene Items werden während des Runs als Dungeon-Beute gesammelt
+- freiwilliges Verlassen sichert die bis dahin gesammelte Beute; Niederlage verliert ungesicherte Dungeon-Beute
+- Endboss „Hüter der Katakomben“ schließt die erste Expedition ab
+- Dungeon-Loot nutzt das bestehende Item-System; Legendär bleibt von regulären Drops ausgeschlossen
+- die im GDD vorgesehene vollständige 10-Ebenen-Struktur mit Phasenschilden, Enrage und Immunitäten ist für die nächste Dungeon-Ausbaustufe vorgesehen
+
 ### Loot, Inventar & Ausrüstung
 - Inventar ist vollständig in den Held-Tab integriert; der separate Rucksack-Tab wurde aus der Navigation entfernt
 - GDD-Ausrüstung mit 11 Slots: Kopf, Brust, Schulter, Beine, Gürtel, Stiefel, Amulett, Ring 1, Ring 2, Haupthand und Zweithand
@@ -53,10 +68,10 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Gewöhnlich ist häufig; Selten, Magisch und Episch werden stufenweise seltener; Mythisch ist die seltenste reguläre Drop-Stufe
 - Mythisch bildet gemäß GDD das Maximum der regulären Kampfwerte mit 2,3× Multiplikator
 - Legendär besitzt gemäß GDD dieselben Kampfwerte wie Mythisch und ist als Prestige-Stufe für die Ahnen-Schmiede vorgesehen
-- Legendäre Gegenstände werden nicht mehr als reguläre Quest- oder Kopfgeld-Drops erzeugt
+- Legendäre Gegenstände werden nicht mehr als reguläre Quest-, Kopfgeld- oder Dungeon-Drops erzeugt
 - spätere Legendär-Herstellung ist an die Ahnen-Schmiede, eine mythische +10 Basis, legendäre Essenzen, Seelensteine und ein Relikt der Urahnen gebunden
 - Questtyp-spezifische Loot-Pools für Standard, Ereignis, Risiko und Kopfgeld
-- Risiko- und Kopfgeld-Inhalte besitzen höhere Chancen auf die besseren regulären Seltenheitsstufen
+- Risiko-, Kopfgeld- und Dungeon-Inhalte besitzen höhere Chancen auf bessere reguläre Seltenheitsstufen
 - Lootwerte skalieren mit Charakterlevel und Seltenheit
 
 > Hinweis: Die zusätzliche Stufe „Episch“ und die Reihenfolge „Selten vor Magisch“ wurden auf Basis der aktuellen Produktentscheidung ergänzt. Das GDD selbst nennt für Auto-Verwerten gewöhnliche und magische Items sowie Mythisch und Legendär als Endgame-Stufen, definiert aber keine vollständige Zwischenstufen-Reihenfolge.
