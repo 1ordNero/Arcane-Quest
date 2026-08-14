@@ -39,7 +39,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Rüstung reduziert eingehenden Schaden
 - Sieg, Niederlage und Kopfgeldbelohnungen
 
-### Inventar & Ausrüstung
+### Loot, Inventar & Ausrüstung
 - vereinheitlichtes Item- und Ausrüstungsmodell
 - Ausrüstungs-Slots für Rüstung, Waffen, Schmuck und Nebenhand
 - Items können ausgerüstet, ersetzt und wieder abgelegt werden
@@ -47,7 +47,14 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Gegenstände besitzen konkrete Boni wie STR, AGI, INT, HP, Rüstung, Schaden, Krit, Block und Ausweichen
 - zentrale Final-Stats aus Charakter und Ausrüstung
 - Ausrüstung beeinflusst Ereignisproben und Kopfgeldkämpfe
-- Kopfgelder können echte ausrüstbare seltene Gegenstände droppen
+- Loot-System v1 mit Gewöhnlich, Magisch, Selten, Mythisch und Legendär
+- Questtyp-spezifische Loot-Pools für Standard, Ereignis, Risiko und Kopfgeld
+- bessere Seltenheitschancen bei Risiko- und Kopfgeld-Inhalten
+- Lootwerte skalieren mit Charakterlevel und Seltenheit
+- kompakte Inventaransicht mit Filtern nach Slot und Seltenheit
+- Sortierung nach Stärke, Seltenheit oder Name
+- direkte Auf-/Abwertung gegenüber aktuell ausgerüstetem Item
+- aufklappbare Itemdetails mit Wertevergleich und Ausrüstungsbutton
 
 ### Weitere vorhandene Beta-Systeme
 - XP, Leveling und Gold
