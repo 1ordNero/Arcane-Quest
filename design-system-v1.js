@@ -1,0 +1,23 @@
+(()=>{
+const screenMeta={home:['🍺','Taverne','Quests & Abenteuer'],dungeon:['🏰','Katakomben','Expedition & Beute'],char:['🧙','Held','Ausrüstung & Fertigkeiten'],city:['🏘️','Stadt','Handel & Handwerk'],merchant:['🧺','Händler','Kaufen & Verkaufen'],bank:['🏦','Bank','Tresor & Lager'],forge:['🔨','Ahnen-Schmiede','Aufwerten & Verwerten'],arena:['⚔️','Arena','Ruhm & Kämpfe']};
+function compactHeader(){const h=document.querySelector('header');if(!h||h.dataset.ds1)return;h.dataset.ds1='1';const meta=screenMeta[S.screen]||['✦','Arcane Quest',''];h.innerHTML=`<div class="ds-top"><div class="ds-screen"><span>${meta[0]}</span><div><b>${meta[1]}</b><small>${meta[2]}</small></div></div><div class="ds-res"><span>Lv ${S.lvl}</span><span class="gold">🪙 ${S.gold}</span><span>⚡ ${S.al}/${S.maxAl}</span></div></div>`}
+function polish(){compactHeader();document.body.dataset.screen=S.screen||'';document.querySelectorAll('main section').forEach(x=>x.classList.add('ds-section'));document.querySelectorAll('.card').forEach(x=>x.classList.add('ds-card'))}
+const previous=window.render;window.render=function(){previous();polish()};
+const css=document.createElement('style');css.textContent=`
+:root{--ds-radius:14px;--ds-gap:10px;--ds-line:#ffffff0d;--ds-surface:#1c1526;--ds-surface2:#241a31}
+body{background:radial-gradient(circle at 50% -8%,#2c1b40 0,#110d17 38%,#0e0b13 100%)!important}
+header{padding:9px 12px!important;min-height:58px!important;background:#15101ddd!important;border-bottom:1px solid var(--ds-line)!important}
+.ds-top{max-width:900px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}.ds-screen{display:flex;align-items:center;gap:8px;min-width:0}.ds-screen>span{font-size:23px}.ds-screen b,.ds-screen small{display:block}.ds-screen b{font-size:15px;line-height:1.1}.ds-screen small{font-size:8px;color:var(--muted);margin-top:2px}.ds-res{display:flex;gap:4px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.ds-res span{padding:5px 7px;border-radius:999px;background:#ffffff09;font-size:9px;white-space:nowrap}.ds-res .gold{color:var(--gold)}
+main{padding:11px 12px 100px!important}.hero{padding:14px!important;border-radius:var(--ds-radius)!important;box-shadow:none!important;background:linear-gradient(135deg,#261936,#17111f)!important}.hero h1{font-size:22px!important}.card,.ds-card{border-radius:var(--ds-radius)!important;padding:11px!important;background:var(--ds-surface)!important;box-shadow:none!important;border-color:var(--ds-line)!important}.grid{gap:8px!important;margin-top:9px!important}.row{gap:6px!important}.actions{gap:6px!important;margin-top:8px!important}button{border-radius:11px!important;box-shadow:none!important}.pill{padding:5px 7px!important;font-size:9px!important}.small{font-size:9px!important}.notice{padding:8px!important;border-radius:10px!important}
+.tabs{background:#15101df7!important;border-top:1px solid var(--ds-line)!important}.tabs button.active:not(.hero-tab){background:#ffffff08!important}.tabs button span{filter:saturate(.88)}.tabs .hero-tab{border-color:#1b1425!important;box-shadow:0 5px 18px #0008,0 0 0 2px #f4c15d33!important}
+.modal{background:#000b!important}.sheet{border-radius:20px 20px 0 0!important;padding:14px!important;background:#1b1425!important}.sheet h2,.sheet h3{margin-top:3px}.tag{font-size:8px!important;padding:4px 6px!important}
+/* Reduce nested-card noise */
+section section,.card .card,.hero .card{box-shadow:none!important}.d1-bank,.d2-loot,.dv2-risk,.mb-head,.cv2-head,.hsv2-panel,.hsv2-head{box-shadow:none!important}.d2-loot,.dv2-risk{border-color:var(--ds-line)!important}
+/* Screen focus */
+body[data-screen="dungeon"] header{opacity:.94}body[data-screen="dungeon"] main{padding-top:8px!important}.d1-track{margin-top:6px!important}.d1-room{border-radius:14px!important}.d1-bank{margin-top:7px!important}.d2-loot{margin-top:7px!important}
+body[data-screen="char"] .hsv2-head{margin-bottom:8px!important}.hsv2-panel{margin-top:8px!important}
+body[data-screen="city"] .cv2-head p{max-width:520px}.cv2-grid{gap:7px!important}.cv2-grid>button{border-radius:13px!important}
+body[data-screen="merchant"] .mb-head,body[data-screen="bank"] .mb-head{border-radius:14px!important}.mb-item{border-radius:11px!important}
+@media(max-width:430px){header{padding:8px 10px!important}.ds-screen small{display:none}.ds-screen b{font-size:14px}.ds-screen>span{font-size:21px}.ds-res span{font-size:8px;padding:4px 6px}main{padding-left:10px!important;padding-right:10px!important}.hero h1{font-size:20px!important}}
+`;document.head.appendChild(css);polish();
+})();
