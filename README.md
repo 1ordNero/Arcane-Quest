@@ -65,6 +65,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - der Hintergrund „Runenschmied-Lehrling“ gewährt gemäß GDD +10 % Erfolgschance beim Aufwerten
 - bei Fehlschlag bleiben Item und Aufwertungsstufe erhalten; eingesetzte Materialien werden verbraucht
 - erfolgreiche Aufwertungen erhöhen Item-Macht und schrittweise vorhandene Itemwerte
+- nach jeder erfolgreichen Aufwertung erscheint ein Ergebnis-Popup mit der neuen Item-Stufe sowie den konkret gestiegenen Werten (z. B. Macht, Schaden, Rüstung oder Attribute)
 - unerwünschte Inventar-Gegenstände können in Entzauberungs-Staub zerlegt werden
 - Epische und Mythische Items liefern zusätzlich Schmiede-Essenz beim Verwerten
 - Auto-Verwerten-Schalter für gewöhnliche und magische Gegenstände sind gemäß GDD integriert
