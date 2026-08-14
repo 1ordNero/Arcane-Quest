@@ -1,7 +1,7 @@
 (()=>{
 function footer(){const nav=document.querySelector('nav.tabs');if(!nav)return;const cityActive=['city','merchant','bank','forge'].includes(S.screen);nav.innerHTML=`
 <button class="${S.screen==='home'?'active':''}" onclick="tab('home')"><span class="nav-art"><img src="assets/icons/nav-tavern.webp" alt="" aria-hidden="true"></span><small>Taverne</small></button>
-<button class="${S.screen==='dungeon'?'active':''}" onclick="tab('dungeon')"><span>🏰</span><small>Katakomben</small></button>
+<button class="${S.screen==='dungeon'?'active':''}" onclick="tab('dungeon')"><span class="nav-art"><img src="assets/icons/nav-catacombs.webp" alt="" aria-hidden="true"></span><small>Katakomben</small></button>
 <button class="hero-tab ${S.screen==='char'?'active':''}" onclick="tab('char')"><span>🧙</span><small>Held</small></button>
 <button class="${cityActive?'active':''}" onclick="tab('city')"><span>🏘️</span><small>Stadt</small></button>
 <button class="${S.screen==='arena'?'active':''}" onclick="tab('arena')"><span>⚔️</span><small>Arena</small></button>`}
