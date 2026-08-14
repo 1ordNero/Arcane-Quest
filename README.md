@@ -14,6 +14,20 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - bestehende fünfteilige symmetrische Fußnavigation bleibt erhalten
 - Farben werden stärker semantisch verwendet: Violett für primäre Aktionen, Gold für Wert/Belohnung, Grün für Erfolg und Rot für Gefahr
 
+### Stadt UX v3
+- Stadt, Händler, Bank und Ahnen-Schmiede verwenden nun dieselbe visuelle Hierarchie
+- die Stadt ist als zentraler Hub aufgebaut und zeigt Händler, Schmiede und Bank als große, gut lesbare Gebäudezeilen
+- Stadtübersicht zeigt Gold und aktuelle Rucksackbelegung kompakt an
+- Unterbereiche verwenden eine einheitliche Breadcrumb-Navigation zurück zur Stadt statt unterschiedlicher Zurück-Buttons
+- Händler- und Bank-Tabs besitzen größere mobile Touchflächen und besser lesbare Schrift
+- Händleritems zeigen Name, Item-Level, Slot, Macht, Stats, Preis und Aktion in einer einheitlichen Listenstruktur
+- Bankitems verwenden dieselbe Itemdarstellung wie der Händler
+- auf kleinen Smartphones rutschen Kauf-, Verkaufs-, Einlagerungs- und Entnahmeaktionen unter die Iteminformationen, damit keine schmalen Textspalten entstehen
+- Schmiede verwendet dieselbe visuelle Sprache wie Händler und Bank
+- Schmiedeitems werden mobil als einspaltige Liste statt kleiner zweispaltiger Karten dargestellt
+- Aufwertungskosten, Erfolgschance, Auto-Verwerten und Ahnenwerk wurden für Smartphone-Lesbarkeit vergrößert
+- Freischaltstufen und gesperrte Gebäude bleiben klar sichtbar
+
 ### Taverne & Quests UX v3
 - Taverne ist jetzt konsequent auf Abenteuerlust, aktive Quest und Quest-Auswahl fokussiert
 - geschlossene Questkarten zeigen nur die entscheidungsrelevanten Informationen: Name, Typ, Kurzbeschreibung, Dauer, AL-Kosten und Belohnung
