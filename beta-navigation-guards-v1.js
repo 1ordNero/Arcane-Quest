@@ -30,7 +30,7 @@ const baseRender=window.render;
 if(baseRender)window.render=function(){const r=baseRender.apply(this,arguments);queueMicrotask(decorate);return r};
 new MutationObserver(decorate).observe(document.documentElement,{childList:true,subtree:true});
 
-/* Mobile footer: background starts around the former yellow guide line while the artwork may rise above it. */
+/* Mobile footer stays unchanged; only the navigation artwork is lifted upward. */
 const css=document.createElement('style');css.textContent=`
 @media(max-width:699px){
   .tabs{
@@ -54,7 +54,7 @@ const css=document.createElement('style');css.textContent=`
   .tabs .nav-art{
     position:absolute!important;
     left:50%!important;
-    bottom:24px!important;
+    bottom:38px!important;
     transform:translateX(-50%)!important;
     width:68px!important;
     height:68px!important;
@@ -77,7 +77,7 @@ const css=document.createElement('style');css.textContent=`
   .tabs .hero-tab .nav-art,.tabs .hero-nav-art{
     width:82px!important;
     height:82px!important;
-    bottom:20px!important;
+    bottom:34px!important;
   }
   .tabs .hero-tab .nav-art img,.tabs .hero-tab .hero-nav-art img{
     width:80px!important;
