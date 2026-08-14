@@ -10,7 +10,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Abschlussbildschirm mit dynamischer Heldengeschichte
 - Zusammenfassung von Stärken, Klassenfokus und Schwächen
 - Volk, Klasse und Attribute beeinflussen spätere Proben und Kämpfe
-- kompakter Heldenscreen mit Charakterwerten, Ausrüstung und Inventar
+- kompakter Heldenscreen mit Charakterwerten, Ausrüstung und vollständig integriertem Inventar
 
 ### Quests & Abenteuerlust
 - tägliche Abenteuerlust mit Reset nach Tageswechsel
@@ -35,45 +35,34 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - rundenbasierte Kämpfe mit Spieler- und Gegner-HP
 - klar getrennte Angriffs- und Verteidigungsphasen
 - Ablauf: Angriff → gegnerische Angriffsvorschau → Verteidigung → nächster Angriff
-- kostenloser Basisangriff „Einfacher Schlag“ ohne Ladungen und ohne Fokuskosten; geringe Trefferchance und leichter Schaden verhindern festgefahrene Kämpfe
+- kostenloser Basisangriff „Einfacher Schlag“ ohne Ladungen und ohne Fokuskosten
 - Angriffsoptionen mit begrenzten Ladungen: schneller Angriff, schwerer Angriff und Klassenaktion
 - Verteidigungsoptionen mit begrenzten Ladungen: Blocken, Ausweichen und Standhalten
-- Bossangriffe werden vor der Verteidigung angekündigt und besitzen unterschiedliche Eigenschaften wie schwer, frontal, schnell, linear oder Flächenangriff
-- Block-, Ausweich- und Standhalten-Chancen verändern sich abhängig vom angekündigten Angriff
-- Fokus-System: gute Angriffe und perfekte Verteidigung bauen Fokus auf
-- Klassenaktion kostet Fokus und kann deshalb nicht durchgehend verwendet werden
-- sichtbare Verwundbarkeit des Bosses mit fünf Stufen von „Geschützt“ bis „Gebrochen“
-- Verwundbarkeit erzeugt einen sichtbaren Schadensmultiplikator und macht starke Fähigkeiten in guten Schadensfenstern wertvoller
-- perfekte Verteidigung kann den Boss aus dem Gleichgewicht bringen und die Verwundbarkeit erhöhen
-- drei Bossphasen abhängig von verbleibenden HP; spätere Phasen verändern Angriffsmuster und Schaden
-- laufende Kampfwertung von S bis C
-- Kampfwertung berücksichtigt unter anderem erhaltenen Schaden, Fehler, perfekte Verteidigungen und Kampfdauer
+- Fokus-System, Boss-Verwundbarkeit, drei Bossphasen und laufende Kampfwertung von S bis C
 - höhere Kampfwertung erhöht Gold, XP, Essenzen und die Chance auf bessere Loot-Seltenheit
-- klassenspezifische Angriffsaktionen
 - Rüstung, Block, Ausweichen, Krit und Ausrüstung beeinflussen den Kampf
-- direktes Feedback nach jeder Angriffs- und Verteidigungsentscheidung
-- Sieg, Niederlage und wertungsabhängige Kopfgeldbelohnungen
 
 ### Loot, Inventar & Ausrüstung
-- vereinheitlichtes Item- und Ausrüstungsmodell
-- Ausrüstungs-Slots für Rüstung, Waffen, Schmuck und Nebenhand
-- Items können ausgerüstet, ersetzt und wieder abgelegt werden
-- Itemvergleich mit aktuell getragener Ausrüstung
+- Inventar ist vollständig in den Held-Tab integriert; der separate Rucksack-Tab wurde aus der Navigation entfernt
+- GDD-Ausrüstung mit 11 Slots: Kopf, Brust, Schulter, Beine, Gürtel, Stiefel, Amulett, Ring 1, Ring 2, Haupthand und Zweithand
+- Items können direkt im Held-Tab betrachtet, verglichen, ausgerüstet, ersetzt und abgelegt werden
 - Gegenstände besitzen konkrete Boni wie STR, AGI, INT, HP, Rüstung, Schaden, Krit, Block und Ausweichen
 - zentrale Final-Stats aus Charakter und Ausrüstung
-- Ausrüstung beeinflusst Ereignisproben und Kopfgeldkämpfe
-- Loot-System v1 mit Gewöhnlich, Magisch, Selten, Mythisch und Legendär
+- Seltenheit wird im Inventar primär über farbige Item-Rahmen und Leuchteffekte dargestellt statt über ausgeschriebene Seltenheitsnamen
+- aktuelle Progressionsreihenfolge: Gewöhnlich → Selten → Magisch → Episch → Mythisch → Legendär
+- Gewöhnlich ist häufig; Selten, Magisch und Episch werden stufenweise seltener; Mythisch ist die seltenste reguläre Drop-Stufe
+- Mythisch bildet gemäß GDD das Maximum der regulären Kampfwerte mit 2,3× Multiplikator
+- Legendär besitzt gemäß GDD dieselben Kampfwerte wie Mythisch und ist als Prestige-Stufe für die Ahnen-Schmiede vorgesehen
+- Legendäre Gegenstände werden nicht mehr als reguläre Quest- oder Kopfgeld-Drops erzeugt
+- spätere Legendär-Herstellung ist an die Ahnen-Schmiede, eine mythische +10 Basis, legendäre Essenzen, Seelensteine und ein Relikt der Urahnen gebunden
 - Questtyp-spezifische Loot-Pools für Standard, Ereignis, Risiko und Kopfgeld
-- bessere Seltenheitschancen bei Risiko- und Kopfgeld-Inhalten
+- Risiko- und Kopfgeld-Inhalte besitzen höhere Chancen auf die besseren regulären Seltenheitsstufen
 - Lootwerte skalieren mit Charakterlevel und Seltenheit
-- kompakte Inventaransicht mit Filtern nach Slot und Seltenheit
-- Sortierung nach Stärke, Seltenheit oder Name
-- direkte Auf-/Abwertung gegenüber aktuell ausgerüstetem Item
-- aufklappbare Itemdetails mit Wertevergleich und Ausrüstungsbutton
+
+> Hinweis: Die zusätzliche Stufe „Episch“ und die Reihenfolge „Selten vor Magisch“ wurden auf Basis der aktuellen Produktentscheidung ergänzt. Das GDD selbst nennt für Auto-Verwerten gewöhnliche und magische Items sowie Mythisch und Legendär als Endgame-Stufen, definiert aber keine vollständige Zwischenstufen-Reihenfolge.
 
 ### Weitere vorhandene Beta-Systeme
 - XP, Leveling und Gold
-- Rucksack / Inventar
 - Ahnen-Schmiede-Prototyp
 - Arena-Prototyp
 - Feature-Gating gemäß GDD
