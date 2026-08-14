@@ -4,6 +4,19 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ## Aktueller Entwicklungsstand
 
+### UI / UX Design-System v1
+- erstes appweites Design-System als Grundlage für die weitere visuelle Konsolidierung
+- globaler Header deutlich kompakter: Screenname und Zweck stehen jetzt im Fokus statt des permanent großen App-Titels
+- Level, Gold und Abenteuerlust werden als kleine Ressourcen-Chips dargestellt
+- einheitlichere Abstände, Radien, Oberflächen und Buttonformen
+- weniger Schatten und visuelles „Karten-in-Karten“-Rauschen
+- Hauptinhalte erhalten mehr Platz auf kleinen Smartphone-Displays
+- Dungeon, Held, Stadt, Händler und Bank erhalten bereits erste screenspezifische Verdichtungen
+- bestehende fünfteilige symmetrische Fußnavigation bleibt erhalten
+- Farben werden stärker semantisch verwendet: Violett für primäre Aktionen, Gold für Wert/Belohnung, Grün für Erfolg und Rot für Gefahr
+
+> Das Design-System v1 ist bewusst die gemeinsame Grundlage. Die einzelnen Hauptscreens werden anschließend nacheinander strukturell überarbeitet, statt weitere voneinander unabhängige UI-Patches aufzubauen.
+
 ### Navigation & Mobile UI
 - fünf symmetrische Hauptbereiche in der Fußleiste: Taverne, Katakomben, Held, Stadt und Arena
 - Held sitzt exakt zentral und bleibt als größerer, runder Hauptbutton hervorgehoben
@@ -99,9 +112,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ### Technische Bereinigung
 - veraltete Kopfgeld-Kampfversionen v1–v3 entfernt
-- `character-profile.js` entfernt, weil der Held-Screen nun vollständig durch die aktuelle Item-/Hero-Oberfläche abgedeckt wird
-- `city-nav-fix-v1.js` entfernt, weil `city-hub-v2.js` Navigation und Zurückführung vollständig übernimmt
-- `auto-combat-v1.js` entfernt, weil es nicht mehr geladen wurde und durch die aktuelle Auto-Combat-Logik ersetzt ist
+- `character-profile.js`, `city-nav-fix-v1.js`, `auto-combat-v1.js` und die überholte `mobile-nav-v2.js` entfernt
 - weitere Patch-Module bleiben vorerst bestehen, solange sie noch aktive Spiellogik liefern; die nächste Bereinigung sollte erst nach einem gezielten Konsolidierungstest erfolgen
 
 ### Weitere vorhandene Beta-Systeme
