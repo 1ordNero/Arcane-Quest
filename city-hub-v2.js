@@ -3,8 +3,8 @@ function footer(){const nav=document.querySelector('nav.tabs');if(!nav)return;co
 <button class="${S.screen==='home'?'active':''}" onclick="tab('home')"><span class="nav-art"><img src="assets/icons/nav-tavern.webp" alt="" aria-hidden="true"></span><small>Taverne</small></button>
 <button class="${S.screen==='dungeon'?'active':''}" onclick="tab('dungeon')"><span class="nav-art"><img src="assets/icons/nav-catacombs.webp" alt="" aria-hidden="true"></span><small>Katakomben</small></button>
 <button class="hero-tab ${S.screen==='char'?'active':''}" onclick="tab('char')"><span class="hero-nav-art"><img src="assets/icons/nav-held.webp" alt="" aria-hidden="true"></span><small>Held</small></button>
-<button class="${cityActive?'active':''}" onclick="tab('city')"><span>🏘️</span><small>Stadt</small></button>
-<button class="${S.screen==='arena'?'active':''}" onclick="tab('arena')"><span>⚔️</span><small>Arena</small></button>`}
+<button class="${cityActive?'active':''}" onclick="tab('city')"><span class="nav-art"><img src="assets/icons/nav-stadt.webp" alt="" aria-hidden="true"></span><small>Stadt</small></button>
+<button class="${S.screen==='arena'?'active':''}" onclick="tab('arena')"><span class="nav-art"><img src="assets/icons/nav-arena.webp" alt="" aria-hidden="true"></span><small>Arena</small></button>`}
 function lock(level){return S.lvl>=level?'':'<span class="cv2-lock">🔒</span>'}
 function city(){return `<section class="cv2"><div class="cv2-head"><small>STADTVIERTEL</small><h1>🏘️ Die Stadt</h1><p>Alle Wirtschafts- und Verwaltungsbereiche an einem Ort. Wähle ein Gebäude, statt durch zusätzliche Haupttabs zu navigieren.</p></div><div class="cv2-grid">
 <button onclick="tab('merchant')"><span>🧺</span><div><b>Händler</b><small>Ausrüstung kaufen und Fundstücke verkaufen.</small><em>Ab Stufe 3</em></div>${lock(3)}</button>
