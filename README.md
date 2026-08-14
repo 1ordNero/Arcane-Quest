@@ -24,7 +24,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Miniboss-Kämpfe zeigen sichtbare Lebensbalken und ein laufendes Kampfprotokoll
 - „Der Knochenhauer“ ist das teuerste Tavernen-Kopfgeld mit 36 Abenteuerlust
 - Knochenhauer besitzt die hochwertigste Belohnungsstufe innerhalb der Tavernen-Quests
-- Knochenhauer-Kampf läuft automatisch auf Basis von Charakterwerten, Ausrüstung, Fokus und Verteidigungslogik
+- Knochenhauer-Kampf ist wieder vollständig manuell und verwendet Angriff, Verteidigung, Fokus, Verwundbarkeit und Bossphasen
 - Premium-Kopfgeldbonus erhöht Gold und XP des Knochenhauers zusätzlich
 
 ### Dungeons – Katakomben v2
