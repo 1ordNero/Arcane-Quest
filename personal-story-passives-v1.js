@@ -1,57 +1,65 @@
 (()=>{
 const STORIES={
-'Tavernen-Stammgast':{img:'assets/stories/tavernen-stammgast.webp',bonus:'+15% Abenteuerlust-Effizienz',desc:'Questkosten verbrauchen 15% weniger Abenteuerlust.'},
+'Tavernen-Stammgast':{img:'assets/stories/tavernen-stammgast.webp',bonus:'+15% Abenteuerlust-Effizienz',desc:'Questkosten verbrauchen rund 15% weniger Abenteuerlust.'},
 'Gefallener Adeliger':{img:'assets/stories/gefallener-adeliger.webp',bonus:'+10% Gold aus allen Quellen',desc:'Jeder positive Goldgewinn wird automatisch um 10% erhöht.'},
 'Runenschmied-Lehrling':{img:'assets/stories/runenschmied-lehrling.webp',bonus:'+10% Aufwertungserfolg',desc:'Die Erfolgschance beim Aufwerten in der Ahnen-Schmiede steigt um 10 Prozentpunkte.'},
 'Schatten-Ausreißer':{img:'assets/stories/schatten-ausreisser.webp',bonus:'+5% Beute-Glück',desc:'Bei zufällig erzeugter Beute besteht zusätzlich eine 5%-Chance, die Seltenheit um eine Stufe anzuheben.'}
 };
 window.PERSONAL_STORIES=STORIES;
-window.getPersonalStory=()=>STORIES[S?.bg]||null;
+window.getPersonalStory=()=>STORIES[window.S?.bg]||null;
 
 let feedbackTimer=null;
 function storyFeedback(detail){
-  const st=STORIES[S?.bg];if(!st||!detail)return;
+  const st=STORIES[window.S?.bg];if(!st||!detail)return;
   document.querySelector('.ps-trigger')?.remove();
   const el=document.createElement('div');el.className='ps-trigger';
   el.innerHTML=`<img src="${st.img}" alt=""><div><small>PERSÖNLICHE GESCHICHTE WIRKT</small><b>${S.bg}</b><span>${detail}</span></div>`;
   document.body.appendChild(el);
   requestAnimationFrame(()=>el.classList.add('show'));
-  clearTimeout(feedbackTimer);feedbackTimer=setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250)},2800);
+  clearTimeout(feedbackTimer);feedbackTimer=setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),250)},2600);
 }
 window.showPersonalStoryFeedback=storyFeedback;
 
-/* Gold passive: central hook so quest, arena, dungeon, merchant sales and future gold sources all benefit. */
-let lastGold=Number(S?.gold)||0,applyingGold=false;
+/* Gold passive: one bonus application per actual positive gold delta. */
+let lastGold=Number(window.S?.gold)||0,applyingGold=false;
 const baseSave=window.save;
 if(baseSave)window.save=function(){
   let feedback=null;
-  if(!applyingGold&&S?.bg==='Gefallener Adeliger'){
+  if(!applyingGold&&window.S?.bg==='Gefallener Adeliger'){
     const now=Number(S.gold)||0,delta=now-lastGold;
     if(delta>0){
       const bonus=Math.max(1,Math.round(delta*.10));
-      applyingGold=true;S.gold=now+bonus;
+      applyingGold=true;
+      S.gold=now+bonus;
       if(S.questResult&&Number(S.questResult.gold)===delta)S.questResult.gold+=bonus;
-      applyingGold=false;feedback=`+${bonus} Bonus-Gold erhalten`;
+      applyingGold=false;
+      feedback=`+${bonus} Bonus-Gold erhalten`;
     }
   }
-  lastGold=Number(S?.gold)||0;
+  lastGold=Number(window.S?.gold)||0;
   const out=baseSave.apply(this,arguments);
   if(feedback)queueMicrotask(()=>storyFeedback(feedback));
   return out;
 };
 
-/* Tavern passive: refund the efficiency amount before the original cost check. */
+/* Tavern passive: calculate the reduced cost directly and compensate before the legacy quest deduction. */
 const QUEST_COST={raid:12,event:18,bounty:24,risk:28};
+const effectiveCost=raw=>Math.max(1,Math.round(raw*.85));
 const baseQStart=window.qStart;
 if(baseQStart)window.qStart=function(id,e){
-  if(S?.bg!=='Tavernen-Stammgast')return baseQStart(id,e);
+  if(window.S?.bg!=='Tavernen-Stammgast')return baseQStart(id,e);
   const raw=QUEST_COST[id];if(!raw)return baseQStart(id,e);
-  const effective=Math.max(1,Math.ceil(raw*.85)),saved=raw-effective;
-  S.al=(Number(S.al)||0)+saved;
+  const effective=effectiveCost(raw),saved=raw-effective;
+  const current=Number(S.al)||0;
+  if(current<effective){
+    if(typeof window.toast==='function')toast(`Nicht genug Abenteuerlust. Benötigt: ${effective} AL.`);
+    return;
+  }
+  S.al=current+saved;
   const beforeQuest=S.quest;
   const out=baseQStart(id,e);
-  if(S.quest===beforeQuest)S.al=Math.max(0,(Number(S.al)||0)-saved);
-  else if(saved>0)storyFeedback(`${saved} Abenteuerlust gespart`);
+  if(S.quest===beforeQuest){S.al=current}
+  else if(saved>0){storyFeedback(`${saved} Abenteuerlust gespart`)}
   return out;
 };
 
@@ -60,12 +68,13 @@ const baseCreateLoot=window.createLoot;
 if(baseCreateLoot){
   const up={common:'magic',magic:'rare',rare:'mythic',mythic:'mythic'};
   const label={common:'Gewöhnlich',magic:'Magisch',rare:'Selten',mythic:'Mythisch'};
-  window.createLoot=function(kind='general',forced=null,level=S?.lvl||1){
+  window.createLoot=function(kind='general',forced=null,level=window.S?.lvl||1){
     const it=baseCreateLoot(kind,forced,level),before=it?.rarity;
-    if(S?.bg==='Schatten-Ausreißer'&&!forced&&it&&Math.random()<.05){
+    if(window.S?.bg==='Schatten-Ausreißer'&&!forced&&it&&Math.random()<.05){
       const next=up[it.rarity];
       if(next&&next!==it.rarity){
-        const ratio={magic:1.2,rare:1.45,mythic:2.3}[next]/{common:1,magic:1.2,rare:1.45,mythic:2.3}[it.rarity];
+        const mult={common:1,magic:1.2,rare:1.45,mythic:2.3};
+        const ratio=mult[next]/mult[it.rarity];
         it.rarity=next;it.power=Math.max(1,Math.round((it.power||1)*ratio));
         if(it.bonus)Object.keys(it.bonus).forEach(k=>it.bonus[k]=Math.max(1,Math.round(it.bonus[k]*ratio)));
         it.storyLuck=true;
@@ -74,44 +83,50 @@ if(baseCreateLoot){
     }
     return it;
   };
-  window.generateLoot=(kind='general')=>window.createLoot(kind,null,S?.lvl||1);
+  window.generateLoot=(kind='general')=>window.createLoot(kind,null,window.S?.lvl||1);
 }
 
-/* Forge passive: the forge already adds +10 percentage points; make that effect visible on use. */
+/* Forge passive already changes chance in forge-v2.js; only feedback is added here. */
 const baseUpgrade=window.fv2Upgrade;
 if(baseUpgrade)window.fv2Upgrade=function(){
-  if(S?.bg==='Runenschmied-Lehrling')storyFeedback('+10 Prozentpunkte Aufwertungschance aktiv');
+  if(window.S?.bg==='Runenschmied-Lehrling')storyFeedback('+10 Prozentpunkte Aufwertungschance aktiv');
   return baseUpgrade.apply(this,arguments);
 };
 
 function storyCard(){
-  const st=STORIES[S?.bg];if(!st)return '';
+  const st=STORIES[window.S?.bg];if(!st)return '';
   return `<section class="ps-card"><img src="${st.img}" alt="${S.bg}"><div><small>PERSÖNLICHE GESCHICHTE</small><b>${S.bg}</b><span>${st.bonus}</span><p>${st.desc}</p></div></section>`;
 }
 function decorate(){
-  const gate=document.getElementById('character-gate');
-  if(gate&&/Persönliche Geschichte/.test(gate.textContent||''))gate.querySelector('.cg-detail')?.remove();
-  if(S?.screen==='char'){
+  if(!window.S)return;
+  if(S.screen==='char'){
     const hv=document.querySelector('.hv3');
     if(hv&&!hv.querySelector('.ps-card')){const head=hv.querySelector('.hv3-head');if(head)head.insertAdjacentHTML('afterend',storyCard())}
   }
-  if(S?.bg==='Tavernen-Stammgast'&&S?.screen==='home'){
+  if(S.bg==='Tavernen-Stammgast'&&S.screen==='home'){
     document.querySelectorAll('.quest-card').forEach(card=>{
       const btn=card.querySelector('.start-q');if(!btn)return;
       const m=btn.getAttribute('onclick')?.match(/qStart\('([^']+)'/);const raw=m&&QUEST_COST[m[1]];if(!raw)return;
-      const eff=Math.max(1,Math.ceil(raw*.85));btn.innerHTML=`Quest starten · ⚡ ${eff} <em class="ps-inline">(${raw-eff} gespart)</em>`;
-      card.querySelectorAll('.q-meta span').forEach(x=>{if(x.textContent.trim()===`⚡ ${raw}`)x.innerHTML=`⚡ ${eff} <small class="ps-inline">statt ${raw}</small>`});
+      const eff=effectiveCost(raw),saved=raw-eff;
+      const desired=`Quest starten · ⚡ ${eff} <em class="ps-inline">(${saved} gespart)</em>`;
+      if(btn.innerHTML!==desired)btn.innerHTML=desired;
+      card.querySelectorAll('.q-meta span').forEach(x=>{
+        if(x.dataset.psCost==='1')return;
+        if(x.textContent.trim()===`⚡ ${raw}`){x.innerHTML=`⚡ ${eff} <small class="ps-inline">statt ${raw}</small>`;x.dataset.psCost='1'}
+      });
     });
   }
-  if(S?.bg==='Runenschmied-Lehrling'&&S?.screen==='forge'&&!document.querySelector('.ps-forge-note')){
+  if(S.bg==='Runenschmied-Lehrling'&&S.screen==='forge'&&!document.querySelector('.ps-forge-note')){
     const next=document.querySelector('.fv2-next');
     if(next)next.insertAdjacentHTML('afterend','<div class="ps-forge-note">✦ Persönliche Geschichte aktiv: +10 Prozentpunkte Aufwertungschance</div>');
   }
 }
+
+/* Important: no global MutationObserver here. Rewriting quest markup from an observer could trigger itself repeatedly and freeze the UI after quest completion. */
 const baseRender=window.render;
 if(baseRender)window.render=function(){const out=baseRender.apply(this,arguments);queueMicrotask(decorate);return out};
-new MutationObserver(decorate).observe(document.documentElement,{childList:true,subtree:true});
 
 const css=document.createElement('style');css.textContent=`.ps-card{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:center;margin:8px 0;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#261a34,#17111f);border:1px solid #f4c15d33}.ps-card img{width:86px;height:86px;object-fit:contain}.ps-card small,.ps-card b,.ps-card span,.ps-card p{display:block}.ps-card small{font-size:7px;letter-spacing:.9px;color:var(--muted)}.ps-card b{font-size:14px;margin:2px 0}.ps-card span{font-size:10px;color:var(--gold);font-weight:800}.ps-card p{font-size:8px;line-height:1.4;color:var(--muted);margin:3px 0 0}.ps-trigger{position:fixed;left:50%;top:max(12px,env(safe-area-inset-top));z-index:1000;width:min(390px,calc(100% - 20px));display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:center;padding:9px 11px;border-radius:15px;background:linear-gradient(135deg,#332044f5,#17111ff5);border:1px solid #f4c15d88;box-shadow:0 12px 34px #0009;backdrop-filter:blur(12px);transform:translate(-50%,-18px);opacity:0;transition:.22s ease;pointer-events:none}.ps-trigger.show{transform:translate(-50%,0);opacity:1}.ps-trigger img{width:52px;height:52px;object-fit:contain}.ps-trigger small,.ps-trigger b,.ps-trigger span{display:block}.ps-trigger small{font-size:7px;letter-spacing:.8px;color:var(--gold);font-weight:900}.ps-trigger b{font-size:12px;margin:1px 0}.ps-trigger span{font-size:10px;color:#ddd0e4}.ps-inline{font-size:7px!important;color:var(--gold)!important;font-style:normal;font-weight:700}.ps-forge-note{margin-top:5px;padding:7px 9px;border-radius:9px;background:#f4c15d10;border:1px solid #f4c15d33;color:var(--gold);font-size:8px;font-weight:800}@media(max-width:430px){.ps-card{grid-template-columns:78px 1fr}.ps-card img{width:76px;height:76px}.ps-card b{font-size:13px}.ps-card span{font-size:9px}.ps-card p{font-size:8px}}`;
-document.head.appendChild(css);decorate();
+document.head.appendChild(css);
+queueMicrotask(decorate);
 })();
