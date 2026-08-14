@@ -18,26 +18,33 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Standard-, Ereignis-, Kopfgeld- und Risikoquests
 - Wahrscheinlichkeitsproben mit Charakterwerten
 - Feedback nach Entscheidungen
-- Knochenhauer-Kampf mit Angriff/Verteidigung, Fokus, Verwundbarkeit, Bossphasen und Kampfwertung
-- kostenloser Basisangriff verhindert festgefahrene Kämpfe
+- neuer kurzer automatischer Miniboss „Knochenwache“ für 16 Abenteuerlust mit reduzierter Beute
+- Miniboss-Kämpfe zeigen sichtbare Lebensbalken und ein laufendes Kampfprotokoll
+- „Der Knochenhauer“ ist das teuerste Tavernen-Kopfgeld mit 36 Abenteuerlust
+- Knochenhauer besitzt die hochwertigste Belohnungsstufe innerhalb der Tavernen-Quests
+- Knochenhauer-Kampf läuft automatisch auf Basis von Charakterwerten, Ausrüstung, Fokus und Verteidigungslogik
+- Premium-Kopfgeldbonus erhöht Gold und XP des Knochenhauers zusätzlich
 
 ### Dungeons – Katakomben v2
 - regulär gemäß GDD ab Stufe 10 und über Schlüssel; während der Beta direkt testbar
-- 10 aufeinanderfolgende Räume statt der ursprünglichen fünf
+- 10 aufeinanderfolgende Räume
 - Raumtypen: Ereignis, normaler Kampf, Elitekampf, Ruheschrein, Schatzkammer und Endboss
 - sichtbarer 10-Raum-Fortschritt
 - Ereignisentscheidungen zeigen konkrete Erfolgschance, Charakterattribut, Risikoeinschätzung und mögliche Konsequenzen
 - aktuelle ungesicherte Dungeon-Beute mit Gold, XP und Items bleibt während des Runs sichtbar
 - freiwilliger Ausstieg sichert die bisherige Beute
 - Niederlage verliert die ungesicherte Dungeon-Beute
-- Risiko-/Belohnungsanzeige ab den tieferen Ebenen; zunehmende Tiefe signalisiert steigenden Loot-Wert
+- Risiko-/Belohnungsanzeige ab den tieferen Ebenen
 - Ruheschrein in Raum 6 stellt 25 % der maximalen HP wieder her
 - Schatzkammer in Raum 9 bietet eine garantierte Zwischenbelohnung vor dem Boss
 - Elitegegner „Grabritter“ als Zwischenprüfung
+- sämtliche Dungeon-Kämpfe laufen jetzt automatisch ab
+- während automatischer Kämpfe bleiben Held- und Gegner-Lebensbalken sichtbar
+- ein Kampfprotokoll zeigt Treffer, Verteidigung, Schaden und besondere Ereignisse laufend an
+- die automatische Logik wählt Angriffe und Verteidigungen anhand der vorhandenen Stats und gegnerischen Angriffsvorschau
 - Endboss „Hüter der Katakomben“ mit Phasenschild
 - Boss-Schaden trifft zunächst das Phasenschild, bevor Lebenspunkte reduziert werden
 - Boss-Enrage ab Runde 7 erhöht den verursachten Schaden
-- Boss besitzt mehrere angekündigte Angriffe mit unterschiedlichen sinnvollen Verteidigungen
 - Dungeon-Loot nutzt das zentrale Item-System; Legendär bleibt von regulären Drops ausgeschlossen
 
 ### Loot, Inventar & Ausrüstung
