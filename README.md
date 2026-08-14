@@ -76,6 +76,11 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 > Hinweis: Die zusätzliche Stufe „Episch“ und die Reihenfolge „Selten vor Magisch“ wurden auf Basis der aktuellen Produktentscheidung ergänzt. Das GDD selbst nennt für Auto-Verwerten gewöhnliche und magische Items sowie Mythisch und Legendär als Endgame-Stufen, definiert aber keine vollständige Zwischenstufen-Reihenfolge.
 
+### Technische Bereinigung
+- veraltete Kopfgeld-Kampfversionen v1, v2 und v3 wurden aus dem Repository entfernt
+- `index.html` lädt nur noch die aktuell benötigten Kampfmodule v4 und v5
+- weitere Module werden erst entfernt, wenn ihre noch benötigte Logik vollständig konsolidiert wurde
+
 ### Weitere vorhandene Beta-Systeme
 - XP, Leveling und Gold
 - Ahnen-Schmiede-Prototyp
