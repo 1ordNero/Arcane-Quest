@@ -35,13 +35,16 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - rundenbasierte Kämpfe mit Spieler- und Gegner-HP
 - klar getrennte Angriffs- und Verteidigungsphasen
 - Ablauf: Angriff → gegnerische Angriffsvorschau → Verteidigung → nächster Angriff
+- kostenloser Basisangriff „Einfacher Schlag“ ohne Ladungen und ohne Fokuskosten; geringe Trefferchance und leichter Schaden verhindern festgefahrene Kämpfe
 - Angriffsoptionen mit begrenzten Ladungen: schneller Angriff, schwerer Angriff und Klassenaktion
 - Verteidigungsoptionen mit begrenzten Ladungen: Blocken, Ausweichen und Standhalten
 - Bossangriffe werden vor der Verteidigung angekündigt und besitzen unterschiedliche Eigenschaften wie schwer, frontal, schnell, linear oder Flächenangriff
 - Block-, Ausweich- und Standhalten-Chancen verändern sich abhängig vom angekündigten Angriff
 - Fokus-System: gute Angriffe und perfekte Verteidigung bauen Fokus auf
 - Klassenaktion kostet Fokus und kann deshalb nicht durchgehend verwendet werden
-- perfekte Verteidigung kann den Boss aus dem Gleichgewicht bringen und ein verstärktes Schadensfenster öffnen
+- sichtbare Verwundbarkeit des Bosses mit fünf Stufen von „Geschützt“ bis „Gebrochen“
+- Verwundbarkeit erzeugt einen sichtbaren Schadensmultiplikator und macht starke Fähigkeiten in guten Schadensfenstern wertvoller
+- perfekte Verteidigung kann den Boss aus dem Gleichgewicht bringen und die Verwundbarkeit erhöhen
 - drei Bossphasen abhängig von verbleibenden HP; spätere Phasen verändern Angriffsmuster und Schaden
 - laufende Kampfwertung von S bis C
 - Kampfwertung berücksichtigt unter anderem erhaltenen Schaden, Fehler, perfekte Verteidigungen und Kampfdauer
