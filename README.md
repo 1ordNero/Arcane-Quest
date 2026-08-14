@@ -7,23 +7,37 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 ### Navigation & Mobile UI
 - fünf symmetrische Hauptbereiche in der Fußleiste: Taverne, Katakomben, Held, Stadt und Arena
 - Held sitzt exakt zentral und bleibt als größerer, runder Hauptbutton hervorgehoben
-- die Schmiede wurde aus der Fußleiste entfernt und in die Stadt integriert, damit der zentrale Held-Button nicht mehr verschoben wird
+- die Schmiede wurde aus der Fußleiste entfernt und in die Stadt integriert
 - Stadt dient als eigener Hub für Händler, Ahnen-Schmiede, Bank und spätere Verwaltungsfunktionen
-- Händler, Bank und Schmiede besitzen einen kompakten Zurück-Button zur Stadt
 - Inventar und Ausrüstung vollständig im Held-Bereich
 
 ### Stadt v2
-- kompakte Gebäudeübersicht statt weiterer Haupttabs
+- kompakte Gebäudeübersicht
 - Händler ab Stufe 3
 - Ahnen-Schmiede ab Stufe 5
 - Bank ab Stufe 10
-- gesperrte Gebäude zeigen ihre Freischaltstufe direkt in der Stadtübersicht
-- Platz für spätere Stadtfunktionen wie Trainer, ohne die Hauptnavigation weiter zu überladen
+- gesperrte Gebäude zeigen ihre Freischaltstufe direkt an
 
 ### Charakter
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
 - dynamische Heldengeschichte und Charakterzusammenfassung
 - Charakterwerte und Ausrüstung beeinflussen Proben und Kämpfe
+
+### Skill-System v1
+- basiert auf dem GDD-Prinzip einer vor dem Kampf festgelegten Rotation aus 3–4 Skills
+- im Held-Screen stehen vier aktive Skill-Slots zur Verfügung; die Reihenfolge bestimmt die automatische Auslösung
+- jede der sechs Klassen besitzt für die Beta sechs eigene Fertigkeiten
+- GDD-Kernskills sind integriert: Schildwall, Arkaner Meteor, Gestaltwechsel, Pfeilhagel, Seelenentzug und Skelett-Diener
+- Klassenressourcen gemäß GDD: Wut, Mana, Naturfokus, Energie, Seelenfragmente und Essenz des Todes
+- Skills verbrauchen Klassenressource; reicht sie nicht aus, wird ein schwacher Basisangriff verwendet und Ressource regeneriert
+- Skillrotation wird in automatischen Arena- und Katakomben-Kämpfen verwendet
+- offensive, defensive, Heil-, Buff- und Status-Skills werden unterschieden
+- Gift, Bluten, Brand und vergleichbare Status-Effekte stapeln nicht endlos; erneute Anwendung erneuert die Dauer
+- bestehende automatische Arena-Kämpfe verwenden jetzt die gewählte Skillfolge zusätzlich zu Kampfhaltung und Ausrüstung
+- Katakomben-Automatik berücksichtigt die gewählte Skillfolge bei Angriff und Verteidigung
+- der Knochenhauer bleibt weiterhin manuell und wird nicht in die automatische Rotation gezwungen
+
+> Skill-Balancing: Das GDD schreibt die 3–4-Skill-Rotation, die Klassenressourcen, die genannten Kernskills sowie die Status-Regel vor. Die vollständigen sechs Skilllisten, konkreten Ressourcenkosten und Schadensmultiplikatoren sind Beta-Implementierungswerte und können nach Tests angepasst werden.
 
 ### Quests & Kampf
 - Standard-, Ereignis-, Kopfgeld- und Risikoquests
@@ -71,15 +85,11 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Verkaufspreise liegen bewusst bei ungefähr 10–15 % des Gegenstandswerts gemäß GDD-Wirtschaftsprinzip
 - Verwerten bleibt dadurch gegenüber dem reinen Verkauf relevant
 
-> Händler-Balancing: Konkrete Kaufpreise, Sortimentsgröße, Seltenheitsverteilung und Aktualisierungszeit sind Beta-Implementierungswerte; das GDD legt diese Zahlen nicht fest.
-
 ### Bank v1
 - gemäß GDD ab Stufe 10 freigeschaltet
 - 100 feste Tresorplätze
 - Gegenstände können zwischen Rucksack und Bank verschoben werden
-- Einlagern verbraucht keinen Rucksackplatz; Entnehmen benötigt einen freien Rucksackplatz
 - Bankgegenstände behalten Item-Level, Seltenheit, Stats und Schmiedestufe
-- kompakte Umschaltung zwischen Tresor und Rucksack
 
 ### Technische Bereinigung
 - veraltete Kopfgeld-Kampfversionen v1–v3 entfernt
