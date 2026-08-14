@@ -14,6 +14,15 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - bestehende fünfteilige symmetrische Fußnavigation bleibt erhalten
 - Farben werden stärker semantisch verwendet: Violett für primäre Aktionen, Gold für Wert/Belohnung, Grün für Erfolg und Rot für Gefahr
 
+### Custom UI Icons v1
+- eigene WebP-Icons ersetzen schrittweise die bisherigen Emoji-Symbole
+- Taverne, Katakomben und Held besitzen bereits eigene optimierte Assets unter `assets/icons/`
+- dieselben Bereichsicons werden konsistent in Fußleiste und Kopfzeile verwendet
+- Navigationsicons sind größer und vertikal höher positioniert, damit sie auf Smartphones klarer wirken
+- Beschriftungen in der Fußleiste erhalten mehr Platz und werden nicht mehr am unteren Rand abgeschnitten
+- der Held bleibt zentral hervorgehoben, verwendet aber keinen zusätzlichen violetten Kreis mehr; das freigestellte Held-Motiv steht direkt über der Navigation
+- aktive Bereiche erhalten einen dezenten Glow statt zusätzlicher schwerer Rahmen
+
 ### Arena UX v3
 - Arena folgt nun derselben mobilen Designsprache wie Held, Taverne, Katakomben und Stadt
 - Liga, Ruhm und Ruhmesmünzen werden in einer kompakten Rangübersicht gebündelt
