@@ -50,6 +50,14 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - 11 Ausrüstungsslots gemäß GDD
 - Seltenheitsreihenfolge: Gewöhnlich → Selten → Magisch → Episch → Mythisch → Legendär
 - Seltenheit wird primär durch farbige Item-Rahmen dargestellt
+- neue Drops erhalten ein festes Item-Level entsprechend dem Charakterlevel beim Fund; dieses Item-Level bleibt danach erhalten
+- das Item-Level beeinflusst zusammen mit Seltenheit die Grundstärke und macht spätere Drops grundsätzlich relevanter
+- bestehende Beta-Items werden beim Laden auf ein plausibles Item-Level migriert
+- Inventar zeigt Item-Level, Macht und die wichtigsten Itemstats direkt auf der Kachel
+- Vergleichssymbole zeigen sofort, ob ein Item gegenüber dem aktuell ausgerüsteten Gegenstand besser, ähnlich oder schwächer ist: ▲ / = / ▼
+- beim Antippen eines Inventaritems öffnet sich eine Detailansicht mit vollständigen Stats, Vergleich zum angelegten Item und Ausrüstungsoption
+- Ausrüstung ist kompakter als reine Icon-/Slot-Ansicht gestaltet
+- ausgerüstete Gegenstände werden nicht mehr durch einen direkten Tipp abgelegt; ein Tipp öffnet zunächst die Itemdetails mit allen Werten und der Option „Ablegen“
 - Mythisch ist die höchste regulär findbare Stufe
 - Legendär bleibt Prestige-Ausrüstung für spätere Reinkarnation/Ahnenschmiede und kann nicht regulär droppen
 - Itemwerte beeinflussen Final-Stats, Ereignisproben und Kämpfe
@@ -65,7 +73,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - der Hintergrund „Runenschmied-Lehrling“ gewährt gemäß GDD +10 % Erfolgschance beim Aufwerten
 - bei Fehlschlag bleiben Item und Aufwertungsstufe erhalten; eingesetzte Materialien werden verbraucht
 - erfolgreiche Aufwertungen erhöhen Item-Macht und schrittweise vorhandene Itemwerte
-- nach jeder erfolgreichen Aufwertung erscheint ein Ergebnis-Popup mit der neuen Item-Stufe sowie den konkret gestiegenen Werten (z. B. Macht, Schaden, Rüstung oder Attribute)
+- nach jeder erfolgreichen Aufwertung erscheint ein Ergebnis-Popup mit der neuen Item-Stufe sowie den konkret gestiegenen Werten
 - unerwünschte Inventar-Gegenstände können in Entzauberungs-Staub zerlegt werden
 - Epische und Mythische Items liefern zusätzlich Schmiede-Essenz beim Verwerten
 - Auto-Verwerten-Schalter für gewöhnliche und magische Gegenstände sind gemäß GDD integriert
