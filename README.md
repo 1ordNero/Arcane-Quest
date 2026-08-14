@@ -21,10 +21,22 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Risiko-/Auftragstypen werden über kompakte Status-Chips unterschieden
 - Knochenhauer ist visuell als besonders gefährliches Premium-Kopfgeld hervorgehoben
 - Knochenwache ist standardmäßig geschlossen und wird wie die übrigen Aufträge erst durch Antippen geöffnet
+- es kann immer nur eine Questkarte gleichzeitig geöffnet sein; Knochenwache und normale Quests schließen sich gegenseitig
 - aktive Quests stellen Restzeit und Fortschritt deutlich stärker in den Mittelpunkt
 - Ereignisentscheidungen und Wahrscheinlichkeiten wurden für Smartphone-Lesbarkeit vergrößert
 - wichtige Questtexte verwenden keine extrem kleinen 6–9-px-Schriften mehr
 - Abenteuerlust wird weiterhin erst beim tatsächlichen Start eines Auftrags abgezogen
+
+### Katakomben UX v3
+- Katakomben sind während eines Runs stärker als eigener Spielmodus dargestellt
+- neue kompakte, während des Runs sichtbare Statusleiste mit Raumfortschritt, aktuellen HP und ungesicherter Beute
+- Gold, XP und gefundene Items werden in einer einzigen Run-Zusammenfassung gebündelt
+- doppelte bzw. konkurrierende Beute- und Risiko-Boxen werden im neuen Layout ausgeblendet
+- Raumfortschritt bleibt sichtbar; auf Smartphones werden die 10 Räume platzsparend in zwei Reihen dargestellt
+- der aktuelle Raum bzw. Kampf steht visuell im Mittelpunkt
+- Kampfprotokoll, Gegnerinformationen und Ereignisentscheidungen verwenden größere mobile Schrift
+- „Beute sichern & raus“ erscheint ab den tieferen Räumen als kompakte Risikoentscheidung am Ende des aktuellen Inhalts
+- bei Niederlage bleibt die bestehende Regel erhalten: ungesicherte Dungeon-Beute geht verloren
 
 ### Held-Screen UX v3
 - der Held-Screen ist jetzt ein kompaktes Dashboard statt einer langen untereinander gestapelten Seite
