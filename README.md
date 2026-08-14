@@ -4,6 +4,13 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ## Aktueller Entwicklungsstand
 
+### Navigation & Mobile UI
+- fünf feste Hauptbereiche in der unteren Navigation: Taverne, Katakomben, Held, Schmiede und Arena
+- Held ist als zentraler, runder und über die Navigationsleiste hinausragender Hauptbutton hervorgehoben
+- Taverne und Katakomben liegen links vom Held; Schmiede und Arena rechts
+- Katakomben besitzen zusätzlich eine sichtbare Zurück-/Verlassen-Navigation
+- der separate Rucksack-Tab ist entfernt; Inventar und Ausrüstung befinden sich vollständig im Held-Bereich
+
 ### Charakter
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
 - kompakte, mobile Charaktererstellung
@@ -45,8 +52,8 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 ### Dungeons – Katakomben v1
 - gemäß GDD regulär ab Stufe 10 über einen gefundenen Schlüssel zugänglich
 - für die aktuelle Beta-Testphase ist der Dungeon unabhängig von der Charakterstufe direkt freigeschaltet
-- beim ersten Laden werden für den Beta-Test mindestens 5 Katakomben-Schlüssel bereitgestellt
-- sind alle Testschlüssel verbraucht und kein Dungeon aktiv, werden automatisch 5 neue Testschlüssel bereitgestellt
+- beim Laden werden für den Beta-Test mindestens 5 Katakomben-Schlüssel bereitgestellt; verbrauchte Testschlüssel werden bei Bedarf wieder aufgefüllt
+- der Eintrittsbutton ist während der Beta unabhängig vom Level aktiv
 - ein Schlüssel wird beim Betreten verbraucht
 - erste spielbare Expedition mit fünf aufeinanderfolgenden Räumen
 - Mischung aus Attributs-Ereignissen, normalen Kämpfen und einem Endboss
