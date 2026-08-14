@@ -8,6 +8,8 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - feste Hauptbereiche: Taverne, Katakomben, Stadt, Held, Schmiede und Arena
 - Held als zentraler, runder Hauptbutton hervorgehoben
 - Stadt bündelt Händler und Bank
+- Händler- und Bankansichten besitzen wieder die vollständige Fußnavigation
+- Händler und Bank zeigen zusätzlich einen kompakten Zurück-Button zur Taverne
 - Inventar und Ausrüstung vollständig im Held-Bereich
 
 ### Charakter
