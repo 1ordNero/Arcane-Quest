@@ -5,12 +5,20 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 ## Aktueller Entwicklungsstand
 
 ### Navigation & Mobile UI
-- feste Hauptbereiche: Taverne, Katakomben, Stadt, Held, Schmiede und Arena
-- Held als zentraler, runder Hauptbutton hervorgehoben
-- Stadt bündelt Händler und Bank
-- Händler- und Bankansichten besitzen wieder die vollständige Fußnavigation
-- Händler und Bank zeigen zusätzlich einen kompakten Zurück-Button zur Taverne
+- fünf symmetrische Hauptbereiche in der Fußleiste: Taverne, Katakomben, Held, Stadt und Arena
+- Held sitzt exakt zentral und bleibt als größerer, runder Hauptbutton hervorgehoben
+- die Schmiede wurde aus der Fußleiste entfernt und in die Stadt integriert, damit der zentrale Held-Button nicht mehr verschoben wird
+- Stadt dient als eigener Hub für Händler, Ahnen-Schmiede, Bank und spätere Verwaltungsfunktionen
+- Händler, Bank und Schmiede besitzen einen kompakten Zurück-Button zur Stadt
 - Inventar und Ausrüstung vollständig im Held-Bereich
+
+### Stadt v2
+- kompakte Gebäudeübersicht statt weiterer Haupttabs
+- Händler ab Stufe 3
+- Ahnen-Schmiede ab Stufe 5
+- Bank ab Stufe 10
+- gesperrte Gebäude zeigen ihre Freischaltstufe direkt in der Stadtübersicht
+- Platz für spätere Stadtfunktionen wie Trainer, ohne die Hauptnavigation weiter zu überladen
 
 ### Charakter
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
@@ -56,7 +64,6 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ### Händler v1
 - gemäß GDD ab Stufe 3 freigeschaltet
-- eigenes Stadt-Menü mit Händler und Bank
 - Händler bietet sechs levelskalierte Ausrüstungsgegenstände an
 - Item-Level, Stats, Macht, Seltenheit und Vergleich zum angelegten Item werden vor dem Kauf angezeigt
 - Sortiment kann regelmäßig neu generiert werden
