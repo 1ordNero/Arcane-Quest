@@ -19,7 +19,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 - Taverne, Katakomben und Held besitzen bereits eigene optimierte Assets unter `assets/icons/`
 - dieselben Bereichsicons werden konsistent in Fußleiste und Kopfzeile verwendet
 - Navigationsicons sind größer und vertikal höher positioniert, damit sie auf Smartphones klarer wirken
-- Beschriftungen in der Fußleiste erhalten mehr Platz und werden nicht mehr am unteren Rand abgeschnitten
+- die Fußleiste berücksichtigt zusätzlichen unteren Safe-Area-Abstand; Beschriftungen stehen sichtbar oberhalb des Browser-/Systemrands
 - der Held bleibt zentral hervorgehoben, verwendet aber keinen zusätzlichen violetten Kreis mehr; das freigestellte Held-Motiv steht direkt über der Navigation
 - aktive Bereiche erhalten einen dezenten Glow statt zusätzlicher schwerer Rahmen
 
@@ -84,7 +84,7 @@ Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Sm
 
 ### Navigation & Mobile UI
 - fünf symmetrische Hauptbereiche in der Fußleiste: Taverne, Katakomben, Held, Stadt und Arena
-- Held sitzt exakt zentral und bleibt als größerer, runder Hauptbutton hervorgehoben
+- Held sitzt exakt zentral und bleibt als größerer Hauptfokus hervorgehoben
 - die Schmiede wurde aus der Fußleiste entfernt und in die Stadt integriert
 - Stadt dient als eigener Hub für Händler, Ahnen-Schmiede, Bank und spätere Verwaltungsfunktionen
 
