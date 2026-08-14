@@ -1,1 +1,24 @@
-{"name":"Arcane Tavern & Quest – Beta","short_name":"Arcane Tavern","start_url":"./","display":"standalone","background_color":"#120e18","theme_color":"#16101f","lang":"de","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "name": "Arcane Tavern & Quest – Beta",
+  "short_name": "Arcane Quest",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#120e18",
+  "theme_color": "#16101f",
+  "lang": "de",
+  "icons": [
+    {
+      "src": "assets/icons/app-icon-192.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/app-icon-512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}
