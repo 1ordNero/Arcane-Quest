@@ -2,13 +2,21 @@
 let reloading=false;
 function notify(msg){if(typeof toast==='function')toast(msg);else console.info('[Arcane PWA]',msg)}
 function recoveryNotice(){const r=window.__ARCANE_BOOT_RECOVERY;if(!r)return;if(r.restored)queueMicrotask(()=>notify('Ein beschädigter Spielstand wurde aus der letzten Sicherung wiederhergestellt.'));else if(r.source==='corrupt')queueMicrotask(()=>notify('Der beschädigte Spielstand konnte nicht wiederhergestellt werden. Ein neuer Spielstand wurde gestartet.'))}
+function resumeArena(){
+ const f=S.arenaV2?.fight;if(!f||f.done)return false;
+ S.screen='arena';const id=f.o?.id;S.arenaV2.fight=null;
+ const stamina=Number(S.arenaStamina);if(Number.isFinite(stamina))S.arenaStamina=Math.min(Number(S.arenaStaminaMax)||5,stamina+1);
+ save?.();
+ queueMicrotask(()=>{if(id&&S.arenaV2?.opponents?.some(o=>o.id===id)&&typeof arenaV2Start==='function'){arenaV2Start(id);return}log?.('Unterbrochener Arenakampf wurde sicher beendet.');render?.()});
+ return true;
+}
 function resumeState(){
  if(S.quest&&Number(S.quest.ends)&&S.quest.ends<=Date.now()&&typeof render==='function')queueMicrotask(()=>render());
  if(S.dungeonV1&&S.screen!=='dungeon')S.screen='dungeon';
  if(S.bountyCombat4&&S.screen!=='home')S.screen='home';
  if(S.autoMiniBattle&&S.screen!=='home')S.screen='home';
- if(S.arenaV2?.fight&&!S.arenaV2.fight.done&&S.screen!=='arena')S.screen='arena';
- save?.();
+ const arenaRestarted=resumeArena();
+ if(!arenaRestarted)save?.();
 }
 function register(){
  if(!('serviceWorker'in navigator))return;
