@@ -46,5 +46,4 @@ main{padding-top:12px!important}.compact-dungeon-entry{padding:16px!important;bo
 .compact-arena-rank{margin:0 0 10px!important;padding:10px 12px!important;border-radius:13px!important;background:#ffffff06}.compact-section{margin:12px 2px 6px!important;display:block!important}.compact-section h2{font-size:18px!important;margin:0!important}.arena-stamina{margin:0 0 10px!important;padding:9px 11px!important}.arena-stamina.compact-exhausted{padding:10px 11px!important}.disabled-stances{opacity:.45;pointer-events:none}.av2-stances button{min-height:54px!important}.av2-stances{gap:6px!important}
 .compact-dungeon-action{align-items:stretch;flex-direction:column}.compact-dungeon-action button{width:100%}
 `;document.head.appendChild(css);compact();
-const loader=document.createElement('script');loader.src='hero-footer-redesign-v1.js?v=1';document.body.appendChild(loader);
 })();
