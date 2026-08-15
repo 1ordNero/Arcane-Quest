@@ -1,12 +1,16 @@
 {
+  "id": "./",
   "name": "Arcane Tavern & Quest – Beta",
   "short_name": "Arcane Quest",
+  "description": "Ein mobiles Fantasy-RPG rund um Taverne, Held, Katakomben, Arena und Ahnenschmiede.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#120e18",
   "theme_color": "#16101f",
   "lang": "de",
+  "categories": ["games", "entertainment"],
   "icons": [
     {
       "src": "assets/icons/app-icon-192.webp",
