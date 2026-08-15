@@ -2,7 +2,8 @@
 function activeActivity(){
   if(window.S?.quest||window.S?.autoMiniBattle||window.S?.bountyCombat4)return 'quest';
   if(window.S?.dungeonV1)return 'dungeon';
-  if(window.S?.arenaV2?.fight&&!window.S.arenaV2.fight.done)return 'arena';
+  // The arena remains the active major activity until the reward popup is acknowledged.
+  if(window.S?.arenaV2?.fight)return 'arena';
   return null;
 }
 function label(x){return x==='quest'?'eine Quest':x==='dungeon'?'die Katakomben':x==='arena'?'ein Arena-Kampf':'eine andere Aktivität'}
