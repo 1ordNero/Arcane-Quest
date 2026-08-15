@@ -1,0 +1,39 @@
+(()=>{
+const KEY='arcaneTelemetryV1';
+const LIMIT=500;
+const now=()=>Date.now();
+function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');return v&&typeof v==='object'?v:{version:1,events:[]}}catch{return{version:1,events:[]}}}
+let store=read();
+function write(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch{}}
+function record(type,data={}){const event={t:now(),type,screen:S?.screen||'unknown',lvl:Number(S?.lvl)||1,...data};store.events.push(event);if(store.events.length>LIMIT)store.events.splice(0,store.events.length-LIMIT);write();return event}
+function rarityCounts(){const out={};[...(S?.items||[]),...Object.values(S?.eq||{}).filter(Boolean)].forEach(it=>{const r=it?.rarity||'unknown';out[r]=(out[r]||0)+1});return out}
+function upgradeTotal(){return [...(S?.items||[]),...Object.values(S?.eq||{}).filter(Boolean)].reduce((n,it)=>n+(Number(it?.upgrade)||0),0)}
+function snap(){return{gold:Number(S?.gold)||0,xp:Number(S?.xp)||0,lvl:Number(S?.lvl)||1,al:Number(S?.al)||0,items:(S?.items||[]).length,forgeDust:Number(S?.forgeDust)||0,essence:Number(S?.essence)||0,souls:Number(S?.souls)||0,keys:Number(S?.keys)||0,quests:Number(S?.quests)||0,wins:Number(S?.wins)||0,arena:Number(S?.arena)||0,upgrades:upgradeTotal(),rarities:rarityCounts(),screen:S?.screen||'unknown',dungeonActive:!!S?.dungeonV1,arenaFight:!!S?.arenaV2?.fight}};
+let last=snap();
+function delta(a,b,k){return (Number(b[k])||0)-(Number(a[k])||0)}
+function compare(before,after){
+ const economy={};['gold','xp','al','forgeDust','essence','souls','keys'].forEach(k=>{const d=delta(before,after,k);if(d)economy[k]=d});
+ if(Object.keys(economy).length)record('economy_delta',economy);
+ const itemDelta=delta(before,after,'items');if(itemDelta)record('inventory_delta',{count:itemDelta,rarities:after.rarities});
+ const questDelta=delta(before,after,'quests');if(questDelta>0)record('quest_complete',{count:questDelta});
+ const winDelta=delta(before,after,'wins');if(winDelta>0)record('combat_win',{count:winDelta,arenaDelta:delta(before,after,'arena')});
+ const arenaDelta=delta(before,after,'arena');if(arenaDelta<0)record('arena_loss',{glory:arenaDelta});
+ const levelDelta=delta(before,after,'lvl');if(levelDelta>0)record('level_up',{levels:levelDelta,to:after.lvl});
+ const upgradeDelta=delta(before,after,'upgrades');if(upgradeDelta>0)record('forge_upgrade_success',{levels:upgradeDelta});
+ if(before.dungeonActive&&!after.dungeonActive)record('dungeon_end',{result:'left_or_finished'});
+ if(!before.dungeonActive&&after.dungeonActive)record('dungeon_start');
+ if(before.screen!==after.screen)record('screen_change',{from:before.screen,to:after.screen});
+}
+const baseSave=window.save;
+if(typeof baseSave==='function')window.save=function(){const before=last;const out=baseSave.apply(this,arguments);const after=snap();compare(before,after);last=after;return out};
+function wrap(name,type,build){const fn=window[name];if(typeof fn!=='function'||fn.__telemetryWrapped)return;const wrapped=function(...args){const before=snap();record(type,build?build(args,before):{});const out=fn.apply(this,args);last=snap();return out};wrapped.__telemetryWrapped=true;window[name]=wrapped}
+wrap('qStart','quest_start',(args)=>({questId:args[0]||'unknown'}));
+wrap('startAutoMiniBoss','quest_start',()=>({questId:'mini'}));
+wrap('arenaV2Start','arena_start',(args)=>({opponentId:args[0]||null,stance:S?.arenaV2?.stance||null}));
+wrap('d1Start','dungeon_start_action');
+wrap('fv4Upgrade','forge_upgrade_attempt');
+wrap('fv4Salvage','salvage_item',(args)=>({itemId:args[0]||null}));
+wrap('fv4SalvageAll','salvage_all');
+window.ARCANE_TELEMETRY={version:1,record,events:()=>store.events.slice(),summary(){const sum={events:store.events.length,byType:{},goldNet:0,xpNet:0,quests:0,wins:0,losses:0,forgeAttempts:0,forgeSuccess:0};store.events.forEach(e=>{sum.byType[e.type]=(sum.byType[e.type]||0)+1;if(e.type==='economy_delta'){sum.goldNet+=Number(e.gold)||0;sum.xpNet+=Number(e.xp)||0}if(e.type==='quest_complete')sum.quests+=Number(e.count)||1;if(e.type==='combat_win')sum.wins+=Number(e.count)||1;if(e.type==='arena_loss')sum.losses++;if(e.type==='forge_upgrade_attempt')sum.forgeAttempts++;if(e.type==='forge_upgrade_success')sum.forgeSuccess+=Number(e.levels)||1});return sum},reset(){store={version:1,events:[]};last=snap();write()}};
+record('session_start',{build:document.querySelector('meta[name="build"]')?.content||null});
+})();
