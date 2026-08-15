@@ -2,13 +2,14 @@
 const GAME_ROOT='assets/icons/game-v2/';
 const UI_ROOT='assets/icons/ui/';
 const QUEST_ROOT='assets/icons/quests/';
+const QUEST_ASSET_VERSION='2026-08-15-hq2';
 const GAME_FILES=['dungeon_portal.webp','combat_crossed_swords.webp','sealed_niche.webp','shadow_beast.webp','grave_knight.webp','arcane_shrine.webp','archive_scroll.webp','crypt_weaver.webp','dungeon_boss.webp','quest_raid.webp','quest_event.webp','quest_bounty.webp','skull_danger.webp','decision_strength.webp','decision_agility.webp','decision_knowledge.webp','city_trainer.webp','stance_aggressive.webp','stance_defensive.webp','stance_counter.webp','class_warrior.webp','class_mage.webp','class_ranger.webp','class_dark.webp','resource_essence.webp'];
 const UI_FILES=['location_bank.webp','location_forge.webp','location_merchant.webp','resource_energy.webp','resource_gold.webp','resource_hp.webp','resource_xp.webp','stat_attack.webp','stat_defense.webp'];
 const QUEST_FILES=['quest_standard.webp','quest_event.webp','quest_risk.webp','quest_bounty.webp','quest_miniboss.webp'];
 const A={};
 GAME_FILES.forEach(f=>A[f.replace('.webp','')]=GAME_ROOT+f);
 UI_FILES.forEach(f=>A[f.replace('.webp','')]=UI_ROOT+f);
-QUEST_FILES.forEach(f=>A[f.replace('.webp','')]=QUEST_ROOT+f);
+QUEST_FILES.forEach(f=>A[f.replace('.webp','')]=`${QUEST_ROOT}${f}?v=${QUEST_ASSET_VERSION}`);
 A.city_merchant=A.location_merchant;
 A.city_ancestral_forge=A.location_forge;
 A.city_bank=A.location_bank;
@@ -20,7 +21,7 @@ window.gameIconPath=keyToFile;window.gameIconTag=img;window.UI_ICON_ASSETS=Objec
  attack:A.stat_attack,defense:A.stat_defense,
  questStandard:A.quest_standard,questEvent:A.quest_event,questRisk:A.quest_risk,questBounty:A.quest_bounty,questMiniboss:A.quest_miniboss
 });
-[...GAME_FILES.map(f=>GAME_ROOT+f),...UI_FILES.map(f=>UI_ROOT+f),...QUEST_FILES.map(f=>QUEST_ROOT+f)].forEach(src=>{const i=new Image();i.decoding='async';i.src=src});
+[...GAME_FILES.map(f=>GAME_ROOT+f),...UI_FILES.map(f=>UI_ROOT+f),...QUEST_FILES.map(f=>`${QUEST_ROOT}${f}?v=${QUEST_ASSET_VERSION}`)].forEach(src=>{const i=new Image();i.decoding='async';i.src=src});
 function setImg(el,key,cls='gai-icon',alt=''){if(!el||!keyToFile(key))return;if(el.dataset.gai===key)return;el.innerHTML=img(key,cls,alt);el.dataset.gai=key}
 function stripEmojiText(el){if(!el)return;el.childNodes.forEach(n=>{if(n.nodeType===3)n.nodeValue=n.nodeValue.replace(/[⚔️🛡️↩️🏹🔮🧙💀🔥🎲📜🗝️🕯️🔨🏦🏪🧺📚]+/gu,'').trimStart()})}
 function classKey(cls){return cls==='Krieger'?'class_warrior':cls==='Magier'?'class_mage':cls==='Waldläufer'||cls==='Druide'?'class_ranger':'class_dark'}
