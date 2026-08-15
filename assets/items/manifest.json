@@ -1,0 +1,177 @@
+[
+  {
+    "file": "weapon-sword-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 244961,
+    "alpha_min": 0,
+    "alpha_max": 253
+  },
+  {
+    "file": "weapon-axe-warrior.webp",
+    "size": "512x512",
+    "transparent_pixels": 231165,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "weapon-staff-mage.webp",
+    "size": "512x512",
+    "transparent_pixels": 226200,
+    "alpha_min": 0,
+    "alpha_max": 253
+  },
+  {
+    "file": "weapon-staff-warlock.webp",
+    "size": "512x512",
+    "transparent_pixels": 231155,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "weapon-staff-druid.webp",
+    "size": "512x512",
+    "transparent_pixels": 232106,
+    "alpha_min": 0,
+    "alpha_max": 253
+  },
+  {
+    "file": "shield-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 234626,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "armor-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 224709,
+    "alpha_min": 0,
+    "alpha_max": 253
+  },
+  {
+    "file": "robe-mage.webp",
+    "size": "512x512",
+    "transparent_pixels": 221284,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "armor-druid.webp",
+    "size": "512x512",
+    "transparent_pixels": 219862,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "armor-warlock.webp",
+    "size": "512x512",
+    "transparent_pixels": 214302,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "armor-paladin.webp",
+    "size": "512x512",
+    "transparent_pixels": 218754,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "helmet-warlock.webp",
+    "size": "512x512",
+    "transparent_pixels": 231913,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "helmet-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 232123,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "helmet-demon.webp",
+    "size": "512x512",
+    "transparent_pixels": 231426,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "helmet-druid.webp",
+    "size": "512x512",
+    "transparent_pixels": 227198,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "helmet-shadow.webp",
+    "size": "512x512",
+    "transparent_pixels": 232510,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "helmet-paladin.webp",
+    "size": "512x512",
+    "transparent_pixels": 233670,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "gauntlets-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 234699,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "gloves-druid.webp",
+    "size": "512x512",
+    "transparent_pixels": 235354,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "boots-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 230647,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "boots-druid.webp",
+    "size": "512x512",
+    "transparent_pixels": 228900,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "belt-knight.webp",
+    "size": "512x512",
+    "transparent_pixels": 232325,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "belt-druid.webp",
+    "size": "512x512",
+    "transparent_pixels": 233597,
+    "alpha_min": 0,
+    "alpha_max": 254
+  },
+  {
+    "file": "amulet-arcane.webp",
+    "size": "512x512",
+    "transparent_pixels": 244511,
+    "alpha_min": 0,
+    "alpha_max": 253
+  },
+  {
+    "file": "ring-arcane.webp",
+    "size": "512x512",
+    "transparent_pixels": 229261,
+    "alpha_min": 0,
+    "alpha_max": 254
+  }
+]
