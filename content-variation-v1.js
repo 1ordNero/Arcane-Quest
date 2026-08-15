@@ -1,0 +1,102 @@
+(()=>{
+const VERSION=1;
+const dayKey=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const QUEST_VARIANTS={
+ raid:[
+  {id:'steady',name:'Sicherer Auftrag',desc:'Planbarer Auftrag ohne besondere Abweichung.',time:1,gold:1},
+  {id:'urgent',name:'Eilauftrag',desc:'Kürzere Einsatzzeit, dafür etwas weniger Gold.',time:.75,gold:.9},
+  {id:'rich',name:'Gut bezahlte Spur',desc:'Die Händler zahlen für diese Route einen Aufschlag.',time:1.08,gold:1.18}
+ ],
+ event:[
+  {id:'stable',name:'Stabile Runen',desc:'Das Siegel reagiert ruhiger als gewöhnlich.',time:.9,gold:.95},
+  {id:'volatile',name:'Arkane Unruhe',desc:'Die Runen bleiben länger aktiv, die Belohnung steigt.',time:1.12,gold:1.2},
+  {id:'echo',name:'Goldenes Echo',desc:'Seltene Resonanzen erhöhen den Goldfund.',time:1,gold:1.15}
+ ],
+ risk:[
+  {id:'known',name:'Kartierte Krypta',desc:'Ein Teil des Weges ist bekannt und schneller passierbar.',time:.82,gold:.94},
+  {id:'deep',name:'Tiefe Kammern',desc:'Längerer Abstieg mit deutlich besserer Ausbeute.',time:1.18,gold:1.25},
+  {id:'hoard',name:'Gerücht vom Hort',desc:'Mehr Gold wird erwartet, die Dauer bleibt unverändert.',time:1,gold:1.2}
+ ]
+};
+const ROOM_TYPES=['event','combat','event','combat','elite','rest','event','combat','treasure','boss'];
+const ROOM_MODS={
+ event:[
+  {id:'clear',name:'Klare Zeichen',desc:'Die Runen sind ungewöhnlich gut lesbar.',gold:1.18},
+  {id:'faded',name:'Verblasste Zeichen',desc:'Die Kammer ist alt und weniger ergiebig.',gold:.88},
+  {id:'charged',name:'Arkane Ladung',desc:'Erfolgreiche Proben setzen zusätzliche Energie frei.',gold:1.28}
+ ],
+ combat:[
+  {id:'brittle',name:'Brüchig',desc:'Der Gegner besitzt 15 % weniger Lebenspunkte.',hp:.85,damage:1,reward:1},
+  {id:'savage',name:'Rasend',desc:'Der Gegner verursacht 15 % mehr Schaden; der Raum zahlt besser.',hp:1,damage:1.15,reward:1.18},
+  {id:'hardened',name:'Gehärtet',desc:'Der Gegner besitzt 18 % mehr Lebenspunkte und bessere Beute.',hp:1.18,damage:1,reward:1.18}
+ ],
+ elite:[
+  {id:'scarred',name:'Vernarbt',desc:'Der Grabritter ist angeschlagen, aber weiterhin gefährlich.',hp:.9,damage:1.05,reward:1.05},
+  {id:'champion',name:'Gruftchampion',desc:'Mehr Leben und Schaden für eine größere Raumprämie.',hp:1.2,damage:1.12,reward:1.28}
+ ],
+ rest:[
+  {id:'warm',name:'Warmer Schrein',desc:'Der Schrein stellt zusätzliche Lebenskraft wieder her.',heal:1.3},
+  {id:'quiet',name:'Stiller Schrein',desc:'Ein gewöhnlicher, sicherer Rastplatz.',heal:1}
+ ],
+ treasure:[
+  {id:'dusty',name:'Staubige Truhe',desc:'Weniger Münzen, aber weiterhin sichere Zwischenbeute.',gold:.85},
+  {id:'overflowing',name:'Überquellender Hort',desc:'Die Schatzkammer enthält deutlich mehr Gold.',gold:1.3}
+ ],
+ boss:[
+  {id:'fractured',name:'Gebrochener Hüter',desc:'Weniger Lebenspunkte, dafür aggressiver.',hp:.9,damage:1.12,reward:1.08},
+  {id:'ancient',name:'Uralter Hüter',desc:'Mehr Leben und eine größere Abschlussprämie.',hp:1.18,damage:1.05,reward:1.3}
+ ]
+};
+function ensureQuestVariants(){
+ const day=dayKey();
+ if(S.questVariantsDay===day&&S.questVariantsV1)return;
+ S.questVariantsDay=day;S.questVariantsV1={};
+ Object.keys(QUEST_VARIANTS).forEach(id=>S.questVariantsV1[id]=pick(QUEST_VARIANTS[id]));
+}
+function createRoomMods(){return ROOM_TYPES.map(t=>({...pick(ROOM_MODS[t]||ROOM_MODS.combat),type:t}))}
+function qVariant(id){ensureQuestVariants();return S.questVariantsV1?.[id]||null}
+function currentRoomMod(){const d=S.dungeonV1;return d?.roomMods?.[d.room]||null}
+function applyEnemyMod(){
+ const d=S.dungeonV1,m=currentRoomMod(),e=d?.enemy;if(!d||!m||!e||e.variationApplied)return;
+ if(m.hp&&m.hp!==1){const next=Math.max(1,Math.round(e.max*m.hp));e.max=next;e.hp=next;if(e.maxShield){const ratio=e.maxShield/Math.max(1,e.hp);e.maxShield=Math.max(0,Math.round(next*ratio));e.shield=e.maxShield}}
+ if(m.damage&&m.damage!==1)e.damage=Math.max(1,Math.round(e.damage*m.damage));
+ e.variationApplied=m.id;
+}
+function applyRoomReward(){
+ const d=S.dungeonV1,m=currentRoomMod();if(!d||!m||!['cleared','complete','feedback'].includes(d.state))return;
+ d.variationRewarded=d.variationRewarded||{};if(d.variationRewarded[d.room])return;
+ let changed=false;
+ if(['combat','elite','boss'].includes(m.type)&&m.reward&&m.reward!==1&&d.feedback?.good){const baseGold=Number(d.gold)||0,baseXp=Number(d.xp)||0;const g=Math.max(0,Math.round(baseGold*(m.reward-1))),x=Math.max(0,Math.round(baseXp*(m.reward-1)*.35));if(g){d.gold+=g;changed=true}if(x){d.xp+=x;changed=true}if(changed&&d.feedback)d.feedback.text+=` Raum-Modifikator: +${g} Gold${x?` · +${x} XP`:''}.`}
+ if(m.type==='event'&&d.state==='feedback'&&d.feedback?.good&&m.gold&&m.gold!==1){const g=Math.max(0,Math.round((Number(d.gold)||0)*(m.gold-1)*.25));if(g){d.gold+=g;d.feedback.text+=` ${m.name}: +${g} Gold.`;changed=true}}
+ d.variationRewarded[d.room]=true;
+}
+function applyQuestResult(){
+ const r=S.questResult,p=S.questVariantPending;if(!r||!p||p.applied)return;
+ if(!['raid','event','risk'].includes(p.questId))return;
+ const mult=Number(p.variant?.gold)||1,old=Math.max(0,Number(r.gold)||0),next=Math.max(0,Math.round(old*mult)),delta=next-old;
+ if(delta){S.gold=Math.max(0,(Number(S.gold)||0)+delta);r.gold=next}
+ r.variant={name:p.variant.name,desc:p.variant.desc};p.applied=true;
+}
+const baseSave=window.save;
+if(typeof baseSave==='function')window.save=function(){applyRoomReward();applyQuestResult();return baseSave.apply(this,arguments)};
+const baseQStart=window.qStart;
+if(typeof baseQStart==='function')window.qStart=function(id,e){ensureQuestVariants();const v=qVariant(id),before=S.quest;const out=baseQStart.apply(this,arguments);if(S.quest&&S.quest!==before&&v){S.quest.variant=v;const raw=Math.max(1,S.quest.ends-S.quest.started);S.quest.ends=S.quest.started+Math.round(raw*(Number(v.time)||1));S.questVariantPending={questId:id,variant:v,applied:false};save();render()}return out};
+const baseDStart=window.d1Start;
+if(typeof baseDStart==='function')window.d1Start=function(){const before=S.dungeonV1,out=baseDStart.apply(this,arguments);if(S.dungeonV1&&S.dungeonV1!==before&&!S.dungeonV1.roomMods){S.dungeonV1.roomMods=createRoomMods();S.dungeonV1.variationVersion=VERSION;save();render()}return out};
+const baseDEnter=window.d1Enter;
+if(typeof baseDEnter==='function')window.d1Enter=function(){const out=baseDEnter.apply(this,arguments);applyEnemyMod();if(S.dungeonV1?.enemy){save();render()}return out};
+const baseRest=window.d7Rest;
+if(typeof baseRest==='function')window.d7Rest=function(){const d=S.dungeonV1,m=currentRoomMod(),before=Number(d?.hp)||0,out=baseRest.apply(this,arguments);if(d&&m?.heal&&m.heal!==1){const gained=Math.max(0,(Number(d.hp)||0)-before),extra=Math.max(0,Math.round(gained*(m.heal-1)));if(extra){d.hp=Math.min(d.maxHp,d.hp+extra);if(d.feedback)d.feedback.text+=` ${m.name}: +${extra} zusätzliche HP.`;save();render()}}return out};
+const baseTreasure=window.d7Treasure;
+if(typeof baseTreasure==='function')window.d7Treasure=function(){const d=S.dungeonV1,m=currentRoomMod(),before=Number(d?.gold)||0,out=baseTreasure.apply(this,arguments);if(d&&m?.gold&&m.gold!==1){const gained=Math.max(0,(Number(d.gold)||0)-before),target=Math.max(0,Math.round(gained*m.gold)),delta=target-gained;if(delta){d.gold=Math.max(0,d.gold+delta);if(d.feedback)d.feedback.text+=` ${m.name}: ${delta>0?'+':''}${delta} Gold.`;save();render()}}return out};
+function decorateQuest(){if(S.screen!=='home'||S.quest)return;ensureQuestVariants();document.querySelectorAll('.quest-card[data-qid]').forEach(card=>{const id=card.dataset.qid,v=qVariant(id);if(!v||card.querySelector('.cv1-variant'))return;const title=card.querySelector('.q-title');if(title)title.insertAdjacentHTML('beforeend',`<span class="cv1-variant">${v.name}</span>`);const ex=card.querySelector('.quest-expand>p');if(ex)ex.insertAdjacentHTML('afterend',`<div class="cv1-note">${v.desc}</div>`)});}
+function decorateDungeon(){if(S.screen!=='dungeon'||!S.dungeonV1)return;const m=currentRoomMod();if(!m)return;const room=document.querySelector('.dv7-room');if(room&&!room.querySelector('.cv1-roommod'))room.insertAdjacentHTML('afterbegin',`<div class="cv1-roommod"><b>${m.name}</b><span>${m.desc}</span></div>`)}
+function decorateResult(){const r=S.questResult;if(!r?.variant)return;const card=document.querySelector('.reward-card');if(card&&!card.querySelector('.cv1-result')){const grid=card.querySelector('.reward-grid');grid?.insertAdjacentHTML('beforebegin',`<div class="cv1-result"><b>${r.variant.name}</b><span>${r.variant.desc}</span></div>`)}}
+function decorate(){decorateQuest();decorateDungeon();decorateResult()}
+const baseRender=window.render;
+if(typeof baseRender==='function')window.render=function(){const out=baseRender.apply(this,arguments);queueMicrotask(decorate);return out};
+const css=document.createElement('style');css.textContent=`.cv1-variant{font-size:8px;padding:2px 6px;border-radius:999px;background:#f4c15d12;border:1px solid #f4c15d33;color:var(--gold);font-weight:800;letter-spacing:.2px}.cv1-note{margin:6px 0 8px;padding:7px 8px;border-radius:9px;background:#a875ff0d;border:1px solid #a875ff25;color:#cdbde0;font-size:9px;line-height:1.4}.cv1-roommod{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:-3px -3px 10px;padding:8px 9px;border-radius:10px;background:#f4c15d0c;border:1px solid #f4c15d2c;text-align:left}.cv1-roommod b{font-size:9px;color:var(--gold);white-space:nowrap}.cv1-roommod span{font-size:9px;color:var(--muted);line-height:1.35;text-align:right}.cv1-result{margin:9px 0 0;padding:8px;border-radius:9px;background:#a875ff0d;border:1px solid #a875ff2c}.cv1-result b,.cv1-result span{display:block}.cv1-result b{font-size:10px;color:#d8c3ff}.cv1-result span{font-size:8px;color:var(--muted);margin-top:2px}@media(max-width:430px){.cv1-roommod{display:block}.cv1-roommod span{display:block;text-align:left;margin-top:2px}}`;document.head.appendChild(css);
+ensureQuestVariants();queueMicrotask(decorate);
+window.ARCANE_VARIATION={version:VERSION,questVariant:qVariant,currentRoomMod};
+})();
