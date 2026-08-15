@@ -3,7 +3,7 @@ function activity(){
   if(!window.S)return null;
   if(S.quest||S.autoMiniBattle||S.bountyCombat4)return 'quest';
   if(S.dungeonV1)return 'dungeon';
-  if(S.arenaV2?.fight&&!S.arenaV2.fight.done)return 'arena';
+  if(S.arenaV2?.fight)return 'arena';
   return null;
 }
 function label(x){return x==='quest'?'eine Quest':x==='dungeon'?'die Katakomben':x==='arena'?'ein Arena-Kampf':'eine andere Aktivität'}
