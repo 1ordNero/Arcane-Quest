@@ -63,7 +63,21 @@ function installRenderLifecycle(){
   return true;
 }
 
-root.version='core-v4';
+function navigate(screen){
+  const state=getState();
+  if(!state)return false;
+  state.screen=screen;
+  if(typeof window.render==='function')window.render();
+  return true;
+}
+
+function installNavigation(){
+  root.navigation=root.navigation||{};
+  root.navigation.go=navigate;
+  window.tab=navigate;
+}
+
+root.version='core-v5';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
@@ -72,6 +86,7 @@ root.state.screen=getScreen;
 root.lifecycle=root.lifecycle||{};
 root.lifecycle.installRender=installRenderLifecycle;
 installRenderLifecycle();
+installNavigation();
 
 const boot=()=>emit('bootReady',{state:getState(),screen:getScreen()});
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
@@ -85,6 +100,7 @@ root.diagnostics.snapshot=()=>({
   hasRender:typeof window.render==='function',
   hasSave:typeof window.save==='function',
   renderLifecycle:!!root.lifecycle.renderInstalled,
+  navigation:!!root.navigation?.go,
   hookCounts:Object.fromEntries(hookNames.map(name=>[name,hooks[name].size]))
 });
 })();
