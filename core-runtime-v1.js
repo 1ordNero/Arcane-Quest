@@ -98,9 +98,27 @@ function installRenderLifecycle(){
   return true;
 }
 
+const navigationGuards=new Set();
+
+function addNavigationGuard(handler){
+  if(typeof handler!=='function')throw new TypeError('[Arcane] Navigation guard must be a function');
+  navigationGuards.add(handler);
+  return()=>navigationGuards.delete(handler);
+}
+
+function canNavigate(screen){
+  const state=getState();
+  for(const guard of [...navigationGuards]){
+    try{
+      if(guard({screen,state,current:state?.screen??null})===false)return false;
+    }catch(error){console.error('[Arcane] navigation guard failed',error)}
+  }
+  return true;
+}
+
 function navigate(screen){
   const state=getState();
-  if(!state)return false;
+  if(!state||!canNavigate(screen))return false;
   state.screen=screen;
   if(typeof window.render==='function')window.render();
   return true;
@@ -109,10 +127,12 @@ function navigate(screen){
 function installNavigation(){
   root.navigation=root.navigation||{};
   root.navigation.go=navigate;
+  root.navigation.canGo=canNavigate;
+  root.navigation.addGuard=addNavigationGuard;
   window.tab=navigate;
 }
 
-root.version='core-v6';
+root.version='core-v7';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
@@ -138,6 +158,7 @@ root.diagnostics.snapshot=()=>({
   renderLifecycle:!!root.lifecycle.renderInstalled,
   shell:!!root.shell?.render,
   navigation:!!root.navigation?.go,
+  navigationGuards:navigationGuards.size,
   hookCounts:Object.fromEntries(hookNames.map(name=>[name,hooks[name].size]))
 });
 })();
