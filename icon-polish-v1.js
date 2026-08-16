@@ -22,10 +22,13 @@ window.Arcane?.on?.('bootReady',polish);
 const css=document.createElement('style');css.textContent=`
 .tabs .nav-tavern .nav-art img{transform:scale(1.04)!important}.ui-section-icon{display:block;width:34px;height:34px;object-fit:contain}.ui-inline-icon{display:inline-block;width:24px;height:24px;object-fit:contain;vertical-align:middle;margin-right:6px}.cux-top button{display:inline-flex!important;align-items:center!important;gap:3px!important}.cux-top button .ui-inline-icon{width:22px;height:22px;margin-right:2px}.av3-title h1,.cv2-head h1{display:flex!important;align-items:center!important;gap:6px!important}.av3-title h1 .ui-inline-icon,.cv2-head h1 .ui-inline-icon{width:30px;height:30px;margin:0}
 `;document.head.appendChild(css);polish();
-if(!document.querySelector('script[data-arcane-asset-hydrator]')){
+function loadHydrator(){
+ if(document.querySelector('script[data-arcane-asset-hydrator]'))return;
+ if(!window.gameIconPath||!window.UI_ICON_ASSETS){setTimeout(loadHydrator,0);return}
  const s=document.createElement('script');
  s.dataset.arcaneAssetHydrator='1';
- s.src='asset-hydrator-v1.js?v=1';
+ s.src='asset-hydrator-v1.js?v=2';
  document.head.appendChild(s);
 }
+setTimeout(loadHydrator,0);
 })();

@@ -41,12 +41,22 @@ function hydrateCity(){
   ensure(btn.querySelector(':scope > span:first-child'),iconPath(key),'gai-city',t.trim());
  });
 }
+function stripArenaEmoji(host){
+ if(!host)return;
+ for(const node of host.childNodes){if(node.nodeType===Node.TEXT_NODE)node.nodeValue=node.nodeValue.replace(/[⚔️🛡️↩️]+/gu,'').trimStart()}
+}
 function hydrateArena(){
  const a=qAssets(),stance={Aggressiv:a.stanceAggressive,Defensiv:a.stanceDefensive,Konter:a.stanceCounter};
  document.querySelectorAll('.av2-stances button').forEach(btn=>{
   const name=Object.keys(stance).find(n=>(btn.textContent||'').includes(n));
-  const host=btn.querySelector('b');
-  if(name&&host&&!host.querySelector('img'))host.insertAdjacentHTML('afterbegin',`<img class="gai-stance" src="${stance[name]}" alt="${name}"> `);
+  const host=btn.querySelector('b'),src=name?stance[name]:'';
+  if(!name||!host||!src)return;
+  stripArenaEmoji(host);
+  const current=host.querySelector('img');
+  if(!current||norm(current.getAttribute('src'))!==norm(src)){
+   current?.remove();
+   host.insertAdjacentHTML('afterbegin',`<img class="gai-stance" src="${src}" alt="${name}"> `);
+  }
  });
  const ops=(typeof S!=='undefined'&&S?.arenaV2?.opponents)||[];
  document.querySelectorAll('.av2-ophead').forEach((row,i)=>{
@@ -58,7 +68,7 @@ function hydrateHeaders(){
  const entries=[['.cux-city-title>span','assets/icons/nav-stadt.webp'],['.av3-title h1','assets/icons/nav-arena.webp']];
  entries.forEach(([sel,src])=>document.querySelectorAll(sel).forEach(host=>{if(!host.querySelector('img'))host.insertAdjacentHTML('afterbegin',`<img class="ui-inline-icon" src="${src}" alt=""> `)}));
 }
-function hydrate(){hydrateQuests();hydrateChoices();hydrateCity();hydrateArena();hydrateHeaders()}
+function hydrate(){if(!window.gameIconPath||!window.UI_ICON_ASSETS)return;hydrateQuests();hydrateChoices();hydrateCity();hydrateArena();hydrateHeaders()}
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;hydrate()})}
 function startObserver(){
  const root=document.getElementById('app');if(!root||observer)return;
