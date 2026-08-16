@@ -2,14 +2,19 @@
 const SAVE_KEY='arcaneBeta';
 const BACKUP_KEY='arcaneBetaBackup';
 const VERSION=2;
+const MAX={items:500,bank:500,log:100,skills:100,name:24,text:256,level:100000,currency:1e12,capacity:10000};
 function validObject(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
-function parse(raw){if(!raw)return null;try{const v=JSON.parse(raw);return validObject(v)?v:null}catch{return null}}
+function parse(raw){if(!raw||raw.length>5_000_000)return null;try{const v=JSON.parse(raw);return validObject(v)?v:null}catch{return null}}
+function finite(v,fallback=0){const n=Number(v);return Number.isFinite(n)?n:fallback}
+function clamp(v,min,max,fallback=min){return Math.max(min,Math.min(max,finite(v,fallback)))}
+function text(v,max=MAX.text,fallback=''){return typeof v==='string'?v.slice(0,max):fallback}
+function list(v,max){return Array.isArray(v)?v.slice(0,max):[]}
 function migrate(s){
- let v=Math.max(0,Number(s.saveVersion)||0);
+ let v=Math.max(0,finite(s.saveVersion,0));
  if(v<1){s.saveVersion=1;v=1}
  if(v<2){
   s.saveMeta=validObject(s.saveMeta)?s.saveMeta:{};
-  s.saveMeta.createdAt=Number(s.saveMeta.createdAt)||Date.now();
+  s.saveMeta.createdAt=finite(s.saveMeta.createdAt,Date.now());
   s.saveVersion=2;v=2;
  }
  return s;
@@ -17,27 +22,32 @@ function migrate(s){
 function normalize(s){
  if(!validObject(s))return s;
  migrate(s);
- if(!Array.isArray(s.items))s.items=[];
- if(!validObject(s.eq))s.eq={};
- if(!Array.isArray(s.log))s.log=[];
- if(!Array.isArray(s.skills))s.skills=[];
- if(!Array.isArray(s.bank))s.bank=[];
+ s.items=list(s.items,MAX.items).filter(validObject);
+ s.eq=validObject(s.eq)?s.eq:{};
+ s.log=list(s.log,MAX.log).map(v=>text(v,MAX.text));
+ s.skills=list(s.skills,MAX.skills).map(v=>text(v,80)).filter(Boolean);
+ s.bank=list(s.bank,MAX.bank).filter(validObject);
+ s.name=text(s.name,MAX.name,'Aventurier')||'Aventurier';
+ s.screen=text(s.screen,40,'home')||'home';
+ s.race=text(s.race,40,'Mensch')||'Mensch';
+ s.cls=text(s.cls,40,'Krieger')||'Krieger';
+ s.bg=text(s.bg,80,'Tavernen-Stammgast')||'Tavernen-Stammgast';
  if(s.city!=null&&!validObject(s.city))s.city={};
  if(s.arenaV2!=null&&!validObject(s.arenaV2))s.arenaV2=null;
  if(s.dungeonV1!=null&&!validObject(s.dungeonV1))s.dungeonV1=null;
- s.invCap=Math.max(1,Number(s.invCap)||15);
- s.bankCap=Math.max(1,Number(s.bankCap)||100);
- s.maxAl=Math.max(1,Number(s.maxAl)||100);
- s.al=Math.max(0,Math.min(s.maxAl,Number(s.al)||0));
- s.maxHp=Math.max(1,Number(s.maxHp)||120);
- s.hp=Math.max(0,Math.min(s.maxHp,Number(s.hp)||s.maxHp));
- s.gold=Math.max(0,Number(s.gold)||0);
- s.xp=Math.max(0,Number(s.xp)||0);
- s.lvl=Math.max(1,Number(s.lvl)||1);
- s.forgeDust=Math.max(0,Number(s.forgeDust)||0);
- s.essence=Math.max(0,Number(s.essence)||0);
- s.souls=Math.max(0,Number(s.souls)||0);
- s.keys=Math.max(0,Number(s.keys)||0);
+ s.invCap=Math.round(clamp(s.invCap,1,MAX.capacity,15));
+ s.bankCap=Math.round(clamp(s.bankCap,1,MAX.capacity,100));
+ s.maxAl=clamp(s.maxAl,1,MAX.currency,100);
+ s.al=clamp(s.al,0,s.maxAl,0);
+ s.maxHp=clamp(s.maxHp,1,MAX.currency,120);
+ s.hp=clamp(s.hp,0,s.maxHp,s.maxHp);
+ s.gold=clamp(s.gold,0,MAX.currency,0);
+ s.xp=clamp(s.xp,0,MAX.currency,0);
+ s.lvl=Math.round(clamp(s.lvl,1,MAX.level,1));
+ s.forgeDust=clamp(s.forgeDust,0,MAX.currency,0);
+ s.essence=clamp(s.essence,0,MAX.currency,0);
+ s.souls=clamp(s.souls,0,MAX.currency,0);
+ s.keys=clamp(s.keys,0,MAX.currency,0);
  s.saveVersion=VERSION;
  s.saveMeta=validObject(s.saveMeta)?s.saveMeta:{};
  return s;
