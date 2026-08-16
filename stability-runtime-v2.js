@@ -24,11 +24,6 @@ function sanitizeEquipment(){
 }
 function canonicalize(){if(sanitizeEquipment())window.syncEquipmentStats?.()}
 window.Arcane?.on?.('beforeSave',canonicalize);
-function safeLoot(base,args){let item=null;for(let i=0;i<8;i++){item=base.apply(this,args);if(item&&!RETIRED.has(normalizeSlot(item.slot)))break}if(item){item.slot=normalizeSlot(item.slot);if(RETIRED.has(item.slot))item.slot='Beute'}return item}
-const baseCreate=window.createLoot;
-if(typeof baseCreate==='function')window.createLoot=function(){return safeLoot(baseCreate,arguments)};
-const baseGenerate=window.generateLoot;
-if(typeof baseGenerate==='function')window.generateLoot=function(kind='general'){return window.createLoot?window.createLoot(kind,null,S?.lvl||1):safeLoot(baseGenerate,arguments)};
 function ensureStatIcon(el,type){
  if(!el)return;const src=UI+(type==='attack'?'stat_attack.webp':'stat_defense.webp');let img=el.querySelector('img.aq-combat-stat-icon');
  if(!img){img=document.createElement('img');img.className='aq-combat-stat-icon';img.alt=type==='attack'?'Angriff':'Verteidigung';el.prepend(img)}
