@@ -1,9 +1,10 @@
 (()=>{
-const SAVE_KEY='arcaneBeta';
-const BACKUP_KEY='arcaneBetaBackup';
+const storage=window.ARCANE_STORAGE;
+const SAVE_KEY=storage?.keys?.save||'arcaneBeta';
+const BACKUP_KEY=storage?.keys?.backup||'arcaneBetaBackup';
 const VERSION=2;
 function validObject(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
-function parse(raw){if(!raw)return null;try{const v=JSON.parse(raw);return validObject(v)?v:null}catch{return null}}
+function parse(raw){return storage?.parse?storage.parse(raw):(()=>{if(!raw)return null;try{const v=JSON.parse(raw);return validObject(v)?v:null}catch{return null}})()}
 function migrate(s){
  let v=Math.max(0,Number(s.saveVersion)||0);
  if(v<1){s.saveVersion=1;v=1}
@@ -44,20 +45,16 @@ function normalize(s){
 }
 function persist(){
  if(window.__ARCANE_INTENTIONAL_RESET)return true;
+ window.Arcane?.emit?.('beforeSave',S);
  normalize(S);
  S.saveMeta.updatedAt=Date.now();
- const next=JSON.stringify(S);
- try{
-  const previous=localStorage.getItem(SAVE_KEY);
-  if(previous&&previous!==next&&parse(previous))localStorage.setItem(BACKUP_KEY,previous);
-  localStorage.setItem(SAVE_KEY,next);
-  return true;
- }catch(err){
-  console.error('[Arcane Save] Speichern fehlgeschlagen',err);
-  return false;
- }
+ let ok=false;
+ if(storage?.writeObject)ok=storage.writeObject(S,{backup:true});
+ else try{const next=JSON.stringify(S),previous=localStorage.getItem(SAVE_KEY);if(previous&&previous!==next&&parse(previous))localStorage.setItem(BACKUP_KEY,previous);localStorage.setItem(SAVE_KEY,next);ok=true}catch(err){console.error('[Arcane Save] Speichern fehlgeschlagen',err)}
+ if(ok)window.Arcane?.emit?.('afterSave',S);
+ return ok;
 }
-function restoreBackup(){const b=parse(localStorage.getItem(BACKUP_KEY));if(!b)return false;try{localStorage.setItem(SAVE_KEY,JSON.stringify(normalize(b)));location.reload();return true}catch{return false}}
+function restoreBackup(){const b=storage?.read?storage.read(BACKUP_KEY):parse(localStorage.getItem(BACKUP_KEY));if(!b)return false;normalize(b);const ok=storage?.writeObject?storage.writeObject(b,{backup:false}):(()=>{try{localStorage.setItem(SAVE_KEY,JSON.stringify(b));return true}catch{return false}})();if(ok)location.reload();return ok}
 function exportSave(){normalize(S);return JSON.stringify(S)}
 normalize(S);
 window.ARCANE_STATE={key:SAVE_KEY,backupKey:BACKUP_KEY,version:VERSION,normalize,migrate,persist,restoreBackup,exportSave};
