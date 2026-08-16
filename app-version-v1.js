@@ -1,8 +1,8 @@
 (()=>{
 'use strict';
-const VERSION='v0.9.7';
+const VERSION=document.querySelector('meta[name="build"]')?.content||'v0.9.8';
 window.ARCANE_APP_VERSION=VERSION;
-function ensureCatacombIcons(){if(document.querySelector('script[data-catacomb-icons]'))return;const s=document.createElement('script');s.src='catacomb-icons-v1.js?v=1';s.dataset.catacombIcons='1';document.head.appendChild(s)}
+function ensureCatacombIcons(){if(document.querySelector('script[data-catacomb-icons]'))return;const s=document.createElement('script');s.src='catacomb-icons-v1.js?v=2';s.dataset.catacombIcons='1';document.head.appendChild(s)}
 function apply(){
  const top=document.querySelector('header .top')||document.querySelector('header');
  if(!top)return;
