@@ -3,6 +3,7 @@
 const BUILD='v0.11.0';
 window.ARCANE_BUILD=BUILD;
 const NativeImage=window.Image;
+window.__ARCANE_NATIVE_IMAGE=NativeImage;
 const deferredPreloads=window.__ARCANE_DEFERRED_PRELOADS=[];
 let imageGateOpen=false;
 window.Image=function(...args){
