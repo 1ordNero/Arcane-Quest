@@ -1,7 +1,7 @@
 (()=>{
 function confirmReset(){return confirm('Beta-Test vollständig zurücksetzen?\n\nSpielstand, Charakter, Sicherungen und lokaler Arcane-Quest-Cache werden gelöscht. Der Vorgang kann nicht rückgängig gemacht werden.')}
-function resetUrl(){return './reset.html?fresh=1&ts='+Date.now()}
-window.arcaneBetaReset=function(){if(!confirmReset())return;window.__ARCANE_INTENTIONAL_RESET=true;try{sessionStorage.setItem('arcaneResetPending','1')}catch{}location.replace(resetUrl())};
+function resetUrl(){return './?newCharacter=1&ts='+Date.now()}
+window.arcaneBetaReset=function(){if(!confirmReset())return;window.__ARCANE_INTENTIONAL_RESET=true;try{localStorage.clear();sessionStorage.clear()}catch{}location.replace(resetUrl())};
 window.reset=window.arcaneBetaReset;
 function addControl(){let box=document.querySelector('.beta-reset-control');if(!box){box=document.createElement('div');box.className='beta-reset-control';const link=document.createElement('button');link.type='button';link.className='beta-reset-link';link.textContent='Reset';link.setAttribute('aria-label','Beta-Test vollständig zurücksetzen');link.addEventListener('click',()=>window.arcaneBetaReset());const note=document.createElement('small');note.textContent='Spielstand löschen';box.append(link,note);document.body.appendChild(box)}return box}
 const old=window.render;if(typeof old==='function')window.render=function(){const r=old.apply(this,arguments);queueMicrotask(addControl);return r};
