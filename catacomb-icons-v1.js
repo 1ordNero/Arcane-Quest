@@ -1,12 +1,12 @@
 (()=>{
 const ROOT='assets/icons/catacombs/';
-const VERSION='2026-08-16-hq9';
+const VERSION='2026-08-16-hq10';
 const ROOM_FILES=['room_whispering_gallery.webp','room_bone_guard.webp','room_sealed_niche.webp','room_shadow_beast.webp','room_grave_knight.webp','room_shrine_of_silence.webp','room_archive_of_dead.webp','room_crypt_weaver.webp','room_treasure_new.webp','room_catacomb_keeper.webp'];
 const ROOM_NAMES=['Flüsternde Galerie','Knochenwache','Versiegelte Nische','Schattenbestie','Grabritter','Schrein der Stille','Archiv der Toten','Gruftweberin','Schatzkammer','Hüter der Katakomben'];
 const path=file=>`${ROOT}${file}?v=${VERSION}`;
 const currentRoom=()=>{const n=Number(S?.dungeonV1?.room);return Number.isInteger(n)&&n>=0&&n<10?n:null};
 ROOM_FILES.forEach(file=>{const i=new Image();i.decoding='async';i.src=path(file)});
-function apply(){if(S?.screen!=='dungeon')return;const idx=currentRoom();if(idx===null)return;const src=path(ROOM_FILES[idx]),name=ROOM_NAMES[idx];document.querySelectorAll('.dv7-room').forEach(room=>{room.classList.add('catacomb-room-hq');room.querySelectorAll(':scope > .gai-room-inline').forEach(el=>el.remove());let host=room.querySelector('.dv7-icon');if(!host){const h2=room.querySelector('h2');if(!h2)return;host=document.createElement('div');host.className='dv7-icon catacomb-art-host';h2.insertAdjacentElement('beforebegin',host)}host.classList.add('catacomb-art-host');let img=host.querySelector('.catacomb-room-art');if(!img){host.replaceChildren();img=document.createElement('img');img.className='gai-room catacomb-room-art';host.appendChild(img)}if(img.getAttribute('src')!==src)img.src=src;img.alt=name;img.dataset.catacombIcon=name})}
+function apply(){if(S?.screen!=='dungeon')return;const idx=currentRoom();if(idx===null)return;const src=path(ROOM_FILES[idx]),name=ROOM_NAMES[idx];document.querySelectorAll('.dv7-room').forEach(room=>{room.classList.add('catacomb-room-hq');room.querySelectorAll('.gai-room-inline').forEach(el=>{if(!el.classList.contains('catacomb-room-art'))el.remove()});let host=room.querySelector('.dv7-icon');if(!host){const h2=room.querySelector('h2');if(!h2)return;host=document.createElement('div');host.className='dv7-icon catacomb-art-host';h2.insertAdjacentElement('beforebegin',host)}host.classList.add('catacomb-art-host');let img=host.querySelector('.catacomb-room-art');if(!img){host.replaceChildren();img=document.createElement('img');img.className='gai-room catacomb-room-art';host.appendChild(img)}if(img.getAttribute('src')!==src)img.src=src;img.alt=name;img.dataset.catacombIcon=name})}
 window.CATACOMB_ICON_ASSETS=Object.freeze(Object.fromEntries(ROOM_NAMES.map((name,i)=>[name,path(ROOM_FILES[i])])));
 const previousRender=window.render;if(previousRender)window.render=function(){const result=previousRender.apply(this,arguments);apply();return result};
 const css=document.createElement('style');css.textContent=`
