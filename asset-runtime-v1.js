@@ -39,18 +39,30 @@ async function bind(img,src){
   img.dataset.arcaneAssetBuild=BUILD;
   return img;
 }
+function sourceFromImage(img){
+  const original=img.dataset.arcaneAssetSource;
+  if(original)return original;
+  const raw=img.getAttribute('src')||'';
+  if(!raw)return '';
+  try{
+    const u=new URL(raw,location.href);
+    if(u.origin!==location.origin)return raw;
+    u.searchParams.delete('assetBuild');u.searchParams.delete('assetRefresh');
+    const marker='/assets/';const ix=u.pathname.indexOf(marker);
+    return ix>=0?'assets/'+u.pathname.slice(ix+marker.length)+u.search:raw;
+  }catch{return raw}
+}
 function hydrate(root=document.getElementById('app')){
   if(!root)return;
   root.querySelectorAll('img').forEach(img=>{
-    let src=img.dataset.arcaneAssetSource||img.getAttribute('src')||'';
-    if(!src)return;
-    try{const u=new URL(src,location.href);u.searchParams.delete('assetBuild');u.searchParams.delete('assetRefresh');src=u.origin===location.origin?u.pathname.replace(location.pathname.replace(/[^/]*$/,''),'').replace(/^\//,'')+u.search:''}catch{}
+    const src=sourceFromImage(img);
     if(/(?:^|\/)assets\//.test(src))bind(img,src);
   });
 }
 function preloadOne(src){return new Promise(resolveDone=>{
   if(!src)return resolveDone();
-  const img=new Image();
+  const Ctor=window.__ARCANE_NATIVE_IMAGE||window.Image;
+  const img=new Ctor();
   img.decoding='async';
   img.onload=img.onerror=()=>resolveDone();
   img.src=networkUrl(src);
