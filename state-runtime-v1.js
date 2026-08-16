@@ -43,6 +43,7 @@ function normalize(s){
  return s;
 }
 function persist(){
+ if(window.__ARCANE_INTENTIONAL_RESET)return true;
  normalize(S);
  S.saveMeta.updatedAt=Date.now();
  const next=JSON.stringify(S);
