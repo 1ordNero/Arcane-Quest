@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const BUILD='v0.11.0';
+const BUILD='v0.11.1';
 window.ARCANE_BUILD=BUILD;
 const NativeImage=window.Image;
 window.__ARCANE_NATIVE_IMAGE=NativeImage;
