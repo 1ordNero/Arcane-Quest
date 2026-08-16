@@ -9,14 +9,16 @@ const ASSETS={
  aggressive:UI+'ui_stance_aggressive.webp',defensive:UI+'ui_stance_defensive.webp',counter:UI+'ui_stance_counter.webp',
  challengers:[1,2,3,4].map(n=>UI+`arena_challenger_0${n}.webp`)
 };
-Object.values(ASSETS).flat().filter(x=>typeof x==='string').forEach(src=>{const i=new Image();i.decoding='async';i.src=src});
+const allAssets=Object.values(ASSETS).flat().filter(x=>typeof x==='string');
+window.Arcane?.assets?.preload(allAssets);
 const norm=s=>String(s||'').split('?')[0];
+function bind(image,src){window.Arcane?.assets?.bind?.(image,src)}
 function ensure(host,src,cls,alt=''){
  if(!host||!src)return;
  const current=host.querySelector(':scope > img');
- if(current&&norm(current.getAttribute('src'))===norm(src)){current.className=cls;return}
- const image=document.createElement('img');image.src=src;image.className=cls;image.alt=alt;image.decoding='async';
- host.replaceChildren(image);
+ if(current&&(current.dataset.arcaneAssetSource===src||norm(current.getAttribute('src'))===norm(src))){current.className=cls;bind(current,src);return}
+ const image=document.createElement('img');image.src=src;image.className=cls;image.alt=alt;image.decoding='async';image.dataset.arcaneAssetSource=src;
+ host.replaceChildren(image);bind(image,src);
 }
 function questSrc(text=''){
  return /Knochenwache|MINIBOSS|AUTO/i.test(text)?ASSETS.questMiniboss:
@@ -34,16 +36,15 @@ function city(){
 function stripEmoji(host){for(const n of host?.childNodes||[])if(n.nodeType===Node.TEXT_NODE)n.nodeValue=n.nodeValue.replace(/[⚔️🛡️↩️🏹🔮]+/gu,'').trimStart()}
 function arena(){
  const stance={Aggressiv:ASSETS.aggressive,Defensiv:ASSETS.defensive,Konter:ASSETS.counter};
- document.querySelectorAll('.av2-stances button').forEach(btn=>{const name=Object.keys(stance).find(n=>(btn.textContent||'').includes(n));const host=btn.querySelector('b');if(!name||!host)return;stripEmoji(host);let image=host.querySelector(':scope > img');if(!image||norm(image.getAttribute('src'))!==norm(stance[name])){image?.remove();image=document.createElement('img');image.src=stance[name];image.alt=name;host.prepend(image)}image.className='aq-icon aq-icon-stance'});
+ document.querySelectorAll('.av2-stances button').forEach(btn=>{const name=Object.keys(stance).find(n=>(btn.textContent||'').includes(n));const host=btn.querySelector('b');if(!name||!host)return;stripEmoji(host);let image=host.querySelector(':scope > img');if(!image||image.dataset.arcaneAssetSource!==stance[name]){image?.remove();image=document.createElement('img');image.src=stance[name];image.alt=name;image.dataset.arcaneAssetSource=stance[name];host.prepend(image)}image.className='aq-icon aq-icon-stance';bind(image,stance[name])});
  document.querySelectorAll('.av2-ophead').forEach((row,i)=>ensure(row.querySelector(':scope > span'),ASSETS.challengers[i%4],'aq-icon aq-icon-challenger','Herausforderer'));
 }
-function hydrate(){quests();city();arena()}
+function hydrate(){quests();city();arena();window.Arcane?.assets?.hydrate?.()}
 let scheduled=false;
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;hydrate()})}
 window.Arcane?.on?.('afterRenderSettled',schedule);
 window.Arcane?.on?.('bootReady',schedule);
-const start=()=>{const root=document.getElementById('app');if(root)new MutationObserver(m=>{if(m.some(x=>x.type==='childList'))schedule()}).observe(root,{childList:true,subtree:true});schedule()};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
 const style=document.createElement('style');style.textContent=`
 .aq-icon{position:static!important;inset:auto!important;display:block!important;float:none!important;transform:none!important;margin:0!important;padding:0!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center!important;background:none!important;border:0!important;box-shadow:none!important;pointer-events:none!important}
 .quest-card .q-icon,.active-quest .q-icon{position:relative!important;display:grid!important;place-items:center!important;width:64px!important;height:64px!important;min-width:64px!important;min-height:64px!important;flex:0 0 64px!important;overflow:hidden!important;background:#ffffff06!important;border-radius:12px!important}
