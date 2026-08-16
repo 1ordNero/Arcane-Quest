@@ -2,7 +2,7 @@
 const storage=window.ARCANE_STORAGE;
 const SAVE_KEY=storage?.keys?.save||'arcaneBeta';
 const BACKUP_KEY=storage?.keys?.backup||'arcaneBetaBackup';
-const VERSION=2;
+const VERSION=3;
 function validObject(v){return !!v&&typeof v==='object'&&!Array.isArray(v)}
 function parse(raw){return storage?.parse?storage.parse(raw):(()=>{if(!raw)return null;try{const v=JSON.parse(raw);return validObject(v)?v:null}catch{return null}})()}
 function migrate(s){
@@ -12,6 +12,14 @@ function migrate(s){
   s.saveMeta=validObject(s.saveMeta)?s.saveMeta:{};
   s.saveMeta.createdAt=Number(s.saveMeta.createdAt)||Date.now();
   s.saveVersion=2;v=2;
+ }
+ if(v<3){
+  s.reincarnation=validObject(s.reincarnation)?s.reincarnation:{};
+  s.reincarnation.count=Math.max(0,Number(s.reincarnation.count)||0);
+  s.reincarnation.bestLevel=Math.max(1,Number(s.reincarnation.bestLevel)||Number(s.lvl)||1);
+  s.reincarnation.lifetimeSouls=Math.max(0,Number(s.reincarnation.lifetimeSouls)||Number(s.souls)||0);
+  s.reincarnation.lastAt=Math.max(0,Number(s.reincarnation.lastAt)||0);
+  s.saveVersion=3;v=3;
  }
  return s;
 }
@@ -26,6 +34,7 @@ function normalize(s){
  if(s.city!=null&&!validObject(s.city))s.city={};
  if(s.arenaV2!=null&&!validObject(s.arenaV2))s.arenaV2=null;
  if(s.dungeonV1!=null&&!validObject(s.dungeonV1))s.dungeonV1=null;
+ if(!validObject(s.reincarnation))s.reincarnation={};
  s.invCap=Math.max(1,Number(s.invCap)||15);
  s.bankCap=Math.max(1,Number(s.bankCap)||100);
  s.maxAl=Math.max(1,Number(s.maxAl)||100);
@@ -39,6 +48,10 @@ function normalize(s){
  s.essence=Math.max(0,Number(s.essence)||0);
  s.souls=Math.max(0,Number(s.souls)||0);
  s.keys=Math.max(0,Number(s.keys)||0);
+ s.reincarnation.count=Math.max(0,Number(s.reincarnation.count)||0);
+ s.reincarnation.bestLevel=Math.max(s.lvl,Number(s.reincarnation.bestLevel)||1);
+ s.reincarnation.lifetimeSouls=Math.max(s.souls,Number(s.reincarnation.lifetimeSouls)||0);
+ s.reincarnation.lastAt=Math.max(0,Number(s.reincarnation.lastAt)||0);
  s.saveVersion=VERSION;
  s.saveMeta=validObject(s.saveMeta)?s.saveMeta:{};
  return s;
