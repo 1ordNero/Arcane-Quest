@@ -2,7 +2,7 @@
 'use strict';
 
 const root=window.Arcane=window.Arcane||{};
-const hookNames=['beforeRender','afterRender','beforeSave','afterSave','screenChange','bootReady'];
+const hookNames=['beforeRender','afterRender','afterRenderSettled','beforeSave','afterSave','screenChange','bootReady'];
 const hooks=root.hooks=root.hooks||{};
 
 for(const name of hookNames){
@@ -36,6 +36,7 @@ function installRenderLifecycle(){
   const base=window.render;
   if(typeof base!=='function')return false;
   let lastScreen=getScreen();
+  let settledPending=false;
   const wrapped=function(){
     const beforeScreen=getScreen();
     emit('beforeRender',{state:getState(),screen:beforeScreen,args:[...arguments]});
@@ -47,6 +48,13 @@ function installRenderLifecycle(){
       emit('screenChange',{state:getState(),screen:afterScreen,previous});
     }
     emit('afterRender',{state:getState(),screen:afterScreen,result});
+    if(!settledPending){
+      settledPending=true;
+      queueMicrotask(()=>{
+        settledPending=false;
+        emit('afterRenderSettled',{state:getState(),screen:getScreen()});
+      });
+    }
     return result;
   };
   Object.defineProperty(wrapped,'__arcaneLifecycle',{value:true});
@@ -55,7 +63,7 @@ function installRenderLifecycle(){
   return true;
 }
 
-root.version='core-v2';
+root.version='core-v3';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};

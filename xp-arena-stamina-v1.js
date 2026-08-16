@@ -41,9 +41,8 @@ if(oldStart)window.arenaV2Start=function(id){
   S.arenaStamina--;save?.();return oldStart.apply(this,arguments)
 };
 function syncPresentation(){ensureArenaStamina();decorateXP();decorateArena()}
-let scheduled=false;
-function scheduleSync(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;syncPresentation()})}
-new MutationObserver(scheduleSync).observe(document.documentElement,{childList:true,subtree:true});
+window.Arcane?.on?.('afterRenderSettled',syncPresentation);
+window.Arcane?.on?.('bootReady',syncPresentation);
 const css=document.createElement('style');css.textContent=`
 .global-xp{max-width:900px;margin:7px auto 0;padding:0 1px}.global-xp-meta{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:var(--muted);margin-bottom:3px}.global-xp-meta span{font-weight:900;letter-spacing:.7px}.global-xp-meta b{font-size:9px;color:#d8cde0}.global-xp>i{display:block;height:5px;background:#ffffff0d;border-radius:99px;overflow:hidden}.global-xp>i>u{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));text-decoration:none;border-radius:inherit;transition:width .25s ease}.arena-stamina{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0;padding:10px 12px;border:1px solid #ffffff10;border-radius:13px;background:#1b1425}.arena-stamina small,.arena-stamina b,.arena-stamina span{display:block}.arena-stamina small{font-size:8px;letter-spacing:.7px;color:var(--muted)}.arena-stamina b{font-size:13px;margin:1px 0}.arena-stamina span{font-size:9px;color:var(--muted)}.arena-stamina-pips{display:flex;gap:4px;flex:0 0 auto}.arena-stamina-pips i{width:10px;height:18px;border-radius:4px;background:#ffffff10;border:1px solid #ffffff10}.arena-stamina-pips i.on{background:linear-gradient(180deg,#f4c15d,#a875ff);border-color:#f4c15d55}.arena-stamina.empty{border-color:#e86a7a33}.arena-stamina.empty b{color:#ff9baa}.av2-ops>button:disabled{opacity:.42!important;filter:saturate(.55)}
 @media(max-width:430px){.global-xp{margin-top:5px}.arena-stamina{padding:9px 10px}.arena-stamina span{max-width:235px}.arena-stamina-pips i{width:8px;height:16px}}
