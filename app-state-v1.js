@@ -67,6 +67,23 @@ function writeLastActive(value=Date.now()){
   try{localStorage.setItem(storage?.keys?.last||'arcaneLast',String(value));return true}catch{return false}
 }
 
-root.appState={DEFAULT_STATE,cloneDefault,load,save,readLastActive,writeLastActive};
+function settleOffline(){
+  if(typeof S==='undefined'||!S)return;
+  const last=readLastActive()||Date.now();
+  const hours=Math.min(12,(Date.now()-last)/3600000);
+  if(hours>.03){
+    const gold=Math.floor(hours*18);
+    const xp=Math.floor(hours*10);
+    S.gold+=gold;
+    if(typeof gainXP==='function')gainXP(xp);
+    if(typeof log==='function')log(`Wachdienst: ${hours.toFixed(1)}h offline → +${gold} Gold, +${xp} XP.`);
+  }
+  writeLastActive();
+}
+
+function installLegacyBridges(){window.offline=settleOffline}
+
+root.appState={DEFAULT_STATE,cloneDefault,load,save,readLastActive,writeLastActive,settleOffline};
 window.ARCANE_APP_STATE=root.appState;
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installLegacyBridges,{once:true});else installLegacyBridges();
 })();
