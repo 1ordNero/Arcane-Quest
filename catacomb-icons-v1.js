@@ -1,6 +1,6 @@
 (()=>{
 const ROOT='assets/icons/catacombs/';
-const VERSION='2026-08-16-hq1';
+const VERSION='2026-08-16-hq2';
 const ROOMS=Object.freeze({
  'Flüsternde Galerie':'room_whispering_gallery.webp',
  'Knochenwache':'room_bone_guard.webp',
@@ -14,19 +14,37 @@ const ROOMS=Object.freeze({
  'Hüter der Katakomben':'room_catacomb_keeper.webp'
 });
 const path=file=>`${ROOT}${file}?v=${VERSION}`;
-const keyFor=text=>Object.keys(ROOMS).find(name=>(text||'').includes(name))||'';
-Object.values(ROOMS).forEach(file=>{const preload=new Image();preload.decoding='async';preload.src=path(file)});
+const roomName=text=>Object.keys(ROOMS).find(name=>(text||'').includes(name))||'';
+Object.values(ROOMS).forEach(file=>{const i=new Image();i.decoding='async';i.src=path(file)});
+let applying=false;
 function apply(){
- document.querySelectorAll('.dv7-room').forEach(room=>{
-  const title=room.querySelector('h2')?.textContent||'';
-  const key=keyFor(title);if(!key)return;
-  const src=path(ROOMS[key]);
-  const image=room.querySelector('.gai-room,.gai-room-inline');
-  if(image&&image.getAttribute('src')!==src){image.src=src;image.alt=key;image.dataset.catacombIcon=key}
- });
+ if(applying)return;applying=true;
+ try{
+  document.querySelectorAll('.dv7-room').forEach(room=>{
+   const h2=room.querySelector('h2');if(!h2)return;
+   const name=roomName(h2.textContent||'');if(!name)return;
+   const src=path(ROOMS[name]);
+   const host=room.querySelector('.dv7-icon');
+   if(host){
+    host.querySelectorAll('img').forEach(img=>{if(!img.classList.contains('catacomb-room-art'))img.remove()});
+    host.childNodes.forEach(n=>{if(n.nodeType===3)n.remove()});
+    let img=host.querySelector('img.catacomb-room-art');
+    if(!img){img=document.createElement('img');img.className='gai-room catacomb-room-art';host.replaceChildren(img)}
+    if(img.getAttribute('src')!==src)img.src=src;img.alt=name;img.dataset.catacombIcon=name;
+   }else{
+    room.querySelectorAll('.gai-room-inline,.catacomb-room-art').forEach(el=>el.remove());
+    const img=document.createElement('img');img.className='gai-room-inline catacomb-room-art';img.src=src;img.alt=name;img.dataset.catacombIcon=name;
+    h2.insertAdjacentElement('beforebegin',img);
+   }
+  });
+ }finally{applying=false}
 }
 window.CATACOMB_ICON_ASSETS=Object.freeze(Object.fromEntries(Object.entries(ROOMS).map(([name,file])=>[name,path(file)])));
 const previousRender=window.render;
 if(previousRender)window.render=function(){const result=previousRender.apply(this,arguments);apply();queueMicrotask(apply);requestAnimationFrame(apply);return result};
+const root=document.getElementById('app')||document.body;
+const observer=new MutationObserver(()=>queueMicrotask(apply));
+observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});
+const css=document.createElement('style');css.textContent=`.catacomb-room-art{object-fit:contain!important;object-position:center!important;background:transparent!important;border:0!important;box-shadow:none!important}`;document.head.appendChild(css);
 apply();queueMicrotask(apply);requestAnimationFrame(apply);
 })();
