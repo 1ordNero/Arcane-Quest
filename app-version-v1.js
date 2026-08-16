@@ -1,18 +1,9 @@
 (()=>{
 'use strict';
-const VERSION='v0.10.1';
+const VERSION='v0.10.2';
 const buildMeta=document.querySelector('meta[name="build"]');
 if(buildMeta)buildMeta.content=VERSION;
 window.ARCANE_APP_VERSION=VERSION;
-function ensureScript(selector,src,datasetKey){
- if(document.querySelector(selector))return;
- const s=document.createElement('script');
- s.src=src;
- if(datasetKey)s.dataset[datasetKey]='1';
- document.head.appendChild(s);
-}
-function ensureCatacombIcons(){ensureScript('script[data-catacomb-icons]','catacomb-icons-v1.js?v=3','catacombIcons')}
-function ensureRenderAuthority(){ensureScript('script[data-render-authority]','render-authority-v1.js?v=1','renderAuthority')}
 function apply(){
  const top=document.querySelector('header .top')||document.querySelector('header');
  if(!top)return;
@@ -25,8 +16,6 @@ window.Arcane?.on?.('bootReady',apply);
 let pending=false;
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;apply()})}
 const start=()=>{
- ensureCatacombIcons();
- ensureRenderAuthority();
  const app=document.getElementById('app');
  if(app)new MutationObserver(m=>{if(m.some(x=>x.type==='childList'&&[...x.addedNodes].some(n=>n.nodeType===1&&(n.matches?.('header')||n.querySelector?.('header')))))schedule()}).observe(app,{childList:true,subtree:false});
  apply();
