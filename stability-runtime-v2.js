@@ -22,9 +22,8 @@ function sanitizeEquipment(){
  if(RETIRED.has(S.heroSlotFilter)){delete S.heroSlotFilter;changed=true}else if(S.heroSlotFilter){const n=normalizeSlot(S.heroSlotFilter);if(n!==S.heroSlotFilter){S.heroSlotFilter=n;changed=true}}
  sanitizing=false;return changed;
 }
-function persistCanonical(){if(sanitizeEquipment())window.syncEquipmentStats?.();window.ARCANE_APP_STATE?.save?.(S)}
-const priorSave=window.save;
-if(typeof priorSave==='function')window.save=function(){const result=priorSave.apply(this,arguments);persistCanonical();return result};
+function canonicalize(){if(sanitizeEquipment())window.syncEquipmentStats?.()}
+window.Arcane?.on?.('beforeSave',canonicalize);
 function safeLoot(base,args){let item=null;for(let i=0;i<8;i++){item=base.apply(this,args);if(item&&!RETIRED.has(normalizeSlot(item.slot)))break}if(item){item.slot=normalizeSlot(item.slot);if(RETIRED.has(item.slot))item.slot='Beute'}return item}
 const baseCreate=window.createLoot;
 if(typeof baseCreate==='function')window.createLoot=function(){return safeLoot(baseCreate,arguments)};
@@ -37,7 +36,7 @@ function ensureStatIcon(el,type){
  for(const n of [...el.childNodes])if(n.nodeType===Node.TEXT_NODE)n.nodeValue=n.nodeValue.replace(type==='attack'?/[⚔️⚔]/gu:/[🛡️🛡]/gu,'').trimStart();
 }
 function fixHero(){
- if(typeof S==='undefined'||S?.screen!=='char')return;sanitizeEquipment();
+ if(typeof S==='undefined'||S?.screen!=='char')return;canonicalize();
  document.querySelectorAll('.he4-core b').forEach(el=>{const t=el.textContent||'';if(/Schaden|Angriff|⚔/i.test(t))ensureStatIcon(el,'attack');else if(/Rüstung|Verteidigung|🛡/i.test(t))ensureStatIcon(el,'defense')});
  document.querySelectorAll('.he4-slot').forEach(btn=>{const label=btn.querySelector('small');const t=label?.textContent.trim();if(t==='Gürtel'||t==='Ring 2')btn.remove();else if(t==='Ring 1'&&label)label.textContent='Ring'});
  const count=VALID.filter(slot=>S.eq?.[slot]).length;
@@ -50,7 +49,7 @@ function fixDungeonBoot(){
 }
 function reconcile(){fixHero();fixDungeonBoot()}
 window.Arcane?.on?.('afterRenderSettled',reconcile);
-window.Arcane?.on?.('bootReady',()=>{persistCanonical();requestAnimationFrame(()=>{if(S?.screen==='dungeon')window.render?.();reconcile()})});
+window.Arcane?.on?.('bootReady',()=>{canonicalize();requestAnimationFrame(()=>{if(S?.screen==='dungeon')window.render?.();reconcile()})});
 const css=document.createElement('style');css.textContent=`.aq-combat-stat-icon{display:inline-block!important;width:20px!important;height:20px!important;object-fit:contain!important;vertical-align:middle!important;margin-right:4px!important;position:static!important;transform:none!important}.he4-core b{display:inline-flex!important;align-items:center!important}`;document.head.appendChild(css);
-persistCanonical();
+canonicalize();
 })();
