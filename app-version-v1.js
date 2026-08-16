@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='v0.10.2';
+const VERSION='v0.10.3';
 const buildMeta=document.querySelector('meta[name="build"]');
 if(buildMeta)buildMeta.content=VERSION;
 window.ARCANE_APP_VERSION=VERSION;
