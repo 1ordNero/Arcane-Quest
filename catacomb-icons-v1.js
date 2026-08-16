@@ -1,6 +1,6 @@
 (()=>{
 const ROOT='assets/icons/catacombs/';
-const VERSION='2026-08-16-hq2';
+const VERSION='2026-08-16-hq3';
 const ROOMS=Object.freeze({
  'Flüsternde Galerie':'room_whispering_gallery.webp',
  'Knochenwache':'room_bone_guard.webp',
@@ -23,9 +23,11 @@ function apply(){
   document.querySelectorAll('.dv7-room').forEach(room=>{
    const h2=room.querySelector('h2');if(!h2)return;
    const name=roomName(h2.textContent||'');if(!name)return;
+   room.classList.add('catacomb-room-hq');
    const src=path(ROOMS[name]);
    const host=room.querySelector('.dv7-icon');
    if(host){
+    host.classList.add('catacomb-art-host');
     host.querySelectorAll('img').forEach(img=>{if(!img.classList.contains('catacomb-room-art'))img.remove()});
     host.childNodes.forEach(n=>{if(n.nodeType===3)n.remove()});
     let img=host.querySelector('img.catacomb-room-art');
@@ -45,6 +47,13 @@ if(previousRender)window.render=function(){const result=previousRender.apply(thi
 const root=document.getElementById('app')||document.body;
 const observer=new MutationObserver(()=>queueMicrotask(apply));
 observer.observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['src']});
-const css=document.createElement('style');css.textContent=`.catacomb-room-art{object-fit:contain!important;object-position:center!important;background:transparent!important;border:0!important;box-shadow:none!important}`;document.head.appendChild(css);
+const css=document.createElement('style');css.textContent=`
+.catacomb-room-hq .catacomb-art-host{width:190px!important;height:190px!important;min-width:190px!important;display:flex!important;align-items:center!important;justify-content:center!important;margin:14px auto 10px!important;background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+.catacomb-room-hq .catacomb-room-art{display:block!important;width:190px!important;height:190px!important;max-width:190px!important;max-height:190px!important;margin:14px auto 10px!important;padding:0!important;object-fit:contain!important;object-position:center!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+.catacomb-room-hq .catacomb-art-host .catacomb-room-art{margin:0!important}
+.catacomb-room-hq h2{margin-top:8px!important;margin-bottom:14px!important;text-align:center!important}
+.catacomb-room-hq h2 + .small,.catacomb-room-hq h2 + p{margin-top:0!important}
+@media(max-width:420px){.catacomb-room-hq .catacomb-art-host{width:176px!important;height:176px!important;min-width:176px!important}.catacomb-room-hq .catacomb-room-art{width:176px!important;height:176px!important;max-width:176px!important;max-height:176px!important}}
+`;document.head.appendChild(css);
 apply();queueMicrotask(apply);requestAnimationFrame(apply);
 })();
