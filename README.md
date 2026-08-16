@@ -1,170 +1,193 @@
 # Arcane Tavern & Quest – Android Beta
 
-Diese Beta ist als installierbare Progressive Web App (PWA) umgesetzt und auf Smartphone-Bedienung optimiert.
+Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit einer klaren, stilisierten Warcraft-artigen Lesbarkeit.
+
+**Aktuelle Beta-Version:** v0.10.3  
+**Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
 
 ## Aktueller Entwicklungsstand
 
-### UI / UX Design-System v1
-- erstes appweites Design-System als Grundlage für die weitere visuelle Konsolidierung
-- globaler Header deutlich kompakter: Screenname und Zweck stehen jetzt im Fokus statt des permanent großen App-Titels
-- Level, Gold und Abenteuerlust werden als kleine Ressourcen-Chips dargestellt
-- einheitlichere Abstände, Radien, Oberflächen und Buttonformen
-- weniger Schatten und visuelles „Karten-in-Karten“-Rauschen
-- Hauptinhalte erhalten mehr Platz auf kleinen Smartphone-Displays
-- bestehende fünfteilige symmetrische Fußnavigation bleibt erhalten
-- Farben werden stärker semantisch verwendet: Violett für primäre Aktionen, Gold für Wert/Belohnung, Grün für Erfolg und Rot für Gefahr
-
-### Custom UI Icons v1
-- eigene WebP-Icons ersetzen schrittweise die bisherigen Emoji-Symbole
-- Taverne, Katakomben und Held besitzen bereits eigene optimierte Assets unter `assets/icons/`
-- dieselben Bereichsicons werden konsistent in Fußleiste und Kopfzeile verwendet
-- Navigationsicons sind größer und vertikal höher positioniert, damit sie auf Smartphones klarer wirken
-- die Fußleiste berücksichtigt zusätzlichen unteren Safe-Area-Abstand; Beschriftungen stehen sichtbar oberhalb des Browser-/Systemrands
-- der Held bleibt zentral hervorgehoben, verwendet aber keinen zusätzlichen violetten Kreis mehr; das freigestellte Held-Motiv steht direkt über der Navigation
-- aktive Bereiche erhalten einen dezenten Glow statt zusätzlicher schwerer Rahmen
-
-### Arena UX v3
-- Arena folgt nun derselben mobilen Designsprache wie Held, Taverne, Katakomben und Stadt
-- Liga, Ruhm und Ruhmesmünzen werden in einer kompakten Rangübersicht gebündelt
-- Fortschritt bis zur nächsten Liga wird über eine eigene Fortschrittsleiste sichtbar
-- Kampfhaltungen besitzen größere Touchflächen und klarere Beschreibungen
-- die aktuell gewählte Haltung ist visuell deutlich markiert
-- Gegnerkarten zeigen Name, Klasse, Level, Kampfstärke, Schwierigkeit und Belohnung in einer klaren Hierarchie
-- die Gegnerwahl kommuniziert deutlicher, dass höheres Risiko mehr Ruhm und Münzen bringt
-- automatische Arena-Kämpfe stellen die beiden Lebensbalken stärker in den Mittelpunkt
-- Kampfprotokoll und Ergebnisansicht verwenden größere, mobil lesbare Schrift
-- auf Smartphones werden Haltung und Gegnerinformationen einspaltig bzw. platzsparend angeordnet
-
-### Stadt UX v3
-- Stadt, Händler, Bank und Ahnen-Schmiede verwenden nun dieselbe visuelle Hierarchie
-- die Stadt ist als zentraler Hub aufgebaut und zeigt Händler, Schmiede und Bank als große, gut lesbare Gebäudezeilen
-- Stadtübersicht zeigt Gold und aktuelle Rucksackbelegung kompakt an
-- Unterbereiche verwenden eine einheitliche Breadcrumb-Navigation zurück zur Stadt statt unterschiedlicher Zurück-Buttons
-- Händler- und Bank-Tabs besitzen größere mobile Touchflächen und besser lesbare Schrift
-- Händleritems zeigen Name, Item-Level, Slot, Macht, Stats, Preis und Aktion in einer einheitlichen Listenstruktur
-- Bankitems verwenden dieselbe Itemdarstellung wie der Händler
-- auf kleinen Smartphones rutschen Kauf-, Verkaufs-, Einlagerungs- und Entnahmeaktionen unter die Iteminformationen, damit keine schmalen Textspalten entstehen
-- Schmiede verwendet dieselbe visuelle Sprache wie Händler und Bank
-- Schmiedeitems werden mobil als einspaltige Liste statt kleiner zweispaltiger Karten dargestellt
-- Aufwertungskosten, Erfolgschance, Auto-Verwerten und Ahnenwerk wurden für Smartphone-Lesbarkeit vergrößert
-- Freischaltstufen und gesperrte Gebäude bleiben klar sichtbar
-
-### Taverne & Quests UX v3
-- Taverne ist jetzt konsequent auf Abenteuerlust, aktive Quest und Quest-Auswahl fokussiert
-- geschlossene Questkarten zeigen nur die entscheidungsrelevanten Informationen: Name, Typ, Kurzbeschreibung, Dauer, AL-Kosten und Belohnung
-- Questdetails werden erst durch Antippen aufgeklappt; der Start erfolgt anschließend direkt innerhalb derselben Karte
-- Risiko-/Auftragstypen werden über kompakte Status-Chips unterschieden
-- Knochenhauer ist visuell als besonders gefährliches Premium-Kopfgeld hervorgehoben
-- Knochenwache ist standardmäßig geschlossen und wird wie die übrigen Aufträge erst durch Antippen geöffnet
-- es kann immer nur eine Questkarte gleichzeitig geöffnet sein; Knochenwache und normale Quests schließen sich gegenseitig
-- aktive Quests stellen Restzeit und Fortschritt deutlich stärker in den Mittelpunkt
-- Ereignisentscheidungen und Wahrscheinlichkeiten wurden für Smartphone-Lesbarkeit vergrößert
-- wichtige Questtexte verwenden keine extrem kleinen 6–9-px-Schriften mehr
-- Abenteuerlust wird weiterhin erst beim tatsächlichen Start eines Auftrags abgezogen
-
-### Katakomben UX v3
-- Katakomben sind während eines Runs stärker als eigener Spielmodus dargestellt
-- neue kompakte, während des Runs sichtbare Statusleiste mit Raumfortschritt, aktuellen HP und ungesicherter Beute
-- Gold, XP und gefundene Items werden in einer einzigen Run-Zusammenfassung gebündelt
-- doppelte bzw. konkurrierende Beute- und Risiko-Boxen werden im neuen Layout ausgeblendet
-- Raumfortschritt bleibt sichtbar; auf Smartphones werden die 10 Räume platzsparend in zwei Reihen dargestellt
-- der aktuelle Raum bzw. Kampf steht visuell im Mittelpunkt
-- Kampfprotokoll, Gegnerinformationen und Ereignisentscheidungen verwenden größere mobile Schrift
-- „Beute sichern & raus“ erscheint ab den tieferen Räumen als kompakte Risikoentscheidung am Ende des aktuellen Inhalts
-- bei Niederlage bleibt die bestehende Regel erhalten: ungesicherte Dungeon-Beute geht verloren
-
-### Held-Screen UX v3
-- der Held-Screen ist jetzt ein kompaktes Dashboard statt einer langen untereinander gestapelten Seite
-- oben bleiben Charaktername, Level, Volk, Klasse sowie HP, Schaden und Rüstung ständig sichtbar
-- STR, AGI, INT, Krit, Ausweichen und Block werden in einer kompakten Stat-Zeile dargestellt
-- drei interne Bereiche reduzieren Scrollen deutlich: **Ausrüstung · Skills · Inventar**
-- Ausrüstung zeigt nur die 11 kompakten Slot-Icons; Itemdetails öffnen sich erst nach Antippen
-- Skills besitzen einen eigenen Bereich mit der aktiven 4-Slot-Rotation
-- Inventar verwendet eine kompakte Listenansicht mit Seltenheitsrahmen, Item-Level, Macht, Stats und ▲ / = / ▼ Vergleich
-
-### Navigation & Mobile UI
-- fünf symmetrische Hauptbereiche in der Fußleiste: Taverne, Katakomben, Held, Stadt und Arena
-- Held sitzt exakt zentral und bleibt als größerer Hauptfokus hervorgehoben
-- die Schmiede wurde aus der Fußleiste entfernt und in die Stadt integriert
-- Stadt dient als eigener Hub für Händler, Ahnen-Schmiede, Bank und spätere Verwaltungsfunktionen
-
-### Stadt v2
-- kompakte Gebäudeübersicht
-- Händler ab Stufe 3
-- Ahnen-Schmiede ab Stufe 5
-- Bank ab Stufe 10
-- gesperrte Gebäude zeigen ihre Freischaltstufe direkt an
+### Kern-Loop
+- Charakter erstellen und über Quests, Katakomben und Arena entwickeln
+- Gold, XP, Ausrüstung und Schmiederessourcen verdienen
+- Ausrüstung und Skillrotation optimieren
+- Stadt als Hub für Händler, Ahnen-Schmiede und Bank
+- fünf mobile Hauptbereiche: **Taverne · Katakomben · Held · Stadt · Arena**
 
 ### Charakter
 - Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
 - dynamische Heldengeschichte und Charakterzusammenfassung
 - Charakterwerte und Ausrüstung beeinflussen Proben und Kämpfe
+- lokale persistente Spielstände mit Recovery-/Backup-Mechanismen
 
-### Skill-System v1
-- basiert auf dem GDD-Prinzip einer vor dem Kampf festgelegten Rotation aus 3–4 Skills
-- im Held-Screen stehen vier aktive Skill-Slots in der Reihenfolge 1 → 2 → 3 → 4 zur Verfügung
-- jede der sechs Klassen besitzt für die Beta sechs eigene Fertigkeiten
+### Held & Ausrüstung
+Der Held-Screen ist als kompaktes mobiles Dashboard mit den Bereichen **Ausrüstung · Skills · Inventar** aufgebaut.
+
+Aktuell gibt es **9 aktive Ausrüstungsslots**:
+- linke Rüstungsseite: Kopf, Schulter, Brust, Beine, Stiefel
+- Accessoires: Amulett, Ring
+- Waffen unter dem Helden: Haupthand, Zweithand
+
+Bewusst entfernt wurden:
+- Ring 2
+- Gürtel
+- Handschuhe
+
+Alte Saves werden auf die aktuelle Slot-Struktur migriert. Nicht mehr verwendete ausgerüstete Gegenstände werden dabei möglichst verlustfrei ins Inventar überführt.
+
+Weitere Held-Systeme:
+- kompakte Anzeige von STR, AGI, INT, Krit, Ausweichen und Block
+- Itemdetails erst nach Auswahl
+- Itemvergleich im Inventar
+- reload-sichere Synchronisierung des aktuellen Equipment-Layouts und der Itemgrafiken
+
+### Item-, Loot- & Build-System
+- Item-Level entsprechend dem Charakterlevel beim Fund
+- Seltenheit, Item-Level, Schmiedestufe und Roll-Qualität beeinflussen die Stärke
+- variable Affixe und unterschiedliche Roll-Stärken erzeugen Item-Varianz
+- hochwertige Gegenstände können mehrere Affixe besitzen
+- Itemvergleich zeigt Verbesserungen bzw. Verschlechterungen gegenüber der aktuellen Ausrüstung
+
+Vier Build-Affinitäten erzeugen zusätzliche Ausrüstungsidentität:
+- **Bollwerk** – Rüstung, Block und Überleben
+- **Schatten** – AGI, Ausweichen und kritische Treffer
+- **Arkan** – INT, Krit und Burst
+- **Blutklinge** – STR, direkter Schaden und Krit
+
+Bei 2 bzw. 4 ausgerüsteten Teilen einer Affinität werden Resonanzboni aktiv.
+
+Mythische und legendäre Gegenstände können zusätzliche Keystone-Eigenschaften besitzen, die Kampfregeln verändern statt ausschließlich numerische Stats zu erhöhen.
+
+### Skill-System
+- vor dem Kampf festgelegte Rotation aus bis zu vier Skills
+- jede der sechs Klassen besitzt eigene Fertigkeiten
 - Skillrotation wird in automatischen Arena- und Katakomben-Kämpfen verwendet
-- der Knochenhauer bleibt weiterhin manuell
+- der Knochenhauer bleibt als stärker manuell geprägter Kampf erhalten
 
-### Quests & Kampf
+### Taverne & Quests
 - Standard-, Ereignis-, Kopfgeld- und Risikoquests
-- kurzer automatischer Miniboss „Knochenwache“
-- „Der Knochenhauer“ als teuerstes Premium-Kopfgeld mit vollständig manuellem Kampf
+- kompakte Questkarten mit Details auf Abruf
+- Abenteuerlust wird beim tatsächlichen Start eines Auftrags abgezogen
+- automatischer Miniboss **Knochenwache**
+- **Der Knochenhauer** als Premium-Kopfgeld mit manuellem Kampf
+- Questbelohnungen verwenden die aktuelle Loot-/Itemdarstellung ohne doppelte Legacy-Itemanzeige
 
-### Dungeons – Katakomben v2
-- 10 aufeinanderfolgende Räume mit Ereignissen, Kämpfen, Schrein, Schatzkammer, Elite und Endboss
-- Dungeon-Kämpfe laufen automatisch
-- sichtbare Lebensbalken und Kampfprotokoll
+### Katakomben
+- 10 aufeinanderfolgende Räume
+- Ereignisse, Kämpfe, Schrein, Schatzkammer, Elite und Endboss
+- automatische Dungeon-Kämpfe mit HP-Balken und Kampfprotokoll
 - ungesicherte Beute und freiwilliger Ausstieg als Risiko-/Belohnungssystem
+- während eines aktiven Kampfes kann der Run nicht verlassen werden, um Niederlagen zu umgehen
 - Endboss mit Phasenschild und Enrage
+- kompakter mobiler Header und Run-Status, um möglichst viel Gameplay ohne Scrollen sichtbar zu halten
+- selbstheilende Auto-Combat-Sperre gegen festhängende Kämpfe nach Reload/Unterbrechung
 
-### Loot, Inventar & Ausrüstung
-- feste Item-Level entsprechend dem Charakterlevel beim Fund
-- Item-Level, Seltenheit und Schmiedestufe bestimmen gemeinsam die Gegenstandsstärke
-- ▲ / = / ▼ zeigen Vergleiche mit aktuell ausgerüsteten Items
-- Legendär kann nicht regulär droppen
-
-### Ahnen-Schmiede v2
-- Freischaltung ab Stufe 5 gemäß GDD
-- Aufwerten +1 bis +10 mit exponentiell steigenden Kosten
-- Stufen +7 bis +10 benötigen zusätzlich Schmiede-Essenz
-- Ergebnis-Popup zeigt nach erfolgreicher Aufwertung die konkret verbesserten Stats
-- Verwerten in Staub und Essenz
-- Ahnenwerk zeigt das spätere Legendär-Rezept
-
-### Arena v2
-- drei Gegner: Einfach, Ebenbürtig und Herausforderer
-- Aggressiv, Defensiv und Konter als Kampfhaltungen gemäß GDD
+### Arena 2.0
+- drei Schwierigkeitsstufen bei der Gegnerwahl
+- Kampfhaltungen: Aggressiv, Defensiv und Konter
 - automatische Kämpfe mit HP-Balken und Kampfprotokoll
-- Ruhm, Ruhmesmünzen und Liga-Progression Bronze → Silber → Gold → Platin → Legende
+- Ruhm, Ruhmesmünzen und Liga-Progression von Bronze bis Legende
 
-### Händler v1
-- gemäß GDD ab Stufe 3 freigeschaltet
-- Händler bietet sechs levelskalierte Ausrüstungsgegenstände an
-- Gegenstände können direkt aus dem Rucksack verkauft werden
+Arena-Gegner besitzen zusätzlich Build-Archetypen:
+- **Bollwerk** – wird bevorzugt aggressiv gekontert
+- **Schatten** – Hinterhalt; Konter ist besonders effektiv
+- **Arkan** – hoher Burst; Defensive reduziert die Gefahr
+- **Blutklinge** – Raserei bei niedrigen HP; Defensive schwächt den Enrage
 
-### Bank v1
-- gemäß GDD ab Stufe 10 freigeschaltet
+Die Arena zeigt Archetyp, Verhalten und empfohlenen Konter vor dem Kampf.
+
+### Stadt
+Die Stadt ist der zentrale Verwaltungs-Hub:
+- Händler ab Stufe 3
+- Ahnen-Schmiede ab Stufe 5
+- Bank ab Stufe 10
+- gesperrte Gebäude zeigen ihre Freischaltstufe
+- einheitliche Breadcrumb-/Zurücknavigation in den Unterbereichen
+
+### Händler
+- levelskalierte Ausrüstungsangebote
+- Gegenstände können aus dem Inventar verkauft werden
+- mobile Listenansicht mit Itemwerten, Preis und Aktionen
+
+### Bank
 - 100 feste Tresorplätze
 - Gegenstände können zwischen Rucksack und Bank verschoben werden
+- Darstellung folgt dem gemeinsamen Item-UI
 
-### Technische Bereinigung
-- veraltete Kopfgeld-Kampfversionen v1–v3 entfernt
-- `character-profile.js`, `city-nav-fix-v1.js`, `auto-combat-v1.js` und `mobile-nav-v2.js` entfernt
-- weitere Patch-Module bleiben vorerst bestehen, solange sie noch aktive Spiellogik liefern
+### Ahnen-Schmiede
+Die Schmiede besitzt aktuell mehrere Progressionspfade:
+- Aufwerten von +1 bis +10
+- exponentiell steigende Kosten
+- höhere Stufen benötigen zusätzliche Schmiede-Essenz
+- Verwerten in Staub und Essenz
+- Ahnenwerk / Legendär-Progression
+- **Veredeln** für das Affix-System
 
-### Weitere vorhandene Beta-Systeme
-- XP, Leveling und Gold
-- Feature-Gating gemäß GDD
-- lokaler Spielstand via localStorage
+Beim Veredeln können:
+- Affixe neu gewürfelt werden
+- einzelne Affixe gesperrt werden
+- Roll-Qualitäten gezielt bis 100 % verbessert werden
 
-## Android
+Die Affix-Neuberechnung entfernt alte Affix-Beiträge vor dem Neuaufbau, damit wiederholtes Veredeln keine Stats mehrfach aufaddiert.
 
-**Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
+### UI / UX
+- appweites mobiles Design-System
+- kompakte Header und größere nutzbare Spielfläche
+- fünfteilige symmetrische Fußnavigation
+- semantische Farbverwendung für Aktion, Belohnung, Erfolg und Gefahr
+- reduzierte Kartenverschachtelung und Schatten
+- Smartphone-Safe-Areas werden berücksichtigt
+- wichtige Spielinformationen verwenden mobil lesbare Schriftgrößen
 
-Die Beta läuft aktuell als PWA über GitHub Pages.
+### Eigene Grafiken & Icons
+Die UI wird schrittweise vollständig von Emoji-/Legacy-Platzhaltern auf eigene Dark-Arcane-Fantasy-Assets umgestellt.
+
+Unter anderem vorhanden bzw. integriert:
+- eigene Navigation-/Bereichsicons
+- Katakomben-Raum- und Gegnergrafiken
+- Itemgrafiken
+- Charakter-/Heldengrafiken
+- Kampfhaltungen unter `assets/icons/ui`
+- Auswahlicons für Kraft/Kampf, Geschick und Wissen
+- Arena-Challenger-Artworks für die Build-Archetypen
+- Stadt-, Händler-, Bank-, Schmiede-, Ressourcen- und Stat-Icons
+
+Alte Runtime-Verweise auf ersetzte Haltungs- und Entscheidungsicons wurden entfernt. Die Asset-Synchronisierung wird auch nach einem direkten Reload der Heldenseite erneut ausgeführt.
+
+### Beta, PWA & Cache-Verhalten
+- installierbare PWA über GitHub Pages
+- Code und Bilder werden während der Beta bevorzugt network-first geladen
+- Versions-/Cache-Bumps dienen dazu, alte Runtime-Assets nach Deployments zu verwerfen
+- Updates werden so behandelt, dass aktive Spielsitzungen möglichst nicht durch einen Asset-Wechsel beschädigt werden
+- Beta-Grafiken können gezielt aktualisiert werden
+- Reset-/Recovery-Code wird früh im Bootprozess geladen
+
+Der Beta-Reset ist dafür vorgesehen, lokalen Spielstand, Backups und Session-Daten zu entfernen und anschließend wieder die Charaktererstellung zu öffnen. Dieser Bereich wurde zuletzt mehrfach gegen Browser-/Boot-Race-Conditions gehärtet und bleibt ein besonders zu testender Beta-Pfad.
+
+### Technische Architektur / Konsolidierung
+Das Projekt ist historisch aus mehreren Runtime-/Patch-Modulen gewachsen. Die technische Konsolidierung läuft aktiv weiter.
+
+Zuletzt wurden unter anderem:
+- zentrale Render- und Navigation-Authority gestärkt
+- Boot-Reihenfolgen deterministischer gemacht
+- alte Merchant-/Bank-Render-Wrapper entfernt
+- obsolete Dungeon-Render-/Tab-Wrapper entfernt
+- obsolete Forge-Render-Wrapper entfernt
+- ältere Kopfgeld- und Navigationsmodule entfernt
+
+Ziel ist, schrittweise weniger konkurrierende Runtime-Wrapper zu besitzen und zentrale Systeme als eindeutige Source of Truth zu verwenden.
+
+## Beta-Schwerpunkte
+Besonders wichtig für aktuelle Tests sind:
+- Reset → neue Charaktererstellung
+- Katakomben-Autokampf über längere Runs und nach Reloads
+- Equipment-Migration älterer Saves
+- Schmiede-Veredelung und Affix-Neuberechnung
+- aktuelle Grafiken nach Deployment/Reload
+- Arena-Build-Matchups und Haltungskonter
+
+## Plattform
+Die aktuelle Beta läuft als mobile PWA über GitHub Pages und ist primär für Smartphone-Bedienung optimiert.
 
 ## Entwicklungsregel
-
-Nach neuen spielbaren Features oder relevanten Änderungen wird diese README aktualisiert.
+Nach neuen spielbaren Features, Änderungen an Kernsystemen oder relevanten technischen Änderungen wird diese README mit dem tatsächlichen Stand von `main` abgeglichen.
