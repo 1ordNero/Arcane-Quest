@@ -36,6 +36,7 @@ function legacyScreenHtml(){
   if(screen==='home'&&typeof home==='function')return home();
   if(screen==='char'&&typeof char==='function')return char();
   if(screen==='inv'&&typeof inv==='function')return inv();
+  if(screen==='dungeon'&&typeof dungeonV1==='function')return dungeonV1();
   if(screen==='city'&&typeof cityView==='function')return cityView();
   if(screen==='merchant'&&typeof merchantView==='function')return merchantView();
   if(screen==='bank'&&typeof bankView==='function')return bankView();
@@ -97,6 +98,7 @@ function installRenderLifecycle(){
   };
   Object.defineProperty(wrapped,'__arcaneLifecycle',{value:true});
   window.render=wrapped;
+  root.lifecycle.renderFunction=wrapped;
   root.lifecycle.renderInstalled=true;
   return true;
 }
@@ -135,7 +137,13 @@ function installNavigation(){
   window.tab=navigate;
 }
 
-root.version='core-v8';
+function reclaimRuntime(){
+  if(typeof root.lifecycle?.renderFunction==='function')window.render=root.lifecycle.renderFunction;
+  if(typeof root.navigation?.go==='function')window.tab=root.navigation.go;
+  return typeof window.render==='function'&&typeof window.tab==='function';
+}
+
+root.version='core-v9';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
@@ -143,6 +151,7 @@ root.state.get=getState;
 root.state.screen=getScreen;
 root.lifecycle=root.lifecycle||{};
 root.lifecycle.installRender=installRenderLifecycle;
+root.lifecycle.reclaim=reclaimRuntime;
 installShell();
 installRenderLifecycle();
 installNavigation();
@@ -159,6 +168,8 @@ root.diagnostics.snapshot=()=>({
   hasRender:typeof window.render==='function',
   hasSave:typeof window.save==='function',
   renderLifecycle:!!root.lifecycle.renderInstalled,
+  renderAuthority:window.render===root.lifecycle.renderFunction,
+  navigationAuthority:window.tab===root.navigation?.go,
   shell:!!root.shell?.render,
   navigation:!!root.navigation?.go,
   navigationGuards:navigationGuards.size,
