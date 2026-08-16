@@ -38,14 +38,13 @@ function compactArena(){
  }
 }
 function compact(){compactDungeon();compactCity();compactArena()}
-let scheduled=false;
-function scheduleCompact(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;compact()})}
-new MutationObserver(scheduleCompact).observe(document.documentElement,{childList:true,subtree:true});
+window.Arcane?.on?.('afterRenderSettled',compact);
+window.Arcane?.on?.('bootReady',compact);
 const css=document.createElement('style');css.textContent=`
 /* Shared compact content rhythm */
 main{padding-top:12px!important}.compact-dungeon-entry{padding:16px!important;border-radius:16px!important}.compact-dungeon-title{display:flex;align-items:center;gap:11px}.compact-dungeon-title>span{font-size:32px}.compact-dungeon-title h1{font-size:22px!important;margin:0!important}.compact-dungeon-title p{font-size:12px;margin:3px 0 0;color:var(--muted)}.compact-dungeon-action{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}.compact-dungeon-action>span{font-size:11px;color:var(--muted)}.compact-dungeon-action button{min-height:44px!important;padding:9px 14px!important;font-size:13px!important}.d-beta-back{display:none!important}
 .compact-city-status{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;padding:4px 2px}.compact-city-status>b{font-size:21px}.compact-city-status>span{font-size:11px;color:var(--muted);background:#ffffff07;padding:6px 9px;border-radius:999px}.cv2-grid{margin-top:0!important}.cux-building{min-height:70px!important;padding:10px 12px!important}.cux-building small{line-height:1.25!important}.cux-building .cux-unlock{margin-top:2px!important}
 .compact-arena-rank{margin:0 0 10px!important;padding:10px 12px!important;border-radius:13px!important;background:#ffffff06}.compact-section{margin:12px 2px 6px!important;display:block!important}.compact-section h2{font-size:18px!important;margin:0!important}.arena-stamina{margin:0 0 10px!important;padding:9px 11px!important}.arena-stamina.compact-exhausted{padding:10px 11px!important}.disabled-stances{opacity:.45;pointer-events:none}.av2-stances button{min-height:54px!important}.av2-stances{gap:6px!important}
 .compact-dungeon-action{align-items:stretch;flex-direction:column}.compact-dungeon-action button{width:100%}
-`;document.head.appendChild(css);scheduleCompact();
+`;document.head.appendChild(css);compact();
 })();
