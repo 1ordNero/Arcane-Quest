@@ -31,6 +31,41 @@ function getState(){
 
 function getScreen(){return getState()?.screen??null}
 
+function legacyScreenHtml(){
+  const screen=getScreen();
+  if(screen==='home'&&typeof home==='function')return home();
+  if(screen==='char'&&typeof char==='function')return char();
+  if(screen==='inv'&&typeof inv==='function')return inv();
+  if(screen==='forge'&&typeof forgeView==='function')return forgeView();
+  if(screen==='arena'&&typeof arena==='function')return arena();
+  if(screen==='combat'&&typeof combat==='function')return combat();
+  return typeof home==='function'?home():'';
+}
+
+function legacyFooterHtml(){
+  const state=getState();
+  if(!state)return'';
+  return [['home','🍺','Taverne'],['char','🧙','Held'],['inv','🎒','Rucksack'],['forge','🔨','Schmiede'],['arena','⚔️','Arena']]
+    .map(x=>`<button class="${state.screen===x[0]?'active':''}" onclick="tab('${x[0]}')">${x[1]}<br>${x[2]}</button>`)
+    .join('');
+}
+
+function renderShell(){
+  const state=getState();
+  const app=document.getElementById('app');
+  if(!state||!app)return;
+  if(typeof save==='function')save();
+  app.innerHTML=`<header><div class="top"><div class="brand">🍺 Arcane Tavern & Quest <span class="small">BETA</span></div><div class="stats"><span class="pill">Lv ${state.lvl}</span><span class="pill gold">🪙 ${state.gold}</span><span class="pill">⚡ ${state.al}/${state.maxAl}</span><span class="pill">🜂 ${state.souls}</span></div></div></header><main>${legacyScreenHtml()}</main><nav class="tabs">${legacyFooterHtml()}</nav>`;
+}
+
+function installShell(){
+  root.shell=root.shell||{};
+  root.shell.render=renderShell;
+  root.shell.screenHtml=legacyScreenHtml;
+  root.shell.footerHtml=legacyFooterHtml;
+  window.render=renderShell;
+}
+
 function installRenderLifecycle(){
   if(root.lifecycle?.renderInstalled)return true;
   const base=window.render;
@@ -77,7 +112,7 @@ function installNavigation(){
   window.tab=navigate;
 }
 
-root.version='core-v5';
+root.version='core-v6';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
@@ -85,6 +120,7 @@ root.state.get=getState;
 root.state.screen=getScreen;
 root.lifecycle=root.lifecycle||{};
 root.lifecycle.installRender=installRenderLifecycle;
+installShell();
 installRenderLifecycle();
 installNavigation();
 
@@ -100,6 +136,7 @@ root.diagnostics.snapshot=()=>({
   hasRender:typeof window.render==='function',
   hasSave:typeof window.save==='function',
   renderLifecycle:!!root.lifecycle.renderInstalled,
+  shell:!!root.shell?.render,
   navigation:!!root.navigation?.go,
   hookCounts:Object.fromEntries(hookNames.map(name=>[name,hooks[name].size]))
 });
