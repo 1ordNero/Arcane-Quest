@@ -50,7 +50,7 @@ function installRenderLifecycle(){
     emit('afterRender',{state:getState(),screen:afterScreen,result});
     if(!settledPending){
       settledPending=true;
-      queueMicrotask(()=>{
+      requestAnimationFrame(()=>{
         settledPending=false;
         emit('afterRenderSettled',{state:getState(),screen:getScreen()});
       });
@@ -63,7 +63,7 @@ function installRenderLifecycle(){
   return true;
 }
 
-root.version='core-v3';
+root.version='core-v4';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
