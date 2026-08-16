@@ -56,9 +56,26 @@ function persist(){
 }
 function restoreBackup(){const b=storage?.read?storage.read(BACKUP_KEY):parse(localStorage.getItem(BACKUP_KEY));if(!b)return false;normalize(b);const ok=storage?.writeObject?storage.writeObject(b,{backup:false}):(()=>{try{localStorage.setItem(SAVE_KEY,JSON.stringify(b));return true}catch{return false}})();if(ok)location.reload();return ok}
 function exportSave(){normalize(S);return JSON.stringify(S)}
+function installCharacterCommit(){
+ if(typeof window.cgConfirmHero!=='function'||typeof window.getCharacterDraft!=='function')return;
+ const classes=new Set(['Krieger','Magier','Hexenmeister','Druide']);
+ const stories=new Set(['Tavernen-Stammgast','Gefallener Adeliger','Runenschmied-Lehrling','Schatten-Ausreißer']);
+ window.cgConfirmHero=function(){
+  const d=window.getCharacterDraft?.()||{};
+  const name=String(d.name||'').trim().slice(0,24);
+  if(!name)return alert('Bitte gib deinem Helden einen Namen.');
+  const chosen={name,race:'Mensch',gender:d.gender==='female'?'female':'male',cls:classes.has(d.cls)?d.cls:'Krieger',bg:stories.has(d.bg)?d.bg:'Tavernen-Stammgast',screen:'home'};
+  Object.assign(S,chosen);
+  if(!persist())return alert('Der Spielstand konnte nicht gespeichert werden. Bitte versuche es erneut.');
+  try{localStorage.setItem(storage?.keys?.created||'arcaneCharacterCreated','1')}catch(err){console.error('[Arcane Save] character flag failed',err);return alert('Der Charakter konnte nicht abgeschlossen werden. Bitte versuche es erneut.')}
+  document.getElementById('character-gate')?.remove();
+  location.reload();
+ };
+}
 normalize(S);
 window.ARCANE_STATE={key:SAVE_KEY,backupKey:BACKUP_KEY,version:VERSION,normalize,migrate,persist,restoreBackup,exportSave};
 window.save=persist;
+installCharacterCommit();
 window.addEventListener('pagehide',persist);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persist()});
 })();
