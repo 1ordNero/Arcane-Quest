@@ -36,6 +36,9 @@ function legacyScreenHtml(){
   if(screen==='home'&&typeof home==='function')return home();
   if(screen==='char'&&typeof char==='function')return char();
   if(screen==='inv'&&typeof inv==='function')return inv();
+  if(screen==='city'&&typeof cityView==='function')return cityView();
+  if(screen==='merchant'&&typeof merchantView==='function')return merchantView();
+  if(screen==='bank'&&typeof bankView==='function')return bankView();
   if(screen==='forge'&&typeof forgeView==='function')return forgeView();
   if(screen==='arena'&&typeof arena==='function')return arena();
   if(screen==='combat'&&typeof combat==='function')return combat();
@@ -132,7 +135,7 @@ function installNavigation(){
   window.tab=navigate;
 }
 
-root.version='core-v7';
+root.version='core-v8';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
