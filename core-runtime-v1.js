@@ -31,12 +31,44 @@ function getState(){
 
 function getScreen(){return getState()?.screen??null}
 
-root.version='core-v1';
+function installRenderLifecycle(){
+  if(root.lifecycle?.renderInstalled)return true;
+  const base=window.render;
+  if(typeof base!=='function')return false;
+  let lastScreen=getScreen();
+  const wrapped=function(){
+    const beforeScreen=getScreen();
+    emit('beforeRender',{state:getState(),screen:beforeScreen,args:[...arguments]});
+    const result=base.apply(this,arguments);
+    const afterScreen=getScreen();
+    if(afterScreen!==lastScreen){
+      const previous=lastScreen;
+      lastScreen=afterScreen;
+      emit('screenChange',{state:getState(),screen:afterScreen,previous});
+    }
+    emit('afterRender',{state:getState(),screen:afterScreen,result});
+    return result;
+  };
+  Object.defineProperty(wrapped,'__arcaneLifecycle',{value:true});
+  window.render=wrapped;
+  root.lifecycle.renderInstalled=true;
+  return true;
+}
+
+root.version='core-v2';
 root.on=on;
 root.emit=emit;
 root.state=root.state||{};
 root.state.get=getState;
 root.state.screen=getScreen;
+root.lifecycle=root.lifecycle||{};
+root.lifecycle.installRender=installRenderLifecycle;
+installRenderLifecycle();
+
+const boot=()=>emit('bootReady',{state:getState(),screen:getScreen()});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
+else queueMicrotask(boot);
+
 root.diagnostics=root.diagnostics||{};
 root.diagnostics.snapshot=()=>({
   core:root.version,
@@ -44,6 +76,7 @@ root.diagnostics.snapshot=()=>({
   hasState:!!getState(),
   hasRender:typeof window.render==='function',
   hasSave:typeof window.save==='function',
+  renderLifecycle:!!root.lifecycle.renderInstalled,
   hookCounts:Object.fromEntries(hookNames.map(name=>[name,hooks[name].size]))
 });
 })();
