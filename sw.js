@@ -1,4 +1,4 @@
-const CACHE='arcane-quest-shell-v6';
+const CACHE='arcane-quest-shell-v7';
 const SHELL=['./','./index.html','./manifest.webmanifest'];
 const isCode=url=>/\.(?:js|css|html|webmanifest)$/i.test(url.pathname);
 const isImage=url=>/\.(?:webp|png|jpe?g|gif|svg)$/i.test(url.pathname);
@@ -11,8 +11,6 @@ self.addEventListener('fetch',event=>{
  const req=event.request;if(req.method!=='GET')return;
  const url=new URL(req.url);if(url.origin!==self.location.origin)return;
  if(req.mode==='navigate'){event.respondWith(networkFirst(req,'./index.html'));return}
- // Beta policy: code AND images are network-first. This prevents an old artwork
- // from being rendered once before stale-while-revalidate refreshes the cache.
  if(isCode(url)||isImage(url)){event.respondWith(networkFirst(req));return}
  event.respondWith(networkFirst(req));
 });
