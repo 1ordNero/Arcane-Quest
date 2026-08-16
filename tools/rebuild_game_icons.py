@@ -6,8 +6,10 @@ SRC = Path('assets/icons/game')
 DST = Path('assets/icons/game-v2')
 CANVAS = 512
 MARGIN = 18  # ~3.5% per side: artwork reaches almost to the edge.
+# UI choices, arena stances, arena challengers, city locations and common resources
+# now live in assets/icons/ui and must not be regenerated from the retired game set.
 FILES = [
-'dungeon_portal.webp','combat_crossed_swords.webp','sealed_niche.webp','shadow_beast.webp','grave_knight.webp','arcane_shrine.webp','archive_scroll.webp','crypt_weaver.webp','dungeon_boss.webp','quest_raid.webp','quest_event.webp','quest_bounty.webp','skull_danger.webp','decision_strength.webp','decision_agility.webp','decision_knowledge.webp','city_merchant.webp','city_ancestral_forge.webp','city_bank.webp','city_trainer.webp','stance_aggressive.webp','stance_defensive.webp','stance_counter.webp','class_warrior.webp','class_mage.webp','class_ranger.webp','class_dark.webp','resource_gold.webp','resource_xp.webp','resource_energy.webp','resource_hp.webp','resource_essence.webp'
+'dungeon_portal.webp','combat_crossed_swords.webp','sealed_niche.webp','shadow_beast.webp','grave_knight.webp','arcane_shrine.webp','archive_scroll.webp','crypt_weaver.webp','dungeon_boss.webp','quest_raid.webp','quest_event.webp','quest_bounty.webp','skull_danger.webp','city_trainer.webp','class_warrior.webp','class_mage.webp','class_ranger.webp','class_dark.webp','resource_essence.webp'
 ]
 
 def border_pixels(rgb):
@@ -22,30 +24,20 @@ def remove_baked_background(im):
     rgba = np.array(im.convert('RGBA')).astype(np.float32)
     rgb = rgba[..., :3]
     alpha = rgba[..., 3] / 255.0
-
-    # If the source already has meaningful transparency, preserve it and only clean fringes.
     if np.percentile(alpha, 10) < 0.98:
         a = np.clip((alpha - 0.015) / 0.985, 0, 1)
     else:
         border = border_pixels(rgb)
-        # Robust background estimate from edge median. Also keep corner samples so gradients are handled.
         bg = np.median(border, axis=0)
         corners = np.array([rgb[0,0], rgb[0,-1], rgb[-1,0], rgb[-1,-1], bg], dtype=np.float32)
         d = np.min(np.sqrt(((rgb[...,None,:] - corners[None,None,:,:]) ** 2).sum(axis=3)), axis=2)
-
-        # Turn background similarity into a soft alpha matte; close border colors become fully transparent.
         low, high = 20.0, 72.0
         a = np.clip((d - low) / (high - low), 0, 1)
-
-        # Pixels connected to the image border and visually close to background are background for sure.
         bgmask = (d < 55).astype(np.uint8) * 255
         mask_img = Image.fromarray(bgmask, 'L').filter(ImageFilter.GaussianBlur(radius=1.2))
         bgsoft = np.asarray(mask_img).astype(np.float32) / 255.0
         a *= (1.0 - 0.82 * bgsoft)
-
-        # Remove faint matte residue.
         a = np.clip((a - 0.06) / 0.94, 0, 1)
-
     out = rgba.copy()
     out[..., 3] = a * 255.0
     return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), 'RGBA')
