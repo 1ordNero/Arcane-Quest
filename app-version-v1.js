@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='v0.9.4';
+const VERSION='v0.9.5';
 window.ARCANE_APP_VERSION=VERSION;
 function apply(){
  const top=document.querySelector('header .top')||document.querySelector('header');
