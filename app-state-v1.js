@@ -26,6 +26,7 @@ const DEFAULT_STATE=Object.freeze({
   forgeDust:0,
   essence:0,
   souls:0,
+  reincarnation:{count:0,bestLevel:1,lifetimeSouls:0,lastAt:0},
   keys:0,
   quests:0,
   wins:0,
