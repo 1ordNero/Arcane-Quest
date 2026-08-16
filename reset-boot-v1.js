@@ -1,5 +1,38 @@
 (()=>{
 'use strict';
+const BUILD='v0.11.0';
+window.ARCANE_BUILD=BUILD;
+const NativeImage=window.Image;
+window.__ARCANE_NATIVE_IMAGE=NativeImage;
+const deferredPreloads=window.__ARCANE_DEFERRED_PRELOADS=[];
+let imageGateOpen=false;
+window.Image=function(...args){
+ if(imageGateOpen)return new NativeImage(...args);
+ return {decoding:'async',set src(v){if(v)deferredPreloads.push(String(v))},get src(){return ''}};
+};
+const openImageGate=()=>{if(imageGateOpen)return;imageGateOpen=true;window.Image=NativeImage};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',openImageGate,{once:true});else openImageGate();
+
+function mountLoader(){
+ if(document.getElementById('arcane-boot-loader'))return;
+ const el=document.createElement('div');
+ el.id='arcane-boot-loader';
+ el.innerHTML=`<div class="abl-vignette"></div><div class="abl-core"><div class="abl-seal" aria-hidden="true"><i></i><b>✦</b><i></i></div><div class="abl-title">ARCANE QUEST</div><div class="abl-sub">Das Siegel erwacht …</div><div class="abl-line"><span></span></div><div class="abl-version">${BUILD} · BETA</div></div>`;
+ document.body.appendChild(el);
+ const style=document.createElement('style');style.id='arcane-boot-loader-style';style.textContent=`#arcane-boot-loader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 38%,#2c1940 0,#120d19 36%,#08060b 78%);color:#f7f0e8;transition:opacity .28s ease,visibility .28s ease}#arcane-boot-loader.abl-out{opacity:0;visibility:hidden;pointer-events:none}.abl-vignette{position:absolute;inset:-15%;background:radial-gradient(circle at 50% 48%,#a875ff14 0,transparent 38%),radial-gradient(circle at 50% 55%,transparent 0,#0009 68%);animation:ablMist 4.5s ease-in-out infinite alternate}.abl-core{position:relative;width:min(78vw,360px);text-align:center;padding:24px}.abl-seal{width:108px;height:108px;margin:0 auto 18px;border:1px solid #d6ad644d;border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 36px #8d58c633,inset 0 0 28px #0008;animation:ablPulse 2.1s ease-in-out infinite}.abl-seal:before,.abl-seal:after{content:'';position:absolute;inset:13px;border:1px solid #a875ff55;transform:rotate(45deg)}.abl-seal:after{inset:25px;border-color:#f4c15d44;transform:rotate(22.5deg)}.abl-seal b{font-size:28px;color:#f4c15d;text-shadow:0 0 18px #f4c15d77;z-index:2}.abl-seal i{position:absolute;width:1px;height:132px;background:linear-gradient(transparent,#a875ff55,transparent)}.abl-seal i:first-child{transform:rotate(60deg)}.abl-seal i:last-child{transform:rotate(-60deg)}.abl-title{font-size:21px;font-weight:900;letter-spacing:.18em;text-shadow:0 2px 18px #000}.abl-sub{margin-top:8px;color:#b8a9c4;font-size:11px;letter-spacing:.05em;min-height:16px}.abl-line{height:2px;margin:18px auto 0;width:190px;background:#ffffff10;overflow:hidden;position:relative}.abl-line span{display:block;height:100%;width:38%;background:linear-gradient(90deg,transparent,#a875ff,#f4c15d,transparent);animation:ablLoad 1.15s ease-in-out infinite}.abl-version{margin-top:13px;font-size:8px;color:#756b7e;letter-spacing:.16em}.abl-ready .abl-seal{animation:ablReady .34s ease-out both}.abl-ready .abl-sub{color:#d8c58e}@keyframes ablLoad{0%{transform:translateX(-120%)}100%{transform:translateX(330%)}}@keyframes ablPulse{50%{transform:scale(1.035);box-shadow:0 0 48px #8d58c64d,inset 0 0 28px #0008}}@keyframes ablMist{to{transform:scale(1.06) translateY(-1%)}}@keyframes ablReady{to{transform:scale(1.08);box-shadow:0 0 64px #f4c15d55,inset 0 0 28px #0008}}@media(prefers-reduced-motion:reduce){.abl-vignette,.abl-seal,.abl-line span{animation:none}}`;
+ document.head.appendChild(style);
+ const sub=el.querySelector('.abl-sub');let contentReady=false,criticalReady=false,closed=false;
+ const started=performance.now();
+ const messages=['Das Siegel erwacht …','Die Taverne wird vorbereitet …','Artefakte werden gebunden …'];let mi=0;
+ const msgTimer=setInterval(()=>{if(closed)return;mi=Math.min(messages.length-1,mi+1);sub.textContent=messages[mi]},650);
+ const close=()=>{if(closed)return;closed=true;clearInterval(msgTimer);el.classList.add('abl-ready');sub.textContent='Das Tor ist geöffnet.';const wait=Math.max(0,260-(performance.now()-started));setTimeout(()=>{el.classList.add('abl-out');setTimeout(()=>{el.remove();document.getElementById('arcane-boot-loader-style')?.remove()},320)},wait+120)};
+ const maybeClose=()=>{if(contentReady&&(criticalReady||performance.now()-started>1350))close()};
+ window.addEventListener('arcane:critical-assets-ready',()=>{criticalReady=true;maybeClose()},{once:true});
+ const probe=()=>{const app=document.getElementById('app');contentReady=!!app?.querySelector('main,header,.hero,.he4,.tv5,.dv7,.cv2');if(contentReady)maybeClose();if(!closed&&performance.now()-started<5000)requestAnimationFrame(probe);else if(!closed)close()};
+ requestAnimationFrame(probe);
+}
+if(document.body)mountLoader();else document.addEventListener('DOMContentLoaded',mountLoader,{once:true});
+
 const root=window.Arcane=window.Arcane||{};
 const keys={save:'arcaneBeta',backup:'arcaneBetaBackup',created:'arcaneCharacterCreated',last:'arcaneLast'};
 const validObject=v=>!!v&&typeof v==='object'&&!Array.isArray(v);

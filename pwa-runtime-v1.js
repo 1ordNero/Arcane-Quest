@@ -1,6 +1,6 @@
 (()=>{
 let reloading=false;
-const BUILD=document.querySelector('meta[name="build"]')?.content||'v0.9.9';
+const BUILD=window.ARCANE_BUILD||document.querySelector('meta[name="build"]')?.content||'dev';
 const STARTUP_WINDOW_MS=8000;
 function notify(msg){if(typeof toast==='function')toast(msg);else console.info('[Arcane PWA]',msg)}
 function recoveryNotice(){const r=window.__ARCANE_BOOT_RECOVERY;if(!r)return;if(r.restored)queueMicrotask(()=>notify('Ein beschädigter Spielstand wurde aus der letzten Sicherung wiederhergestellt.'));else if(r.source==='corrupt')queueMicrotask(()=>notify('Der beschädigte Spielstand konnte nicht wiederhergestellt werden. Ein neuer Spielstand wurde gestartet.'))}
