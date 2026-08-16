@@ -11,19 +11,23 @@ function activity(){
 function label(x){return x==='quest'?'eine Quest':x==='dungeon'?'die Katakomben':x==='arena'?'ein Arena-Kampf':'eine andere Aktivität'}
 function blocked(target){const a=activity();if(!a||a===target)return false;if(typeof window.toast==='function')toast(`Nicht verfügbar: ${label(a)} ist bereits aktiv. Schließe diese Aktivität zuerst ab.`);return true}
 function navigationTarget(name){const n=String(name).toLowerCase();if(['dungeon','catacombs','katakomben'].includes(n))return'dungeon';if(n==='arena')return'arena';return null}
+function guardStart(name,target){
+  const base=window[name];
+  if(typeof base!=='function')return;
+  window[name]=function(){
+    const resolved=typeof target==='function'?target.apply(this,arguments):target;
+    if(resolved&&blocked(resolved))return;
+    return base.apply(this,arguments);
+  };
+}
 window.getActiveMajorActivity=activity;
 window.isMajorActivityBlocked=blocked;
 window.Arcane?.navigation?.addGuard?.(({screen})=>{const target=navigationTarget(screen);return !target||!blocked(target)});
-const baseStartCombat=window.startCombat;
-if(baseStartCombat)window.startCombat=function(kind){const target=kind==='arena'?'arena':kind==='dungeon'?'dungeon':null;if(target&&blocked(target))return;return baseStartCombat.apply(this,arguments)};
-const baseQStart=window.qStart;
-if(baseQStart)window.qStart=function(){if(blocked('quest'))return;return baseQStart.apply(this,arguments)};
-const baseMini=window.startAutoMiniBoss;
-if(baseMini)window.startAutoMiniBoss=function(){if(blocked('quest'))return;return baseMini.apply(this,arguments)};
-const baseD1=window.d1Start;
-if(baseD1)window.d1Start=function(){if(blocked('dungeon'))return;return baseD1.apply(this,arguments)};
-const baseArena=window.arenaV2Start;
-if(baseArena)window.arenaV2Start=function(){if(blocked('arena'))return;return baseArena.apply(this,arguments)};
+guardStart('startCombat',kind=>kind==='arena'?'arena':kind==='dungeon'?'dungeon':null);
+guardStart('qStart','quest');
+guardStart('startAutoMiniBoss','quest');
+guardStart('d1Start','dungeon');
+guardStart('arenaV2Start','arena');
 function decorate(){
   const a=activity();if(!a)return;
   document.querySelectorAll('button').forEach(btn=>{
