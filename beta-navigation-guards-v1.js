@@ -10,12 +10,12 @@ function activity(){
 }
 function label(x){return x==='quest'?'eine Quest':x==='dungeon'?'die Katakomben':x==='arena'?'ein Arena-Kampf':'eine andere Aktivität'}
 function blocked(target){const a=activity();if(!a||a===target)return false;if(typeof window.toast==='function')toast(`Nicht verfügbar: ${label(a)} ist bereits aktiv. Schließe diese Aktivität zuerst ab.`);return true}
+function navigationTarget(name){const n=String(name).toLowerCase();if(['dungeon','catacombs','katakomben'].includes(n))return'dungeon';if(n==='arena')return'arena';return null}
 window.getActiveMajorActivity=activity;
 window.isMajorActivityBlocked=blocked;
+window.Arcane?.navigation?.addGuard?.(({screen})=>{const target=navigationTarget(screen);return !target||!blocked(target)});
 const baseStartCombat=window.startCombat;
 if(baseStartCombat)window.startCombat=function(kind){const target=kind==='arena'?'arena':kind==='dungeon'?'dungeon':null;if(target&&blocked(target))return;return baseStartCombat.apply(this,arguments)};
-const baseTab=window.tab;
-if(baseTab)window.tab=function(name){const n=String(name).toLowerCase(),target=['dungeon','catacombs','katakomben'].includes(n)?'dungeon':n==='arena'?'arena':null;if(target&&blocked(target))return;return baseTab.apply(this,arguments)};
 const baseQStart=window.qStart;
 if(baseQStart)window.qStart=function(){if(blocked('quest'))return;return baseQStart.apply(this,arguments)};
 const baseMini=window.startAutoMiniBoss;
