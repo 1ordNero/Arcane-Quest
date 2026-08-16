@@ -3,8 +3,8 @@ const CLASSES={Krieger:{primary:'STR',res:'Wut',skill:'Schildwall',role:'Tank',i
 const BG={'Tavernen-Stammgast':{effect:'+15% Abenteuerlust-Effizienz',desc:'Du kennst jeden Winkel der Taverne.',icon:'🍺'},'Gefallener Adeliger':{effect:'+10% Gold aus allen Quellen',desc:'Alte Titel, neue Schulden und ein Händchen für Geschäfte.',icon:'👑'},'Runenschmied-Lehrling':{effect:'+10% Erfolgschance beim Aufwerten',desc:'Du hast die ersten Geheimnisse der Runenschmiede gelernt.',icon:'🔨'},'Schatten-Ausreißer':{effect:'+5% Beute-Glück',desc:'Du hast gelernt, dort Beute zu finden, wo andere nichts sehen.',icon:'🗝️'}};
 const BASE={str:8,agi:8,int:8,hp:120};
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-let S=JSON.parse(localStorage.getItem('arcaneBeta')||'null')||{screen:'home',name:'Aventurier',race:'Mensch',cls:'Krieger',bg:'Tavernen-Stammgast',lvl:1,xp:0,gold:120,al:100,maxAl:100,hp:120,maxHp:120,str:8,agi:8,int:8,items:[{name:'Rostiges Schwert',slot:'Haupthand',power:4,rarity:'common'}],eq:{},invCap:15,forgeDust:0,essence:0,souls:0,keys:0,quests:0,wins:0,arena:0,skills:['Hieb','Schildwall','Mächtiger Schlag'],combat:null,log:['Willkommen in der Arcane Tavern.']};
-function save(){localStorage.setItem('arcaneBeta',JSON.stringify(S))}
+let S=window.ARCANE_APP_STATE?.load?.()||{screen:'home',name:'Aventurier',race:'Mensch',cls:'Krieger',bg:'Tavernen-Stammgast',lvl:1,xp:0,gold:120,al:100,maxAl:100,hp:120,maxHp:120,str:8,agi:8,int:8,items:[{name:'Rostiges Schwert',slot:'Haupthand',power:4,rarity:'common'}],eq:{},invCap:15,forgeDust:0,essence:0,souls:0,keys:0,quests:0,wins:0,arena:0,skills:['Hieb','Schildwall','Mächtiger Schlag'],combat:null,log:['Willkommen in der Arcane Tavern.']};
+function save(){return window.ARCANE_APP_STATE?.save?.(S)??false}
 function xpNeed(){return Math.floor(80*Math.pow(1.16,S.lvl-1))}
 function unlock(l){return S.lvl>=l?'':' 🔒 ab Stufe '+l}
 function gainXP(n){S.xp+=n;let up=0;while(S.xp>=xpNeed()){S.xp-=xpNeed();S.lvl++;up++;S.maxHp+=10;S.hp=S.maxHp;S.str++;S.agi++;S.int++}return up}
