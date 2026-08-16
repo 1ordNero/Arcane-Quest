@@ -35,9 +35,9 @@ function decorate(){
     if(target&&target!==a){btn.disabled=true;btn.setAttribute('aria-disabled','true');btn.title=`Nicht verfügbar, solange ${label(a)} aktiv ist.`}
   });
 }
-const baseRender=window.render;
-if(baseRender)window.render=function(){const r=baseRender.apply(this,arguments);queueMicrotask(decorate);return r};
-new MutationObserver(decorate).observe(document.documentElement,{childList:true,subtree:true});
+let scheduled=false;
+function scheduleDecorate(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;decorate()})}
+new MutationObserver(scheduleDecorate).observe(document.documentElement,{childList:true,subtree:true});
 const css=document.createElement('style');css.textContent=`
 @media(max-width:699px){
   .tabs{height:72px!important;min-height:72px!important;padding:0 max(5px,env(safe-area-inset-left)) max(3px,env(safe-area-inset-bottom))!important;align-items:flex-end!important;overflow:visible!important}
