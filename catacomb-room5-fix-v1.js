@@ -1,7 +1,7 @@
 (()=>{
 const SRC='assets/icons/catacombs/room_grave_knight.webp?v=2026-08-16-room5-fix1';
 function recoverCombatLock(){
- const d=window.S?.dungeonV1||((typeof S!=='undefined'&&S)?S.dungeonV1:null);
+ let d=null;try{d=typeof S!=='undefined'&&S?S.dungeonV1:null}catch{}
  if(!d||d.state!=='combat'||!d.enemy)return;
  if(!d.autoBusy)return;
  const now=Date.now();
@@ -22,17 +22,19 @@ function apply(){
    let img=host.querySelector('img');
    if(!img){img=document.createElement('img');host.replaceChildren(img)}
    img.className='gai-room catacomb-room-art';
-   img.src=SRC;img.alt='Grabritter';
+   if(img.getAttribute('src')!==SRC)img.src=SRC;
+   img.alt='Grabritter';
    host.dataset.gai='catacomb_room_grave_knight';
   }else{
    let img=room.querySelector('img.catacomb-room-art,img.gai-room-inline');
    if(!img){img=document.createElement('img');room.querySelector('h2')?.insertAdjacentElement('beforebegin',img)}
-   if(img){img.className='gai-room-inline catacomb-room-art';img.src=SRC;img.alt='Grabritter'}
+   if(img){img.className='gai-room-inline catacomb-room-art';if(img.getAttribute('src')!==SRC)img.src=SRC;img.alt='Grabritter'}
   }
  });
 }
-const prev=window.render;
-if(prev)window.render=function(){const r=prev.apply(this,arguments);apply();queueMicrotask(apply);requestAnimationFrame(apply);return r};
+let scheduled=false;
+function scheduleApply(){if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;apply()})}
+new MutationObserver(scheduleApply).observe(document.documentElement,{childList:true,subtree:true});
 setInterval(recoverCombatLock,500);
 window.addEventListener('pageshow',recoverCombatLock);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')recoverCombatLock()});
