@@ -6,7 +6,6 @@ const RESULT_GOLD_FACTOR={raid:.015,event:.018,risk:.024,bounty:.022,mini:.008};
 const RESULT_GOLD_CAP={raid:2.5,event:2.8,risk:3.4,bounty:3.2,mini:1.8};
 const MERCHANT_RARITY={common:1,magic:1.25,rare:1.55,mythic:2.25,epic:1.85,legendary:2.5};
 const baseGainXP=window.gainXP;
-const baseSave=window.save;
 let pendingXP=null;
 
 function source(){
@@ -44,7 +43,7 @@ window.xpNeed=()=>XP_CURVE(S.lvl);
 window.getEffectiveQuestCost=(id)=>effectiveCost(id)??COSTS[id]??null;
 window.getQuestRawCost=id=>COSTS[id]??null;
 if(typeof baseGainXP==='function')window.gainXP=function(n){const src=source(),actual=xpAward(n,src);pendingXP={reported:Number(n)||0,actual,src,at:Date.now()};return baseGainXP(actual)};
-if(typeof baseSave==='function')window.save=function(){applyResultBalance();normalizeMerchant();return baseSave.apply(this,arguments)};
+window.Arcane?.on?.('beforeSave',()=>{applyResultBalance();normalizeMerchant()});
 
 const oldQStart=window.qStart;
 if(typeof oldQStart==='function')window.qStart=function(id,e){const desired=effectiveCost(id),before=Number(S.al)||0;if(desired!=null&&before<desired){e?.stopPropagation?.();return toast?.(`Nicht genug Abenteuerlust. Benötigt: ${desired} AL.`)}const hadQuest=!!S.quest,hadBounty=!!S.bountyCombat4;const out=oldQStart.apply(this,arguments);const started=id==='bounty'?!hadBounty&&!!S.bountyCombat4:!hadQuest&&!!S.quest;correctActivityCost(before,id,started);return out};
