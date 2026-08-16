@@ -1,4 +1,17 @@
 (()=>{
+const params=new URLSearchParams(location.search);
+if(params.has('fresh')){
+  window.__ARCANE_INTENTIONAL_RESET=true;
+  try{
+    const keys=[];
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&/^arcane/i.test(k))keys.push(k);
+    }
+    keys.forEach(k=>localStorage.removeItem(k));
+    sessionStorage.clear();
+  }catch(e){console.warn('[Fresh Boot] storage cleanup',e)}
+}
 const CLASS_SLUG={Krieger:'warrior',Magier:'mage',Hexenmeister:'warlock',Druide:'druid'};
 window.getHeroPortrait=function(state){
   state=state||{};
