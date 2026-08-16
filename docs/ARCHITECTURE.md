@@ -19,9 +19,9 @@ The page currently loads a long sequence of classic scripts from `index.html`.
 
 ### Global state
 
-`app.js` declares `let S`. In a classic script this is globally visible to later scripts by identifier, but it is not a property of `window`. Code must use `S` (or the new `Arcane.state.get()`) rather than `window.S`.
+`app.js` declares `let S`. In a classic script this is globally visible to later scripts by identifier, but it is not a property of `window`. Code must use `S` (or, after the core is wired in, `Arcane.state.get()`) rather than `window.S`.
 
-Known modules using `window.S` should be migrated because those checks can silently fail:
+Known loaded modules using `window.S` should be migrated because those checks can silently fail:
 
 - `activity-lock-v1.js`
 - `beta-navigation-guards-v1.js`
@@ -39,7 +39,16 @@ Target: one storage module owns save, backup, migration, reset and recovery. Fea
 
 ### Render ownership
 
-`app.js` owns the base `render()` function. Many modules later replace `window.render` with wrappers and call the previous implementation. This creates ordering dependencies and makes a later-loaded module able to accidentally bypass or undo another module.
+`app.js` owns the base `render()` function. Multiple loaded modules later replace `window.render` with wrappers and call the previous implementation. This creates ordering dependencies and makes a later-loaded module able to accidentally bypass or undo another module.
+
+A code search currently finds direct render-wrapper implementations in at least:
+
+- `activity-lock-v1.js`
+- `beta-navigation-guards-v1.js`
+- `compact-ui-v1.js`
+- `icon-polish-v1.js`
+- `catacomb-room5-fix-v1.js`
+- `xp-arena-stamina-v1.js`
 
 Target: keep one render entry point and migrate post-render work to explicit lifecycle hooks (`Arcane.on('afterRender', ...)`).
 
@@ -49,9 +58,9 @@ Navigation and activity exclusion are split between several layers, including `b
 
 Target: one activity service answers `activeActivity()` and one navigation service decides whether a requested transition is allowed.
 
-## Core runtime introduced in phase 1
+## Core runtime scaffold introduced in phase 1
 
-`core-runtime-v1.js` creates a non-invasive `window.Arcane` namespace with:
+`core-runtime-v1.js` defines a non-invasive `window.Arcane` namespace with:
 
 - `Arcane.state.get()` — safe access to the lexical `S` state after it exists.
 - `Arcane.state.screen()` — current screen helper.
@@ -68,7 +77,7 @@ Initial hook names:
 - `screenChange`
 - `bootReady`
 
-Phase 1 deliberately does not redirect existing gameplay through these hooks yet.
+The scaffold is intentionally **not loaded by `index.html` in phase 1**. This keeps the audit commit behavior-neutral. Phase 2 will wire it into the boot order at the same time the first storage/boot owner is migrated to it.
 
 ## Refactor sequence
 
@@ -81,6 +90,7 @@ Phase 1 deliberately does not redirect existing gameplay through these hooks yet
 
 ### Phase 2 — state / storage / boot
 
+- wire `core-runtime-v1.js` into the boot order
 - make a single storage implementation authoritative
 - move reset, backup and recovery behind it
 - remove duplicate raw save writes from character creation
