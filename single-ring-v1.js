@@ -1,11 +1,11 @@
 (()=>{
 function normalizeSlot(slot){return slot==='Ring 1'||slot==='Ring 2'?'Ring':slot}
-const RETIRED=new Set(['Gürtel','Schulter','Schultern']);
+const RETIRED=new Set(['Gürtel','Schulter','Schultern','Handschuhe']);
 function migrate(){S.eq=S.eq||{};S.items=S.items||[];let changed=false;
 const candidates=[];
 for(const key of ['Ring','Ring 1','Ring 2']){const it=S.eq[key];if(it)candidates.push(it);if(key!=='Ring'&&Object.prototype.hasOwnProperty.call(S.eq,key)){delete S.eq[key];changed=true}}
 if(candidates.length){if(!S.eq.Ring){const keep=candidates.shift();keep.slot='Ring';S.eq.Ring=keep;changed=true}else candidates.splice(candidates.indexOf(S.eq.Ring),1);for(const it of candidates){if(it&&it!==S.eq.Ring){it.slot='Ring';S.items.push(it);changed=true}}}
-for(const key of ['Gürtel','Schulter','Schultern']){const retired=S.eq[key];if(retired){delete S.eq[key];retired.slot='Beute';S.items.push(retired);changed=true}}
+for(const key of ['Gürtel','Schulter','Schultern','Handschuhe']){const retired=S.eq[key];if(retired){delete S.eq[key];retired.slot='Beute';S.items.push(retired);changed=true}}
 for(const it of S.items){if(!it)continue;if(it.slot==='Ring 1'||it.slot==='Ring 2'){it.slot='Ring';changed=true}else if(RETIRED.has(it.slot)){it.slot='Beute';changed=true}}
 if(S.heroSlotFilter==='Ring 1'||S.heroSlotFilter==='Ring 2'){S.heroSlotFilter='Ring';changed=true}else if(RETIRED.has(S.heroSlotFilter)){delete S.heroSlotFilter;changed=true}
 if(changed){window.syncEquipmentStats?.();save?.()}return changed}
