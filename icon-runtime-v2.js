@@ -9,8 +9,6 @@ const ASSETS={
  aggressive:UI+'ui_stance_aggressive.webp',defensive:UI+'ui_stance_defensive.webp',counter:UI+'ui_stance_counter.webp',
  challengers:[1,2,3,4].map(n=>UI+`arena_challenger_0${n}.webp`)
 };
-const allAssets=Object.values(ASSETS).flat().filter(x=>typeof x==='string');
-window.Arcane?.assets?.preload(allAssets);
 const norm=s=>String(s||'').split('?')[0];
 function bind(image,src){window.Arcane?.assets?.bind?.(image,src)}
 function ensure(host,src,cls,alt=''){
@@ -43,7 +41,7 @@ function city(){
 function stripEmoji(host){for(const n of host?.childNodes||[])if(n.nodeType===Node.TEXT_NODE)n.nodeValue=n.nodeValue.replace(/[⚔️🛡️↩️🏹🔮]+/gu,'').trimStart()}
 function arena(){
  const stance={Aggressiv:ASSETS.aggressive,Defensiv:ASSETS.defensive,Konter:ASSETS.counter};
- document.querySelectorAll('.av2-stances button').forEach(btn=>{const name=Object.keys(stance).find(n=>(btn.textContent||'').includes(n));const host=btn.querySelector('b');if(!name||!host)return;stripEmoji(host);let image=host.querySelector(':scope > img');if(!image||image.dataset.arcaneAssetSource!==stance[name]){image?.remove();image=document.createElement('img');image.src=stance[name];image.alt=name;image.dataset.arcaneAssetSource=stance[name];host.prepend(image)}image.className='aq-icon aq-icon-stance';bind(image,stance[name])});
+ document.querySelectorAll('.av2-stances button').forEach(btn=>{const name=Object.keys(stance).find(n=>(btn.textContent||'').includes(n));const host=btn.querySelector('b');if(!name||!host)return;stripEmoji(host);let image=host.querySelector(':scope > img');if(!image||image.dataset.arcaneAssetSource!==stance[name]){image?.remove();image=document.createElement('img');image.src=stance[name];image.alt=name;image.dataset.arcaneAssetSource=stance[name];image.loading='lazy';image.decoding='async';host.prepend(image)}image.className='aq-icon aq-icon-stance';bind(image,stance[name])});
  document.querySelectorAll('.av2-ophead').forEach((row,i)=>ensure(row.querySelector(':scope > span'),ASSETS.challengers[i%4],'aq-icon aq-icon-challenger','Herausforderer'));
 }
 function hydrate(){quests();city();arena();window.Arcane?.assets?.hydrate?.()}
