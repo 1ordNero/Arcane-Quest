@@ -42,7 +42,7 @@ jobs:
           forbidden = {
               'forge-v4.js', 'tavern-view-v5.js', 'tavern-polish-v6.js',
               'passive-runtime-fix-v2.js', 'compact-ui-v1.js',
-              'ui-polish-v2.js', 'icon-polish-v1.js',
+              'ui-polish-v2.js', 'icon-polish-v1.js', 'merchant-bank-v2.js',
           }
           stale = sorted(forbidden.intersection(scripts))
           if stale:
@@ -79,13 +79,12 @@ jobs:
               ('quest-system-v1.js', 'tavern.js'),
               ('forge-v5.js', 'forge-affix-v1.js'),
               ('arena-v2.js', 'arena-ux-v3.js'),
+              ('content-variation-v1.js', 'interaction-stability-v1.js'),
           ]
           bad_order = [f'{a} must load before {b}' for a, b in required_order if a in positions and b in positions and positions[a] > positions[b]]
           if bad_order:
               raise SystemExit('Invalid runtime order: ' + '; '.join(bad_order))
 
-          # Core owns render/navigation. Feature modules must use lifecycle hooks instead of
-          # silently replacing these authorities after startup.
           authority_violations = []
           for path in loaded:
               if path.name == 'core-runtime-v1.js':
@@ -129,12 +128,13 @@ jobs:
               'core-runtime-v1.js': ['window.render', 'window.tab', 'root.on', 'root.emit'],
               'state-runtime-v1.js': ['window.save', 'window.ARCANE_STATE'],
               'quest-cost-runtime-v1.js': ['window.getEffectiveQuestCost'],
-              'quest-system-v1.js': ['window.qStart', 'window.qSelect'],
+              'quest-system-v1.js': ['window.qStart', 'window.qSelect', 'setSelected'],
               'tavern.js': ['window.home', 'window.tavern'],
               'dungeon-v7.js': ['window.dungeonV1', 'window.d1Start', 'window.d7Leave'],
               'forge-v5.js': ['window.forgeView', 'window.fv4Upgrade', 'window.fv4Legendary'],
               'arena-v2.js': ['window.arena'],
-              'merchant-bank-v2.js': ['window.merchantView', 'window.bankView'],
+              'merchant-v3.js': ['window.merchantView', 'window.merchantBuy', 'window.merchantSell'],
+              'interaction-stability-v1.js': ['window.qSelect', 'window.arenaV2Stance'],
           }
           missing = []
           for file, needles in checks.items():
