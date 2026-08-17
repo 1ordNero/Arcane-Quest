@@ -18,7 +18,8 @@ function ensureDailyAL(){const today=dayKey();if(!S.alDay){S.alDay=today;save();
 function formatTime(sec){sec=Math.max(0,Math.floor(sec));return `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`}
 function getQuest(id){return QUESTS.find(x=>x.id===id)||null}
 function getSelected(){return selected}
-function select(id){if(S.quest)return;selected=selected===id?null:id;render()}
+function setSelected(id){if(S.quest)return selected;selected=selected===id?null:id;return selected}
+function select(id){const next=setSelected(id);if(typeof window.tavernApplyQuestSelection==='function'&&S.screen==='home'){window.tavernApplyQuestSelection(next);return}render()}
 function statValue(stat){const base=Number(S[stat])||8;const race=typeof RACES!=='undefined'&&RACES[S.race];return base+(race?.bonus?.[stat]||0)}
 function chanceFor(choice){let chance=choice.base+(statValue(choice.stat)-8)*3;const race=S.race,cls=S.cls;if(choice.stat==='agi'&&['Elf','Nachtläufer'].includes(race))chance+=5;if(choice.stat==='str'&&['Zwerg','Ork'].includes(race))chance+=5;if(choice.stat==='int'&&['Drachengeborener','Elf'].includes(race))chance+=4;if(race==='Mensch')chance+=2;if(choice.stat==='str'&&cls==='Krieger')chance+=5;if(choice.stat==='agi'&&cls==='Waldläufer')chance+=5;if(choice.stat==='int'&&['Magier','Hexenmeister','Totenbeschwörer'].includes(cls))chance+=5;return Math.max(20,Math.min(92,Math.round(chance)))}
 function start(id,e){if(e)e.stopPropagation();ensureDailyAL();const q=getQuest(id);if(!q||S.quest)return;const cost=window.getEffectiveQuestCost?getEffectiveQuestCost(q.id,q.cost):q.cost;if(S.al<cost)return toast(`Nicht genug Abenteuerlust. Benötigt: ${cost} AL.`);S.al-=cost;S.quest={id:q.id,started:Date.now(),ends:Date.now()+q.time*1000,event:q.kind==='event'?{step:0,score:0,history:[],ready:false}:null};S.questResult=null;selected=null;log(`Quest gestartet: ${q.name}.`);if(cost<q.cost)queueMicrotask(()=>window.showPersonalStoryFeedback?.(`${q.cost-cost} Abenteuerlust gespart`));save();render()}
@@ -28,7 +29,7 @@ function closeResult(){S.questResult=null;save();render()}
 function isWaiting(){const q=S.quest&&getQuest(S.quest.id);return !!(q?.kind==='event'&&S.quest?.event&&!S.quest.event.ready)}
 function syncState(){ensureDailyAL();if(S.quest&&!isWaiting()&&S.quest.ends<=Date.now())setTimeout(finish,0)}
 function tick(){const reset=ensureDailyAL();if(S.quest){if(!isWaiting()&&S.quest.ends<=Date.now())finish();else render()}else if(reset)render()}
-root.quests={definitions:QUESTS,eventSteps:EVENT_STEPS,getQuest,getSelected,ensureDailyAL,formatTime,chanceFor,select,start,eventChoice,finish,closeResult,isWaiting,syncState,tick};
+root.quests={definitions:QUESTS,eventSteps:EVENT_STEPS,getQuest,getSelected,setSelected,ensureDailyAL,formatTime,chanceFor,select,start,eventChoice,finish,closeResult,isWaiting,syncState,tick};
 window.qSelect=select;window.qStart=start;window.eventChoice=eventChoice;window.qCloseResult=closeResult;
 root.on?.('beforeRender',syncState);
 setInterval(tick,1000);
