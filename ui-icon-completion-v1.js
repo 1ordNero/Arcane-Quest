@@ -1,0 +1,55 @@
+(()=>{
+'use strict';
+const ROOT='assets/icons/ui/';
+const img=(file,cls='uic1-icon',alt='')=>`<img class="${cls}" src="${ROOT}${file}" alt="${alt}">`;
+const BUILD_ICON={
+ ward:'ui_build_bollwerk.webp',
+ shadow:'keystone_shadow_ambush.webp',
+ arcane:'resonance_arcane_fracture.webp',
+ reaver:'ui_build_blutklinge.webp'
+};
+function arena(){
+ if(S?.screen!=='arena')return;
+ const ops=S?.arenaV2?.opponents||[];
+ document.querySelectorAll('.av2-ops>button').forEach((btn,i)=>{
+   const o=ops[i],box=btn.querySelector('.ab1-build');if(!o||!box)return;
+   const title=box.querySelector(':scope > span');const file=BUILD_ICON[o.archetype];
+   if(title&&file&&!title.querySelector('img')){
+     title.textContent=title.textContent.replace(/^[🛡️🌑◈🩸\s]+/u,'').trim();
+     title.insertAdjacentHTML('afterbegin',img(file,'uic1-build',o.archetype)+' ');
+   }
+ });
+ const fight=S?.arenaV2?.fight,tag=document.querySelector('.ab1-fighttag');
+ if(fight&&tag){const file=BUILD_ICON[fight.o?.archetype];if(file&&!tag.querySelector('img')){tag.textContent=tag.textContent.replace(/^[🛡️🌑◈🩸\s]+/u,'').trim();tag.insertAdjacentHTML('afterbegin',img(file,'uic1-build-small')+' ')}}
+}
+function forge(){
+ const root=document.querySelector('.fv4');if(!root)return;
+ const head=root.querySelector('.fv4-head>div:last-child');
+ if(head){const spans=head.querySelectorAll(':scope > span');
+   if(spans[0])setResource(spans[0],'resource_gold.webp',S.gold||0);
+   if(spans[1])setResource(spans[1],'resource_forge_dust.webp',S.forgeDust||0);
+   if(spans[2])setResource(spans[2],'resource_forge_essence.webp',S.essence||0);
+ }
+ root.querySelectorAll('.fv4-detail p').forEach(p=>replaceForgeText(p));
+ const star=root.querySelector('.fv4-star');if(star&&!star.querySelector('img'))star.innerHTML=img('ui_ancestral_work.webp','uic1-ancestral','Ahnenwerk');
+}
+function setResource(el,file,value){
+ if(el.dataset.uic1===file){const n=el.querySelector('b');if(n)n.textContent=String(value);return}
+ el.innerHTML=`${img(file,'uic1-resource')} <b>${value}</b>`;el.dataset.uic1=file;
+}
+function replaceForgeText(el){
+ if(el.dataset.uic1Forge)return;
+ const html=el.innerHTML
+   .replace(/🪙\s*/gu,img('resource_gold.webp','uic1-inline')+' ')
+   .replace(/✨\s*/gu,img('resource_forge_dust.webp','uic1-inline')+' ')
+   .replace(/◆\s*/gu,img('resource_forge_essence.webp','uic1-inline')+' ');
+ if(html!==el.innerHTML){el.innerHTML=html;el.dataset.uic1Forge='1'}
+}
+function genericForgeResources(){
+ document.querySelectorAll('.fa1-panel .fa1-icon').forEach(x=>x.classList.add('uic1-existing'));
+}
+function apply(){arena();forge();genericForgeResources()}
+window.Arcane?.on?.('afterRenderSettled',apply);window.Arcane?.on?.('bootReady',apply);
+new MutationObserver(()=>queueMicrotask(apply)).observe(document.body,{subtree:true,childList:true});
+const css=document.createElement('style');css.textContent=`.uic1-build,.uic1-build-small,.uic1-resource,.uic1-inline,.uic1-ancestral{display:inline-block;object-fit:contain;vertical-align:middle;pointer-events:none}.uic1-build{width:25px;height:25px;margin-right:5px}.uic1-build-small{width:21px;height:21px;margin-right:4px}.ab1-build>span{display:flex;align-items:center}.uic1-resource{width:28px;height:28px;margin-right:4px}.fv4-head span{display:inline-flex!important;align-items:center;gap:2px}.fv4-head span b{font-size:inherit}.uic1-inline{width:22px;height:22px;margin:0 2px}.uic1-ancestral{width:54px;height:54px}.fv4-star{height:58px;display:grid;place-items:center}@media(max-width:520px){.uic1-build{width:23px;height:23px}.uic1-resource{width:25px;height:25px}.uic1-inline{width:20px;height:20px}}`;document.head.appendChild(css);queueMicrotask(apply);
+})();
