@@ -1,13 +1,13 @@
 (()=>{
 'use strict';
 const UI='assets/icons/ui/';
-function icon(file,alt){return `<span class="cv2-icon"><img src="${UI}${file}" alt="${alt}" decoding="async"></span>`}
+function icon(file,alt){const src=UI+file;return `<span class="cv2-icon"><img src="${src}" data-arcane-asset-source="${src}" alt="${alt}" loading="lazy" decoding="async"></span>`}
 function lock(level){return S.lvl>=level?'':'<span class="cv2-lock">🔒</span>'}
 function city(){return `<section class="cv2"><div class="cv2-head"><small>STADTVIERTEL</small><h1>🏘️ Die Stadt</h1><p>Alle Wirtschafts- und Verwaltungsbereiche an einem Ort. Wähle ein Gebäude, statt durch zusätzliche Haupttabs zu navigieren.</p></div><div class="cv2-grid">
 <button onclick="tab('merchant')">${icon('location_merchant.webp','Händler')}<div><b>Händler</b><small>Ausrüstung kaufen und Fundstücke verkaufen.</small><em>Ab Stufe 3</em></div>${lock(3)}</button>
 <button onclick="tab('forge')">${icon('location_forge.webp','Ahnenschmiede')}<div><b>Ahnenschmiede</b><small>Items aufwerten, verwerten und legendäre Ahnenwerke erschaffen.</small><em>Ab Stufe 5</em></div>${lock(5)}</button>
 <button onclick="tab('bank')">${icon('location_bank.webp','Bank')}<div><b>Bank</b><small>100 Tresorplätze für Ausrüstung außerhalb des Rucksacks.</small><em>Ab Stufe 10</em></div>${lock(10)}</button>
-<button onclick="tab('shrine')" class="cv2-shrine">${icon('location_shrine.webp','Ahnenschrein')}<div><b>Ahnenschrein</b><small>Reinkarnation, Seelensteine und künftig dein dauerhaftes Vermächtnis.</small><em>Reinkarnation ab Stufe 100</em></div></button>
+<button onclick="tab('shrine')" class="cv2-shrine">${icon('location_shrine.webp','Ahnenschrein')}<div><b>Ahnenschrein</b><small>Reinkarnation, Seelensteine und dauerhaftes Vermächtnis.</small><em>Reinkarnation ab Stufe 50</em></div></button>
 </div></section>`}
 function addBack(){if(!['merchant','bank','forge','shrine'].includes(S.screen))return;const main=document.querySelector('main');if(!main||main.querySelector('.cv2-back,.cux-top'))return;main.insertAdjacentHTML('afterbegin',`<button class="cv2-back" onclick="tab('city')">‹ Zur Stadt</button>`)}
 window.cityView=city;
