@@ -1,4 +1,18 @@
 (()=>{
-function syncEquipmentStats(){if(!window.getFinalStats||!window.S)return;const f=getFinalStats(),rb=RACES?.[S.race]?.bonus||{};S.str=f.str-(rb.str||0);S.agi=f.agi-(rb.agi||0);S.int=f.int-(rb.int||0);S.maxHp=f.hp;S.hp=Math.min(Number(S.hp)||f.hp,f.hp)}
-const oldEquip=window.equipItem,oldUnequip=window.unequipItem;window.equipItem=function(id){oldEquip?.(id);syncEquipmentStats()};window.unequipItem=function(slot){oldUnequip?.(slot);syncEquipmentStats()};window.syncEquipmentStats=syncEquipmentStats;syncEquipmentStats();save();
+'use strict';
+function syncEquipmentStats(){
+  if(typeof S==='undefined'||!S||typeof window.getFinalStats!=='function')return false;
+  const f=getFinalStats(),rb=(typeof RACES!=='undefined'&&RACES?.[S.race]?.bonus)||{};
+  S.str=Number(f.str||0)-(Number(rb.str)||0);
+  S.agi=Number(f.agi||0)-(Number(rb.agi)||0);
+  S.int=Number(f.int||0)-(Number(rb.int)||0);
+  S.maxHp=Math.max(1,Number(f.hp)||120);
+  S.hp=Math.max(0,Math.min(Number(S.hp)||S.maxHp,S.maxHp));
+  return true;
+}
+const oldEquip=window.equipItem,oldUnequip=window.unequipItem;
+if(typeof oldEquip==='function')window.equipItem=function(id){const result=oldEquip.apply(this,arguments);syncEquipmentStats();return result};
+if(typeof oldUnequip==='function')window.unequipItem=function(slot){const result=oldUnequip.apply(this,arguments);syncEquipmentStats();return result};
+window.syncEquipmentStats=syncEquipmentStats;
+if(syncEquipmentStats())save?.();
 })();
