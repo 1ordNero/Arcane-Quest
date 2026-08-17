@@ -41,10 +41,18 @@ bind();
 Object.values(ASSETS).flatMap(x=>Object.values(x)).forEach(file=>{const img=new Image();img.src=BASE+file;});
 const css=document.createElement('style');
 css.textContent=`
-.arc-skill-icon{display:block;width:100%;height:100%;object-fit:cover;border-radius:9px}
-.sk-rotation>button>span{width:38px;height:38px;margin:4px auto;overflow:hidden;border-radius:10px;border:1px solid #ffffff18;background:#0c0812;display:block}
-.sk-list>button>span{width:42px;height:42px;display:block;overflow:hidden;border-radius:10px;border:1px solid #ffffff18;background:#0c0812}
-.sk-rotation>button>span>.arc-skill-icon,.sk-list>button>span>.arc-skill-icon{width:100%;height:100%}
+.arc-skill-icon{object-fit:cover;border-radius:7px;vertical-align:middle}
+/* Heldenseite: aktive Skills ca. 25% kleiner als zuvor (38px -> 29px). */
+.sk-rotation>button>span{width:29px!important;height:29px!important;margin:3px auto!important;overflow:hidden;border-radius:8px;border:1px solid #ffffff18;background:#0c0812;display:block}
+.sk-rotation>button>span>.arc-skill-icon{display:block;width:100%!important;height:100%!important}
+/* Auswahl darf etwas größer bleiben, damit die Motive gut erkennbar sind. */
+.sk-list>button>span{width:38px!important;height:38px!important;display:block;overflow:hidden;border-radius:9px;border:1px solid #ffffff18;background:#0c0812}
+.sk-list>button>span>.arc-skill-icon{display:block;width:100%!important;height:100%!important}
+/* Skill-Picker immer als echtes, viewport-zentriertes Overlay anzeigen. */
+.modal:has(.sk-sheet){position:fixed!important;inset:0!important;z-index:320!important;display:grid!important;place-items:center!important;padding:16px!important;margin:0!important;background:#08050dcc!important;backdrop-filter:blur(8px);overflow:auto!important}
+.modal:has(.sk-sheet)>.sk-sheet{position:relative!important;inset:auto!important;transform:none!important;margin:auto!important;width:min(520px,100%)!important;max-height:min(78vh,680px)!important;overflow:auto!important;border-radius:18px!important;box-shadow:0 24px 70px #000b!important}
+/* In Kampftexten Skillgrafiken nur als kleine Inline-Icons verwenden. */
+.av2-log .arc-skill-icon,.dv7-room .arc-skill-icon,.dv7-log .arc-skill-icon,.dv7-feedback .arc-skill-icon{display:inline-block!important;width:14px!important;height:14px!important;margin:0 4px 0 0!important;border-radius:4px!important;vertical-align:-3px!important}
 `;
 document.head.appendChild(css);
 window.Arcane=window.Arcane||{};
