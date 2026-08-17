@@ -23,12 +23,13 @@ jobs:
             node --check "$file"
           done < <(find . -type f -name '*.js' -not -path './node_modules/*' -print0)
 
-      - name: Validate index runtime references
+      - name: Validate runtime graph and assets
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
 
+          root = Path('.')
           html = Path('index.html').read_text(encoding='utf-8')
           scripts = [src.split('?', 1)[0] for src in re.findall(r'<script\s+src="([^"]+)"', html)]
           missing = [src for src in scripts if not Path(src).is_file()]
@@ -37,7 +38,45 @@ jobs:
               raise SystemExit('Missing runtime files: ' + ', '.join(missing))
           if duplicates:
               raise SystemExit('Duplicate runtime references: ' + ', '.join(duplicates))
-          print(f'Validated {len(scripts)} runtime references.')
+
+          forbidden = {'forge-v4.js', 'tavern-view-v5.js'}
+          stale = sorted(forbidden.intersection(scripts))
+          if stale:
+              raise SystemExit('Obsolete runtime references still loaded: ' + ', '.join(stale))
+
+          loaded = [Path(src) for src in scripts]
+          placeholder_hits = []
+          for path in loaded:
+              text = path.read_text(encoding='utf-8')
+              if text.strip() in {'PLACEHOLDER', 'TODO', 'TBD'}:
+                  placeholder_hits.append(str(path))
+          if placeholder_hits:
+              raise SystemExit('Placeholder runtime files: ' + ', '.join(placeholder_hits))
+
+          asset_pattern = re.compile(r"assets/[A-Za-z0-9_./\-]+\.(?:webp|png|jpe?g|gif|svg)", re.I)
+          asset_missing = set()
+          scan_files = loaded + [Path('manifest.webmanifest')]
+          for path in scan_files:
+              text = path.read_text(encoding='utf-8')
+              for ref in asset_pattern.findall(text):
+                  if not (root / ref).is_file():
+                      asset_missing.add(f'{path}: {ref}')
+          if asset_missing:
+              raise SystemExit('Missing referenced assets:\n' + '\n'.join(sorted(asset_missing)))
+
+          # Core authority must load before feature modules that subscribe to its lifecycle.
+          positions = {name: i for i, name in enumerate(scripts)}
+          required_order = [
+              ('core-runtime-v1.js', 'tavern.js'),
+              ('core-runtime-v1.js', 'dungeon-v7.js'),
+              ('core-runtime-v1.js', 'forge-v5.js'),
+              ('asset-runtime-v1.js', 'catacomb-presentation-v1.js'),
+          ]
+          bad_order = [f'{a} must load before {b}' for a, b in required_order if a in positions and b in positions and positions[a] > positions[b]]
+          if bad_order:
+              raise SystemExit('Invalid runtime order: ' + '; '.join(bad_order))
+
+          print(f'Validated {len(scripts)} runtime references and their static asset references.')
           PY
 
       - name: Validate single build version source
@@ -53,15 +92,33 @@ jobs:
           runtime = re.search(r"const BUILD='(v\d+\.\d+\.\d+)'", release)
           if not runtime:
               raise SystemExit('release-runtime-v1.js must define the canonical semantic BUILD version.')
-
-          # release-runtime-v1.js is the only canonical source. Other files may consume
-          # window.ARCANE_BUILD but must not require a second manually synchronized version.
           if 'window.ARCANE_BUILD' not in app_version:
               raise SystemExit('app-version-v1.js must consume window.ARCANE_BUILD.')
-
-          meta = re.search(r'<meta name="build"(?: content="([^"]*)")?', html)
-          if not meta:
+          if not re.search(r'<meta name="build"(?: content="([^"]*)")?', html):
               raise SystemExit('index.html must keep a build meta element for runtime publication.')
 
           print('Canonical build source:', runtime.group(1), 'from release-runtime-v1.js')
+          PY
+
+      - name: Guard critical public APIs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          checks = {
+              'core-runtime-v1.js': ['window.render', 'window.tab', 'root.on', 'root.emit'],
+              'quest-system-v1.js': ['window.qStart', 'window.qSelect'],
+              'dungeon-v7.js': ['window.dungeonV1', 'window.d1Start', 'window.d7Leave'],
+              'forge-v5.js': ['window.forgeView', 'window.fv4Upgrade', 'window.fv4Legendary'],
+              'arena-v2.js': ['window.arena'],
+          }
+          missing = []
+          for file, needles in checks.items():
+              text = Path(file).read_text(encoding='utf-8')
+              for needle in needles:
+                  if needle not in text:
+                      missing.append(f'{file}: {needle}')
+          if missing:
+              raise SystemExit('Critical API regression:\n' + '\n'.join(missing))
+          print('Critical public APIs are present.')
           PY
