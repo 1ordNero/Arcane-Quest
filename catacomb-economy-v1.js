@@ -1,13 +1,14 @@
 (()=>{
 'use strict';
 const KEY_CAP=5;
-const KEY_CHANCE={raid:.12,event:.25,bounty:.45,risk:.60};
-const ITEM_KEEP={event:.20,bounty:.25,risk:.30};
+const KEY_CHANCE={raid:.12,event:.25,bounty:.45,risk:.60,mini:.20};
+const ITEM_KEEP={event:.20,bounty:.25,risk:.30,mini:.40};
 const QUEST_KIND={
  'Schatten im alten Forst':'raid',
  'Das flüsternde Siegel':'event',
  'Der Knochenhauer':'bounty',
- 'Die versunkene Krypta':'risk'
+ 'Die versunkene Krypta':'risk',
+ 'Knochenwache':'mini'
 };
 let processing=false;
 function clampKeys(){S.keys=Math.max(0,Math.min(KEY_CAP,Number(S.keys)||0))}
@@ -37,12 +38,12 @@ function fixDungeonItem(it){
 }
 function dungeonKeepChance(d,kind){
  if(!d)return 1;
- if(kind==='bounty'&&d.enemy?.boss)return .68; // ~65% final boss drop instead of 95%
+ if(kind==='bounty'&&d.enemy?.boss)return .68;
  if(kind!=='risk')return 1;
- if(d.state==='treasure')return .50;          // ~45% instead of 90%
- if(d.enemy?.elite)return .46;                // ~30% instead of 65%
- if(d.state==='event')return .31;             // ~10% normal / ~20% critical event
- if(d.state==='combat')return .33;            // ~10% instead of 30%
+ if(d.state==='treasure')return .50;
+ if(d.enemy?.elite)return .46;
+ if(d.state==='event')return .31;
+ if(d.state==='combat')return .33;
  return .40;
 }
 function wrapDungeonLoot(){
@@ -94,7 +95,6 @@ function processQuestResult(){
  processing=true;
  r._catacombEconomyV1=true;
  let changed=false;
- // Quest equipment is deliberately uncommon now. Gold/XP/keys carry the regular loop.
  if(r.item&&ITEM_KEEP[kind]!=null&&Math.random()>ITEM_KEEP[kind]){
    removeQuestItem(r.item);r.item=null;r.itemRarity=null;r.itemStats=null;changed=true;
  }
@@ -108,7 +108,7 @@ function processQuestResult(){
      log?.(`Katakomben-Schlüssel erhalten (${S.keys}/${KEY_CAP}).`);
    }
  }
- if(changed||kind){save?.()}
+ if(changed||kind)save?.();
  processing=false;
  return changed;
 }
@@ -126,10 +126,10 @@ function decorateHeader(){
 }
 function tick(){
  ensureState();patchStart();wrapDungeonLoot();
- let changed=migrateActiveRun();
+ const changed=migrateActiveRun();
  const q=processQuestResult();
  decorateResult();decorateHeader();
- if(changed){save?.()}
+ if(changed)save?.();
  if(q)requestAnimationFrame(()=>{decorateResult();decorateHeader()});
 }
 window.ARCANE_CATACOMB_KEYS=Object.freeze({cap:KEY_CAP,keyChance:{...KEY_CHANCE},itemKeep:{...ITEM_KEEP}});
