@@ -16,11 +16,29 @@ const ROOMS=[
 ];
 const path=file=>`${ROOT}${file}?v=${VERSION}`;
 const assets=Object.freeze(Object.fromEntries(ROOMS.map(([name,file])=>[name,path(file)])));
+const allAssets=Object.freeze(ROOMS.map(([,file])=>path(file)));
 window.CATACOMB_ICON_ASSETS=assets;
-ROOMS.forEach(([,file])=>{const image=new Image();image.decoding='async';image.src=path(file)});
+let preloadPromise=null;
+function preloadFallback(){
+ const Ctor=window.__ARCANE_NATIVE_IMAGE||window.Image;
+ return Promise.allSettled(allAssets.map(src=>new Promise(done=>{const image=new Ctor();image.decoding='async';image.onload=image.onerror=done;image.src=src})));
+}
+function preloadAll(){
+ if(preloadPromise)return preloadPromise;
+ const loader=window.Arcane?.assets?.preload;
+ preloadPromise=(typeof loader==='function'?loader(allAssets):preloadFallback()).catch?.(()=>[])||Promise.resolve([]);
+ return preloadPromise;
+}
+window.CATACOMB_PRELOAD_ALL=preloadAll;
 function state(){try{return typeof S!=='undefined'&&S?S:null}catch{return null}}
+function bindCurrent(image,src){
+ image.decoding='async';image.loading='eager';
+ try{image.fetchPriority='high'}catch{}
+ if(window.Arcane?.assets?.bind)Arcane.assets.bind(image,src);else if(image.getAttribute('src')!==src)image.src=src;
+}
 function apply(){
  const s=state();if(s?.screen!=='dungeon')return;
+ preloadAll();
  const idx=Number(s.dungeonV1?.room);if(!Number.isInteger(idx)||idx<0||idx>=ROOMS.length)return;
  const [name,file]=ROOMS[idx],src=path(file);
  document.querySelectorAll('.dv7-room').forEach(room=>{
@@ -31,7 +49,7 @@ function apply(){
    host.classList.add('catacomb-art-host');
    let image=host.querySelector('.catacomb-room-art');
    if(!image){host.replaceChildren();image=document.createElement('img');image.className='gai-room catacomb-room-art';host.appendChild(image)}
-   if(image.getAttribute('src')!==src)image.src=src;
+   bindCurrent(image,src);
    image.alt=name;image.dataset.catacombIcon=name;host.dataset.gai=`catacomb_room_${idx+1}`;
  });
 }
@@ -43,6 +61,7 @@ const css=document.createElement('style');css.textContent=`
 @media(max-width:380px){.dv7-choices>button{grid-template-columns:50px minmax(0,1fr) 46px!important;padding-inline:9px!important;gap:6px!important}.dv7-choices>button>span{width:46px!important;height:46px!important}.dv7-choices>button>span .gai-choice,.dv7-choices>button>span>img{width:44px!important;height:44px!important;max-width:44px!important;max-height:44px!important}.dv7-choices>button>div>b{font-size:14px!important}.dv7-choices>button>div>small{font-size:10px!important}.dv7-choices>button>em{font-size:18px!important;min-width:44px!important}}
 @media(max-width:520px) and (max-height:820px){.catacomb-room-hq .catacomb-art-host{width:118px!important;height:118px!important;min-width:118px!important}.catacomb-room-hq .catacomb-room-art{width:118px!important;height:118px!important;max-width:118px!important;max-height:118px!important}.catacomb-room-hq h2{font-size:21px!important}.catacomb-room-hq h2+p{font-size:9.5px!important;margin-bottom:6px!important}.catacomb-room-hq>button{min-height:44px!important;font-size:14px!important}}
 `;document.head.appendChild(css);
-if(window.Arcane?.on)Arcane.on('afterRenderSettled',settle);
+if(window.Arcane?.on){Arcane.on('afterRenderSettled',settle);Arcane.on('screenChange',({screen})=>{if(screen==='dungeon')preloadAll()});Arcane.on('bootReady',()=>{if(state()?.screen==='dungeon')preloadAll()})}
+if(state()?.screen==='dungeon')preloadAll();
 settle();
 })();
