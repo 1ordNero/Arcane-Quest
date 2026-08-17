@@ -6,15 +6,16 @@ const SCREEN_META={
  city:{icon:'assets/icons/nav-stadt.webp',title:'Stadt',sub:'Handel & Handwerk'},
  merchant:{icon:'assets/icons/ui/location_merchant.webp',title:'Händler',sub:'Kaufen & Verkaufen'},
  bank:{icon:'assets/icons/ui/location_bank.webp',title:'Bank',sub:'Tresor & Lager'},
- forge:{icon:'assets/icons/ui/location_forge.webp',title:'Ahnen-Schmiede',sub:'Aufwerten & Verwerten'},
+ forge:{icon:'assets/icons/ui/location_forge.webp',title:'Ahnenschmiede',sub:'Aufwerten & Verwerten'},
+ shrine:{icon:'assets/icons/ui/location_shrine.webp',title:'Ahnenschrein',sub:'Reinkarnation & Vermächtnis'},
  arena:{icon:'assets/icons/nav-arena.webp',title:'Arena',sub:'Ruhm & Kämpfe'}
 };
 const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
-function icon(src){return `<span class="ds-icon"><img src="${src}" alt="" aria-hidden="true"></span>`}
+function icon(src){return `<span class="ds-icon"><img src="${src}" alt="" aria-hidden="true" decoding="async"></span>`}
 function resources(){
- const parts=[`<span class="ds-chip ds-level">Lv ${Number(S.lvl)||1}</span>`,`<span class="ds-chip ds-gold"><img src="assets/icons/ui/resource_gold.webp" alt="Gold">${Number(S.gold)||0}</span>`];
- if(S.screen==='home')parts.push(`<span class="ds-chip"><img src="assets/icons/ui/resource_energy.webp" alt="Abenteuerlust">${Number(S.al)||0}/${Number(S.maxAl)||100}</span>`);
- else if(S.screen==='city'||S.screen==='merchant'||S.screen==='bank'||S.screen==='forge')parts.push(`<span class="ds-chip ds-bag">${(S.items||[]).length}/${Number(S.invCap)||15}</span>`);
+ const parts=[`<span class="ds-chip ds-level">Lv ${Number(S.lvl)||1}</span>`,`<span class="ds-chip ds-gold"><img src="assets/icons/ui/resource_gold.webp" alt="Gold" decoding="async">${Number(S.gold)||0}</span>`];
+ if(S.screen==='home')parts.push(`<span class="ds-chip"><img src="assets/icons/ui/resource_energy.webp" alt="Abenteuerlust" decoding="async">${Number(S.al)||0}/${Number(S.maxAl)||100}</span>`);
+ else if(['city','merchant','bank','forge','shrine'].includes(S.screen))parts.push(`<span class="ds-chip ds-bag">${(S.items||[]).length}/${Number(S.invCap)||15}</span>`);
  else if(S.screen==='arena')parts.push(`<span class="ds-chip">Ruhm ${Number(S.arena)||0}</span>`);
  return parts.join('');
 }
@@ -32,9 +33,9 @@ function xpBar(){
 function removeRedundancy(){
  document.body.dataset.screen=S.screen||'';
  if(S.screen==='city')document.querySelectorAll('.cv2-head,.compact-city-status').forEach(x=>x.classList.add('ds-hide-duplicate'));
- if(['merchant','bank','forge'].includes(S.screen)){
+ if(['merchant','bank','forge','shrine'].includes(S.screen)){
   document.querySelectorAll('.cux-top').forEach(x=>x.classList.add('ds-subnav'));
-  const head=document.querySelector(S.screen==='forge'?'.fv4-head':'.mb2-head');
+  const head=document.querySelector(S.screen==='forge'?'.fv4-head':S.screen==='shrine'?'.sv3-head':'.mb2-head');
   if(head)head.classList.add('ds-secondary-head');
  }
 }
