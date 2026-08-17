@@ -1,6 +1,6 @@
 (()=>{
 function skillPicker(slot){
- const list=window.SKILL_DATA?.[S.cls]||[];
+ const list=window.getUnlockedSkills?.()||window.SKILL_DATA?.[S.cls]||[];
  const res={Krieger:'Wut',Magier:'Mana',Druide:'Naturfokus',Waldläufer:'Energie',Hexenmeister:'Seelenfragmente',Totenbeschwörer:'Essenz des Todes'}[S.cls]||'Ressource';
  const active=S.skillSystem?.loadout?.[slot];
  const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
