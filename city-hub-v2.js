@@ -3,7 +3,7 @@
 function lock(level){return S.lvl>=level?'':'<span class="cv2-lock">🔒</span>'}
 function city(){return `<section class="cv2"><div class="cv2-head"><small>STADTVIERTEL</small><h1>🏘️ Die Stadt</h1><p>Alle Wirtschafts- und Verwaltungsbereiche an einem Ort. Wähle ein Gebäude, statt durch zusätzliche Haupttabs zu navigieren.</p></div><div class="cv2-grid">
 <button onclick="tab('merchant')"><span>🧺</span><div><b>Händler</b><small>Ausrüstung kaufen und Fundstücke verkaufen.</small><em>Ab Stufe 3</em></div>${lock(3)}</button>
-<button onclick="tab('forge')"><span>🔨</span><div><b>Ahnen-Schmiede</b><small>Items aufwerten, verwerten und legendäre Ahnenwerke erschaffen.</small><em>Ab Stufe 5</em></div>${lock(5)}</button>
+<button onclick="tab('forge')"><span>🔨</span><div><b>Ahnenschmiede</b><small>Items aufwerten, verwerten und legendäre Ahnenwerke erschaffen.</small><em>Ab Stufe 5</em></div>${lock(5)}</button>
 <button onclick="tab('bank')"><span>🏦</span><div><b>Bank</b><small>100 Tresorplätze für Ausrüstung außerhalb des Rucksacks.</small><em>Ab Stufe 10</em></div>${lock(10)}</button>
 <button onclick="tab('shrine')" class="cv2-shrine"><span>◆</span><div><b>Ahnenschrein</b><small>Reinkarnation, Seelensteine und künftig dein dauerhaftes Vermächtnis.</small><em>Reinkarnation ab Stufe 100</em></div></button>
 </div></section>`}
