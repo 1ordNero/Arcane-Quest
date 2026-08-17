@@ -12,6 +12,8 @@ function deny(screen){const gate=GATES[screen];if(!gate)return false;const messa
 function lockedView(screen){const gate=GATES[screen]||GATES.forge;return `<section class="pg1-locked"><div class="pg1-lock-card"><img src="${gate.icon}" alt="" decoding="async"><small>${gate.label.toUpperCase()}</small><h1>Noch nicht freigeschaltet</h1><p>${gate.label} steht dir ab Stufe ${gate.level} zur Verfügung.</p><b>Erreiche Stufe ${gate.level}</b><button onclick="tab('${gate.returnScreen}')">Zurück</button></div></section>`}
 function guardAction(name,screen){const fn=window[name];if(typeof fn!=='function'||fn.__progressionGuard)return;const wrapped=function(){if(!allowed(screen))return deny(screen);return fn.apply(this,arguments)};Object.defineProperty(wrapped,'__progressionGuard',{value:true});window[name]=wrapped}
 function guardView(name,screen){const fn=window[name];if(typeof fn!=='function'||fn.__progressionGuard)return;const wrapped=function(){return allowed(screen)?fn.apply(this,arguments):lockedView(screen)};Object.defineProperty(wrapped,'__progressionGuard',{value:true});window[name]=wrapped}
+function guardArenaSystem(){const system=Arcane.arenaSystem;if(!system)return;for(const key of ['start','setStance','done']){const fn=system[key];if(typeof fn!=='function'||fn.__progressionGuard)continue;const wrapped=function(){if(!allowed('arena'))return deny('arena');return fn.apply(this,arguments)};Object.defineProperty(wrapped,'__progressionGuard',{value:true});system[key]=wrapped}}
+function guardLegacyCombat(){const fn=window.startCombat;if(typeof fn!=='function'||fn.__progressionArenaGuard)return;const wrapped=function(kind){if(kind==='arena'&&!allowed('arena'))return deny('arena');return fn.apply(this,arguments)};Object.defineProperty(wrapped,'__progressionArenaGuard',{value:true});window.startCombat=wrapped}
 function install(){
   guardView('merchantView','merchant');
   guardView('forgeView','forge');
@@ -19,6 +21,7 @@ function install(){
   ['merchantBuy','merchantSell','merchantRefresh','merchantItemOpen','merchantItemClose','cityMode'].forEach(n=>guardAction(n,'merchant'));
   ['fv4Tab','fv4Select','fv4ToggleAll','fv4Salvage','fv4SalvageAll','fv4Legendary','fv4Upgrade','fa1Select','fa1Lock','fa1Reroll','fa1Improve'].forEach(n=>guardAction(n,'forge'));
   ['arenaV2Stance','arenaV2Start','arenaV2Done'].forEach(n=>guardAction(n,'arena'));
+  guardArenaSystem();guardLegacyCombat();
 }
 Arcane.navigation?.addGuard?.(({screen})=>{const gate=GATES[screen];if(!gate||allowed(screen))return true;deny(screen);return false});
 Arcane.on?.('bootReady',install);
