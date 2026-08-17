@@ -46,8 +46,17 @@ function mountUnlockModal(){
  document.querySelectorAll('.skill-unlock-modal').forEach(x=>x.remove());
  if(S.screen==='char'&&S.heroSkillUnlockOpen&&pending()>0)document.body.insertAdjacentHTML('beforeend',unlockModal());
 }
+function injectHeaderNotice(){
+ document.querySelectorAll('.skill-header-notice').forEach(x=>x.remove());
+ const p=pending();if(!p)return;
+ const header=document.querySelector('header')||document.querySelector('.topbar')||document.querySelector('.app-header');if(!header)return;
+ const btn=document.createElement('button');btn.className='skill-header-notice';btn.type='button';btn.setAttribute('aria-label',p>1?`${p} neue Fertigkeiten wählen`:'Neue Fertigkeit wählen');
+ btn.innerHTML=`<span class="shn-rune">✦</span><span class="shn-copy"><b>${p>1?`${p} Skills wählen`:'Neuen Skill wählen'}</b><small>Level ${Number(S.lvl)||1}</small></span><strong>${p}</strong>`;
+ btn.onclick=()=>{S.screen='char';S.heroView='skills';save();render();requestAnimationFrame(()=>window.heroSkillUnlockOpen?.())};
+ header.appendChild(btn);
+}
 function injectProgress(){
- ensure();
+ ensure();injectHeaderNotice();
  if(S.screen!=='char'||(S.heroView||'equipment')!=='skills')return mountUnlockModal();
  const panel=document.querySelector('.he4-skills')?.closest('.he4-panel');if(!panel)return mountUnlockModal();
  panel.querySelector('.skill-progress-card')?.remove();
@@ -79,6 +88,10 @@ const css=document.createElement('style');css.textContent=`
 .skill-progress-card .spc-rune{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#0c0812;border:1px solid #a875ff44;color:#c59cff;font-size:17px}
 .skill-progress-card b,.skill-progress-card small{display:block}.skill-progress-card b{font-size:10px}.skill-progress-card small{margin-top:2px;font-size:7px;color:var(--muted)}.skill-progress-card strong{font-size:8px;color:var(--gold)}
 .skill-unlock-intro{margin:0 0 9px;padding:8px 9px;border:1px solid #ffffff0d;border-radius:10px;background:#ffffff045;color:var(--muted);font-size:9px;line-height:1.4}
+.skill-header-notice{position:absolute!important;right:76px!important;top:50%!important;transform:translateY(-50%)!important;z-index:8!important;display:flex!important;align-items:center!important;gap:6px!important;min-height:38px!important;padding:5px 8px!important;border:1px solid #a875ff70!important;border-radius:12px!important;background:linear-gradient(135deg,#3a2157f2,#24152ff2)!important;color:var(--text)!important;box-shadow:0 0 18px #a875ff24!important;animation:skillHeaderPulse 2.2s ease-in-out infinite!important}
+.skill-header-notice .shn-rune{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#0d0813;border:1px solid #c59cff55;color:#d8b6ff;font-size:14px}.skill-header-notice .shn-copy{text-align:left;line-height:1.05}.skill-header-notice .shn-copy b,.skill-header-notice .shn-copy small{display:block;white-space:nowrap}.skill-header-notice .shn-copy b{font-size:9px}.skill-header-notice .shn-copy small{margin-top:3px;font-size:6px;color:var(--gold)}.skill-header-notice strong{display:grid;place-items:center;min-width:18px;height:18px;padding:0 4px;border-radius:99px;background:var(--gold);color:#211322;font-size:8px}
+@keyframes skillHeaderPulse{0%,100%{box-shadow:0 0 10px #a875ff18}50%{box-shadow:0 0 22px #a875ff55}}
+@media(max-width:430px){.skill-header-notice{right:68px!important;padding:5px 6px!important}.skill-header-notice .shn-copy{display:none}.skill-header-notice strong{position:absolute;right:-5px;top:-5px}}
 `;document.head.appendChild(css);
 ensure();
 })();
