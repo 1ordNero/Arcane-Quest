@@ -40,7 +40,7 @@ jobs:
           print(f'Validated {len(scripts)} runtime references.')
           PY
 
-      - name: Validate build version consistency
+      - name: Validate single build version source
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -48,11 +48,20 @@ jobs:
 
           html = Path('index.html').read_text(encoding='utf-8')
           release = Path('release-runtime-v1.js').read_text(encoding='utf-8')
-          meta = re.search(r'<meta name="build" content="([^"]+)"', html)
-          runtime = re.search(r"const BUILD='([^']+)'", release)
-          if not meta or not runtime:
-              raise SystemExit('Could not read build versions.')
-          if meta.group(1) != runtime.group(1):
-              raise SystemExit(f'Build mismatch: index={meta.group(1)} runtime={runtime.group(1)}')
-          print('Build version:', meta.group(1))
+          app_version = Path('app-version-v1.js').read_text(encoding='utf-8')
+
+          runtime = re.search(r"const BUILD='(v\d+\.\d+\.\d+)'", release)
+          if not runtime:
+              raise SystemExit('release-runtime-v1.js must define the canonical semantic BUILD version.')
+
+          # release-runtime-v1.js is the only canonical source. Other files may consume
+          # window.ARCANE_BUILD but must not require a second manually synchronized version.
+          if 'window.ARCANE_BUILD' not in app_version:
+              raise SystemExit('app-version-v1.js must consume window.ARCANE_BUILD.')
+
+          meta = re.search(r'<meta name="build"(?: content="([^"]*)")?', html)
+          if not meta:
+              raise SystemExit('index.html must keep a build meta element for runtime publication.')
+
+          print('Canonical build source:', runtime.group(1), 'from release-runtime-v1.js')
           PY
