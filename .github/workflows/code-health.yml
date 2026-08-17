@@ -1,0 +1,58 @@
+name: Code Health
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            echo "Checking $file"
+            node --check "$file"
+          done < <(find . -type f -name '*.js' -not -path './node_modules/*' -print0)
+
+      - name: Validate index runtime references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          html = Path('index.html').read_text(encoding='utf-8')
+          scripts = [src.split('?', 1)[0] for src in re.findall(r'<script\s+src="([^"]+)"', html)]
+          missing = [src for src in scripts if not Path(src).is_file()]
+          duplicates = sorted({src for src in scripts if scripts.count(src) > 1})
+          if missing:
+              raise SystemExit('Missing runtime files: ' + ', '.join(missing))
+          if duplicates:
+              raise SystemExit('Duplicate runtime references: ' + ', '.join(duplicates))
+          print(f'Validated {len(scripts)} runtime references.')
+          PY
+
+      - name: Validate build version consistency
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          html = Path('index.html').read_text(encoding='utf-8')
+          release = Path('release-runtime-v1.js').read_text(encoding='utf-8')
+          meta = re.search(r'<meta name="build" content="([^"]+)"', html)
+          runtime = re.search(r"const BUILD='([^']+)'", release)
+          if not meta or not runtime:
+              raise SystemExit('Could not read build versions.')
+          if meta.group(1) != runtime.group(1):
+              raise SystemExit(f'Build mismatch: index={meta.group(1)} runtime={runtime.group(1)}')
+          print('Build version:', meta.group(1))
+          PY
