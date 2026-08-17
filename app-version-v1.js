@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION=window.ARCANE_BUILD||'v0.14.9';
+const VERSION=window.ARCANE_BUILD||'v0.14.10';
 const buildMeta=document.querySelector('meta[name="build"]');if(buildMeta)buildMeta.content=VERSION;window.ARCANE_APP_VERSION=VERSION;
 function apply(){const header=document.querySelector('header');if(!header)return;let badge=header.querySelector(':scope > .aq-version');if(!badge){badge=document.createElement('span');badge.className='aq-version';header.appendChild(badge)}if(badge.textContent!==VERSION)badge.textContent=VERSION}
 window.Arcane?.on?.('afterRenderSettled',apply);window.Arcane?.on?.('bootReady',apply);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else queueMicrotask(apply);
