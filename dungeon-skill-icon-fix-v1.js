@@ -1,12 +1,12 @@
 (()=>{
 'use strict';
-function escAttr(v){return String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]))}
 function apply(){
- const d=window.S?.dungeonV1||window.S?.dungeonV1;
+ const d=typeof S!=='undefined'?S.dungeonV1:null;
  const feedback=d?.feedback;
  const box=document.querySelector('.dv7-action');
  if(!box)return;
  box.querySelector('.dv7-skill-feedback-icon')?.remove();
+ box.classList.remove('has-skill-icon');
  if(!feedback?.iconAsset)return;
  const img=document.createElement('img');
  img.className='dv7-skill-feedback-icon';
@@ -14,7 +14,7 @@ function apply(){
  img.alt=feedback.title||'Skill';
  img.decoding='async';
  img.loading='eager';
- img.onerror=()=>img.remove();
+ img.onerror=()=>{img.remove();box.classList.remove('has-skill-icon')};
  box.prepend(img);
  box.classList.add('has-skill-icon');
 }
