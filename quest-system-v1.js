@@ -29,8 +29,13 @@ function finish(){const st=S.quest;if(!st)return;const q=getQuest(st.id);if(!q)r
 function closeResult(){S.questResult=null;save();render()}
 function isWaiting(){const q=S.quest&&getQuest(S.quest.id);return !!(q?.kind==='event'&&S.quest?.event&&!S.quest.event.ready)}
 function syncState(){ensureDailyAL();if(S.quest&&!isWaiting()&&S.quest.ends<=Date.now())setTimeout(finish,0)}
-function tick(){const reset=ensureDailyAL();if(S.quest){if(!isWaiting()&&S.quest.ends<=Date.now())finish();else render()}else if(reset)render()}
-root.quests={definitions:QUESTS,eventSteps:EVENT_STEPS,getQuest,getSelected,setSelected,ensureDailyAL,formatTime,chanceFor,select,start,eventChoice,finish,closeResult,isWaiting,syncState,tick};
+function updateQuestClock(){if(!S.quest)return;const q=getQuest(S.quest.id);if(!q)return;const now=Date.now(),left=Math.max(0,Math.ceil((S.quest.ends-now)/1000));if(S.screen==='home'&&!isWaiting()){
+  const timer=document.querySelector('.active-quest .timer');if(timer)timer.textContent=formatTime(left);
+  const bar=document.querySelector('.active-quest .q-progress i');if(bar){const span=Math.max(1,S.quest.ends-S.quest.started),pct=Math.min(100,Math.max(0,((now-S.quest.started)/span)*100));bar.style.width=`${pct}%`}
+}
+const banner=document.querySelector('.global-q');if(banner){const label=banner.querySelector('b');if(label)label.textContent=isWaiting()?'Entscheidung':left?formatTime(left):'Fertig!';const name=banner.querySelector('small');if(name&&name.textContent!==q.name)name.textContent=q.name}}
+function tick(){const reset=ensureDailyAL();if(S.quest){if(reset){render();return}if(!isWaiting()&&S.quest.ends<=Date.now()){finish();return}updateQuestClock()}else if(reset)render()}
+root.quests={definitions:QUESTS,eventSteps:EVENT_STEPS,getQuest,getSelected,setSelected,ensureDailyAL,formatTime,chanceFor,select,start,eventChoice,finish,closeResult,isWaiting,syncState,tick,updateQuestClock};
 window.qSelect=select;window.qStart=start;window.eventChoice=eventChoice;window.qCloseResult=closeResult;
 root.on?.('beforeRender',syncState);
 setInterval(tick,1000);
