@@ -1,0 +1,15 @@
+(()=>{
+'use strict';
+function D(){try{return S?.dungeonV1||null}catch{return null}}
+function stats(){try{return window.getFinalStats?getFinalStats():{str:S.str||8,agi:S.agi||8,int:S.int||8,hp:S.maxHp||120,armor:0,damage:0,crit:0,dodge:0,block:0}}catch{return {str:8,agi:8,int:8,hp:120,armor:0,damage:0,crit:0,dodge:0,block:0}}}
+function playerPower(){const s=stats(),lvl=Math.max(1,Number(S?.lvl)||1);const attrs=(Number(s.str)||8)+(Number(s.agi)||8)+(Number(s.int)||8);return Math.max(1,lvl*5+(attrs-24)*1.8+(Number(s.damage)||0)*5+(Number(s.armor)||0)*2.4+(Number(s.crit)||0)*2.2+(Number(s.dodge)||0)*2+(Number(s.block)||0)*2.1+Math.max(0,(Number(s.hp)||120)-120)*.16)}
+function baselinePower(lvl){return lvl*5+Math.max(0,lvl-1)*3.8}
+function gearFactor(){const lvl=Math.max(1,Number(S?.lvl)||1),ratio=playerPower()/Math.max(1,baselinePower(lvl));return Math.max(.92,Math.min(1.85,Math.pow(ratio,.42)))}
+function roomFactor(room){return 1+Math.max(0,Math.min(9,Number(room)||0))*.055}
+function scaleEnemy(e,d){if(!e||e._catScaleV2)return;const lvl=Math.max(1,Number(S?.lvl)||1),rf=roomFactor(d?.room),gf=gearFactor();const boss=!!e.boss,elite=!!e.elite;const hpMult=gf*rf*(boss?1.22:elite?1.1:1);const dmgMult=Math.pow(gf,.72)*Math.pow(rf,.72)*(boss?1.12:elite?1.06:1);const oldMax=Math.max(1,Number(e.max)||Number(e.hp)||1),oldHp=Math.max(0,Number(e.hp)||oldMax),ratio=oldHp/oldMax;const newMax=Math.max(oldMax,Math.round(oldMax*hpMult));e.max=newMax;e.hp=Math.max(1,Math.round(newMax*ratio));e.damage=Math.max(1,Math.round((Number(e.damage)||1)*dmgMult));if(boss){e.maxShield=Math.max(Number(e.maxShield)||0,Math.round(newMax*(.30+Math.min(.08,(gf-1)*.07))));e.shield=e.maxShield;e._catEnrageRound=Math.max(4,7-Math.floor(Math.max(0,gf-1)*3)-Math.floor((d?.room||0)/5))}e._catScaleV2={lvl,room:d?.room||0,gf:+gf.toFixed(3),rf:+rf.toFixed(3)}}
+function patchEnemy(){const d=D();if(!d?.enemy)return;scaleEnemy(d.enemy,d)}
+function patchEvents(){const d=D();if(!d)return;const root=document.querySelector('.dv7-room');if(!root)return;root.querySelectorAll('.dv7-choices>button em').forEach(em=>{const raw=parseInt(em.textContent,10);if(!Number.isFinite(raw)||em.dataset.catScaleV2)return;const depth=Math.max(0,Math.min(9,Number(d.room)||0)),gf=gearFactor();const penalty=Math.round(depth*1.5+Math.max(0,gf-1)*18);const adjusted=Math.max(30,Math.min(82,raw-penalty));em.textContent=adjusted+'%';em.dataset.catScaleV2='1'})}
+function patchBossEnrage(){const d=D(),e=d?.enemy;if(!e?.boss||!e._catEnrageRound)return;if(!e.enraged&&Number(e.round)>=e._catEnrageRound){e.enraged=true;if(d.feedback?.text&&!/Raserei/.test(d.feedback.text))d.feedback.text+=' Der Hüter gerät in Raserei.'}}
+function apply(){patchEnemy();patchBossEnrage();patchEvents()}
+window.Arcane?.on?.('afterRenderSettled',apply);window.Arcane?.on?.('bootReady',apply);new MutationObserver(()=>queueMicrotask(apply)).observe(document.body,{subtree:true,childList:true});queueMicrotask(apply);
+})();
