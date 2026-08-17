@@ -1,11 +1,12 @@
 (()=>{
 'use strict';
 const root=window.Arcane=window.Arcane||{};
+const questArt=(file,label)=>`<img class="quest-art" src="assets/icons/quests/${file}" alt="${label}" decoding="async">`;
 const QUESTS=[
-{id:'raid',cat:'RAUBZUG',icon:'📜',name:'Schatten im alten Forst',desc:'Ein alter Handelsweg wird von Kreaturen blockiert.',detail:'Spüre die Quelle der Angriffe auf und sichere den Weg für die Händler. Ein verlässlicher Auftrag mit ausgewogener Belohnung.',time:45,cost:12,xp:30,gold:'35–80',kind:'std'},
-{id:'event',cat:'EREIGNIS',icon:'🎲',name:'Das flüsternde Siegel',desc:'Ein Runensiegel reagiert auf deine Ankunft.',detail:'Eine mehrstufige Ereignisquest. Deine Entscheidungen lösen unsichtbare Zufallsproben aus, deren Chancen durch STR, AGI, INT, Volk und Klasse beeinflusst werden.',time:75,cost:18,xp:42,gold:'55–110',kind:'event'},
-{id:'bounty',cat:'KOPFGELD',icon:'💀',name:'Der Knochenhauer',desc:'Ein gefährlicher Mini-Boss treibt Reisende aus der Gegend.',detail:'Jage den Knochenhauer. Kopfgelder sind anspruchsvoller und liefern zusätzlich Handwerksmaterialien.',time:120,cost:24,xp:65,gold:'90–160',kind:'bounty'},
-{id:'risk',cat:'RAUBZUG · RISIKO',icon:'🔥',name:'Die versunkene Krypta',desc:'Hohe Gefahr, aber außergewöhnliche Beute.',detail:'Eine riskante Expedition mit erhöhtem Goldgewinn. Diese Variante ist für Spieler gedacht, die mehr Risiko für eine bessere Belohnung eingehen.',time:180,cost:28,xp:85,gold:'120–220',kind:'risk'}
+{id:'raid',cat:'RAUBZUG',icon:questArt('quest_standard.webp','Raubzug'),name:'Schatten im alten Forst',desc:'Ein alter Handelsweg wird von Kreaturen blockiert.',detail:'Spüre die Quelle der Angriffe auf und sichere den Weg für die Händler. Ein verlässlicher Auftrag mit ausgewogener Belohnung.',time:45,cost:12,xp:30,gold:'35–80',kind:'std'},
+{id:'event',cat:'EREIGNIS',icon:questArt('quest_event.webp','Ereignis'),name:'Das flüsternde Siegel',desc:'Ein Runensiegel reagiert auf deine Ankunft.',detail:'Eine mehrstufige Ereignisquest. Deine Entscheidungen lösen unsichtbare Zufallsproben aus, deren Chancen durch STR, AGI, INT, Volk und Klasse beeinflusst werden.',time:75,cost:18,xp:42,gold:'55–110',kind:'event'},
+{id:'bounty',cat:'KOPFGELD',icon:questArt('quest_bounty.webp','Kopfgeld'),name:'Der Knochenhauer',desc:'Ein gefährlicher Mini-Boss treibt Reisende aus der Gegend.',detail:'Jage den Knochenhauer. Kopfgelder sind anspruchsvoller und liefern zusätzlich Handwerksmaterialien.',time:120,cost:24,xp:65,gold:'90–160',kind:'bounty'},
+{id:'risk',cat:'RAUBZUG · RISIKO',icon:questArt('quest_risk.webp','Risiko-Raubzug'),name:'Die versunkene Krypta',desc:'Hohe Gefahr, aber außergewöhnliche Beute.',detail:'Eine riskante Expedition mit erhöhtem Goldgewinn. Diese Variante ist für Spieler gedacht, die mehr Risiko für eine bessere Belohnung eingehen.',time:180,cost:28,xp:85,gold:'120–220',kind:'risk'}
 ];
 const EVENT_STEPS=[
 {title:'Die Patrouille',text:'Zwischen den Bäumen bewegt sich eine verdorbene Patrouille. Der direkte Weg zum Siegel ist blockiert.',choices:[{label:'Verstecken',icon:'🌑',stat:'agi',base:56,desc:'Ungesehen zwischen den Schatten vorbeiziehen.'},{label:'Einschüchtern',icon:'⚔️',stat:'str',base:48,desc:'Die Patrouille mit Entschlossenheit vertreiben.'},{label:'Arkane Ablenkung',icon:'✦',stat:'int',base:52,desc:'Eine magische Täuschung erzeugen.'}]},
