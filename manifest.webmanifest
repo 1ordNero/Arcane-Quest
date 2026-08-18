@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Arcane Tavern & Quest – Beta",
+  "name": "Arcane Tavern & Quest",
   "short_name": "Arcane Quest",
-  "description": "Ein mobiles Fantasy-RPG rund um Taverne, Held, Katakomben, Arena und Ahnenschmiede.",
+  "description": "Ein mobiles Dark-Arcane-Fantasy-RPG rund um Taverne, Held, Katakomben, Arena, Ahnenschmiede und Reinkarnation.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
