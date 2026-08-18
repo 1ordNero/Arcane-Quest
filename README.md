@@ -2,7 +2,7 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit einer klaren, stilisierten Warcraft-artigen Lesbarkeit.
 
-**Aktuelle Beta-Version:** v0.14.54  
+**Aktuelle Beta-Version:** v0.14.55  
 **Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
 
 ## Aktueller Entwicklungsstand
@@ -216,6 +216,7 @@ Zuletzt wurden unter anderem:
 - Footer-Navigation als stabiler eigener Renderpfad etabliert
 - Skill-Freischaltung und Skillrotation als gemeinsame Systeme ausgebaut
 - Katakomben-Autokampf mit dem öffentlichen Skill-/Combat-Pfad verbunden, damit automatische Kämpfe die Rotation nicht umgehen
+- Screen-spezifische Icon-Geometrie bleibt beim jeweiligen UX-Modul; die allgemeine Icon-Runtime übernimmt nur Asset-Zuordnung und Hydration
 
 Ziel ist, schrittweise weniger konkurrierende Runtime-Wrapper zu besitzen und zentrale Systeme als eindeutige Source of Truth zu verwenden.
 
