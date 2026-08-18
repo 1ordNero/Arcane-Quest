@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktueller Release Candidate:** v0.15.5  
+**Aktueller Release Candidate:** v0.15.7  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.5 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
+v0.15.7 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -47,8 +47,11 @@ Grundregeln:
 - Jedes Kapitel kann separat übersprungen werden, ohne andere spätere Tutorials zu deaktivieren.
 - Reinkarnation startet das Anfänger-Onboarding nicht erneut.
 - Nach einer frischen Charaktererstellung wird das Tavernen-Kapitel explizit als ausstehend markiert und über die kanonische State-Authority gestartet.
+- Coachmarks verwenden einen SVG-Masken-Spotlight-Ausschnitt, sodass das hervorgehobene UI sichtbar bleibt und nicht mit Header-, Footer- oder Karten-Layern kollidiert.
+- Das Quest-Tutorial hebt bevorzugt eine konkrete Questkarte statt den kompletten Questbereich hervor.
+- Das Katakomben-Tutorial verweist auf den tatsächlichen Schlüsselbestand im Katakomben-Header.
 
-Für QA stellt `Arcane.onboarding` Status-, Reset- und Open-Funktionen bereit, damit einzelne Kapitel gezielt erneut getestet werden können.
+Für QA stellt `Arcane.onboarding` Status-, Reset- und Open-Funktionen bereit, damit einzelne Kapitel gezielt erneut getestet werden können. Im Beta-Menü kann zusätzlich das **gesamte Tutorial von vorne gestartet** werden.
 
 ## Charakter, Skills und Builds
 
@@ -106,6 +109,7 @@ Wichtige Regeln:
 - ein aktiver Kampf kann nicht durch Verlassen umgangen werden
 - Endboss besitzt Phasen-/Enrage-Mechaniken
 - Run-Zustände werden für Reload/PWA-Unterbrechungen abgesichert
+- der globale Katakomben-Header zeigt neben Gold den aktuellen Katakombenschlüssel-Bestand mit dem kanonischen Schlüssel-Asset
 
 ## Arena
 
@@ -188,6 +192,8 @@ Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrollie
 - zentraler Held-Button mit Portrait
 - sichtbares Reinkarnations-Prestige mit Lebenszyklus-Titeln im Heldentab
 - progressives, kontextuelles Onboarding mit separaten Kapiteln pro freigeschaltetem System
+- Spotlight-Coachmarks mit garantiert sichtbarem Zielbereich
+- Katakombenschlüssel sichtbar im Katakomben-Header
 - Smartphone-Safe-Areas
 - einheitliche Item-Pop-ups und Dialoge
 - hochwertige Quest-, Arena-, Forge- und Reward-Präsentation
@@ -212,6 +218,9 @@ GitHub Actions prüfen JavaScript-Syntax, Script-/Asset-Referenzen, Load-Order, 
 Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind:
 - frischer Start und Charaktererstellung ohne unerwarteten zweiten Seiten-Reload
 - vollständiges Erst-Onboarding in Taverne und Heldentab
+- Quest-Tutorial: hervorgehobene Questkarte bleibt innerhalb des Spotlight-Ausschnitts sichtbar
+- Katakomben-Tutorial: Schlüssel-Coachmark zeigt auf den sichtbaren Schlüsselbestand im Header
+- Beta-Menü: `Tutorial neu starten` setzt alle Kapitel zurück und startet wieder in der Taverne
 - keine Tutorials für noch gesperrte Systeme
 - Händler-Tutorial beim ersten Betreten ab Stufe 3
 - Schmiede- und Arena-Tutorials beim ersten Betreten ab Stufe 5
@@ -229,7 +238,7 @@ Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besond
 
 ## Entwicklerwerkzeuge
 
-Die internen Testwerkzeuge sind im normalen Release-Build unsichtbar. Für gezielte QA können sie über `?beta=1` oder `?debug=1` aktiviert werden. Dort stehen Testressourcen, Level-Steuerung sowie Save-Export/-Import und Recovery-Aktionen zur Verfügung.
+Die internen Testwerkzeuge sind im normalen Release-Build unsichtbar. Für gezielte QA können sie über `?beta=1` oder `?debug=1` aktiviert werden. Dort stehen Testressourcen, Level-Steuerung, ein vollständiger Tutorial-Neustart sowie Save-Export/-Import und Recovery-Aktionen zur Verfügung.
 
 ## Entwicklungsregel
 
