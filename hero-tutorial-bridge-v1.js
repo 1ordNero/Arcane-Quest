@@ -1,0 +1,1 @@
+(()=>{'use strict';function sync(){if(S?.screen!=='char')return;document.querySelector('.hd8-skills')?.classList.add('hc1-skills');document.querySelector('.hd8-skillrow')?.classList.add('hc1-skill-row');document.querySelector('.hd8-dashboard')?.classList.add('hc1-summary')}window.Arcane?.on?.('afterRenderSettled',sync);queueMicrotask(sync)})();
