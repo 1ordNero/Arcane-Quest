@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktueller Release Candidate:** v0.15.7  
+**Aktueller Release Candidate:** v0.15.12  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.7 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
+v0.15.12 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -33,7 +33,7 @@ Das reguläre Maximallevel ist **Stufe 50**.
 
 ## Onboarding
 
-Das Onboarding ist kontextuell, persistent und an den echten Spielfortschritt gekoppelt. Es verwendet kurze Coachmarks direkt auf den relevanten UI-Bereichen statt eines separaten Tutorial-Modus.
+Das Onboarding ist kontextuell, persistent und an den echten Spielfortschritt gekoppelt. Es verwendet kompakte Coachmarks direkt auf den relevanten UI-Bereichen statt eines separaten Tutorial-Modus.
 
 Grundregeln:
 - Das erste Tutorial erklärt nur Taverne, Abenteuerlust und Questwahl.
@@ -48,6 +48,8 @@ Grundregeln:
 - Reinkarnation startet das Anfänger-Onboarding nicht erneut.
 - Nach einer frischen Charaktererstellung wird das Tavernen-Kapitel explizit als ausstehend markiert und über die kanonische State-Authority gestartet.
 - Coachmarks verwenden einen SVG-Masken-Spotlight-Ausschnitt, sodass das hervorgehobene UI sichtbar bleibt und nicht mit Header-, Footer- oder Karten-Layern kollidiert.
+- Coachmark-Texte bleiben bewusst kompakt; eine kurze Zusatzinformation ergänzt nur den wichtigsten strategischen Kontext.
+- Die Coachmark-Karte wird bevorzugt ober- oder unterhalb des hervorgehobenen Elements platziert und auf kleinen Displays an die gegenüberliegende Bildschirmkante gedockt.
 - Das Quest-Tutorial hebt bevorzugt eine konkrete Questkarte statt den kompletten Questbereich hervor.
 - Das Katakomben-Tutorial verweist auf den tatsächlichen Schlüsselbestand im Katakomben-Header.
 
@@ -68,9 +70,11 @@ Der Held besitzt neun aktive Ausrüstungsslots:
 
 Ring 2, Gürtel und Handschuhe gehören nicht zum aktuellen kanonischen Equipment-Modell. Alte Spielstände werden auf die aktuelle Struktur migriert.
 
-Jede Klasse verfügt über eigene Skills. Freigeschaltete Fertigkeiten werden zu einer vorbereiteten Rotation mit bis zu vier Slots zusammengestellt. Diese Rotation ist nicht nur Darstellung, sondern wird in Arena, Katakomben und Kopfgeldkämpfen tatsächlich ausgeführt. Angriff, Heilung, Lebensraub, Buffs, defensive Effekte und Statusschaden laufen über den gemeinsamen Skill-Pfad.
+Jede Klasse verfügt über eigene Skills. Freigeschaltete Fertigkeiten werden zu einer vorbereiteten Rotation mit bis zu vier Slots zusammengestellt. Diese Rotation ist nicht nur Darstellung, sondern wird in Arena, Katakomben und Kopfgeldkämpfen tatsächlich ausgeführt. Angriff, Heilung, Lebensraub, Buffs, defensive Effekte und Statusschaden laufen über den gemeinsamen Skill-Pfad. Im Heldentab wird die vorbereitete Rotation genau einmal direkt unter der Charakter-/Ausrüstungsansicht angezeigt.
 
 Jede Klasse besitzt eine eigene **kampfgebundene Klassenressource**. Diese Ressource ist nur während eines aktiven Kampfes relevant und sichtbar, startet zu Beginn jedes einzelnen Kampfes wieder auf dem Maximalwert und wird nicht als persistente Meta-Ressource im globalen Header geführt. Skills verbrauchen die Ressource; wenn kein vorbereiteter Skill bezahlbar ist, wird ein schwächerer Basisangriff verwendet, der Ressource regeneriert.
+
+Die drei Kernwerte **Leben, Schaden und Rüstung** verwenden eigene UI-Icons im Heldentab. Ein Antippen öffnet eine kompakte Erklärung mit aktuellem Wert und Gameplay-Bedeutung. Leere Ausrüstungsslots bleiben visuell neutral und dunkel, damit belegte und hochwertige Slots die eigentliche Aufmerksamkeit erhalten.
 
 Der Heldentab zeigt zusätzlich den dauerhaften Reinkarnationsfortschritt als Prestige-Merkmal. Jeder abgeschlossene Lebenszyklus erhöht die sichtbare Reinkarnationszahl und vergibt einen neuen Titel, beispielsweise **Wiedergeborener**, **Seelenwanderer** oder **Ahnenberührter**. Höhere Lebenszyklen führen die Titelprogression fort und bleiben unabhängig vom normalen Level sichtbar.
 
@@ -191,8 +195,11 @@ Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrollie
 - fünfteilige mobile Fußnavigation
 - zentraler Held-Button mit Portrait
 - sichtbares Reinkarnations-Prestige mit Lebenszyklus-Titeln im Heldentab
+- vorbereitete Fertigkeiten einmalig direkt unter Charakter und Ausrüstung
+- Kernwerte Leben, Schaden und Rüstung mit kanonischen Icons und antippbaren Erklärungen
+- leere Equipment-Slots neutral und dunkel statt visuell hervorgehoben
 - progressives, kontextuelles Onboarding mit separaten Kapiteln pro freigeschaltetem System
-- Spotlight-Coachmarks mit garantiert sichtbarem Zielbereich
+- Spotlight-Coachmarks mit garantiert sichtbarem Zielbereich und adaptiver Platzierung
 - Katakombenschlüssel sichtbar im Katakomben-Header
 - Smartphone-Safe-Areas
 - einheitliche Item-Pop-ups und Dialoge
@@ -218,7 +225,7 @@ GitHub Actions prüfen JavaScript-Syntax, Script-/Asset-Referenzen, Load-Order, 
 Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind:
 - frischer Start und Charaktererstellung ohne unerwarteten zweiten Seiten-Reload
 - vollständiges Erst-Onboarding in Taverne und Heldentab
-- Quest-Tutorial: hervorgehobene Questkarte bleibt innerhalb des Spotlight-Ausschnitts sichtbar
+- Quest-Tutorial: hervorgehobene Questkarte bleibt innerhalb des Spotlight-Ausschnitts sichtbar und wird von der Coachmark-Karte nicht verdeckt
 - Katakomben-Tutorial: Schlüssel-Coachmark zeigt auf den sichtbaren Schlüsselbestand im Header
 - Beta-Menü: `Tutorial neu starten` setzt alle Kapitel zurück und startet wieder in der Taverne
 - keine Tutorials für noch gesperrte Systeme
@@ -226,6 +233,7 @@ Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besond
 - Schmiede- und Arena-Tutorials beim ersten Betreten ab Stufe 5
 - Reinkarnations-/Vermächtnis-Tutorial erst auf Stufe 50
 - Tutorial-Fortsetzung nach Reload/PWA-Neustart und separates Überspringen einzelner Kapitel
+- Heldentab: nur eine Skillrotation sichtbar, leere Slots neutral, Stat-Popups für Leben/Schaden/Rüstung
 - Level-/Skill-Progression bis 50
 - alle Questtypen inklusive Ereigniswahrscheinlichkeiten
 - Klassenressource: Sichtbarkeit nur im Kampf, Verbrauch und Reset je Kampf
