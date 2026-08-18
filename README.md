@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktueller Release Candidate:** v0.15.3  
+**Aktueller Release Candidate:** v0.15.4  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.3 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis.
+v0.15.4 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -30,6 +30,24 @@ Waldläufer, Totenbeschwörer und die weiteren fünf Völker existieren teilweis
 8. Seelensteine in dauerhaftes Vermächtnis investieren und einen neuen Lebenszyklus starten.
 
 Das reguläre Maximallevel ist **Stufe 50**.
+
+## Onboarding
+
+Das Onboarding ist kontextuell, persistent und an den echten Spielfortschritt gekoppelt. Es verwendet kurze Coachmarks direkt auf den relevanten UI-Bereichen statt eines separaten Tutorial-Modus.
+
+Grundregeln:
+- Das erste Tutorial erklärt nur Taverne, Abenteuerlust und Questwahl.
+- Bereits gesperrte Systeme werden **nicht vorab erklärt**.
+- Händler startet sein eigenes Mini-Tutorial erst beim ersten Betreten ab Stufe 3.
+- Ahnenschmiede und Arena starten ihre Tutorials erst beim ersten Betreten ab Stufe 5.
+- Katakomben werden beim ersten tatsächlichen Betreten erklärt.
+- Der Heldentab erklärt Ausrüstung, Werte, Fertigkeiten und die kampfgebundene Klassenressource.
+- Reinkarnation und Vermächtnis werden erst auf Stufe 50 erklärt.
+- Jeder Bereich speichert seinen eigenen Tutorial-Fortschritt und wird nach Reload/PWA-Neustart korrekt fortgesetzt.
+- Jedes Kapitel kann separat übersprungen werden, ohne andere spätere Tutorials zu deaktivieren.
+- Reinkarnation startet das Anfänger-Onboarding nicht erneut.
+
+Für QA stellt `Arcane.onboarding` Status-, Reset- und Open-Funktionen bereit, damit einzelne Kapitel gezielt erneut getestet werden können.
 
 ## Charakter, Skills und Builds
 
@@ -168,6 +186,7 @@ Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrollie
 - fünfteilige mobile Fußnavigation
 - zentraler Held-Button mit Portrait
 - sichtbares Reinkarnations-Prestige mit Lebenszyklus-Titeln im Heldentab
+- progressives, kontextuelles Onboarding mit separaten Kapiteln pro freigeschaltetem System
 - Smartphone-Safe-Areas
 - einheitliche Item-Pop-ups und Dialoge
 - hochwertige Quest-, Arena-, Forge- und Reward-Präsentation
@@ -191,6 +210,12 @@ GitHub Actions prüfen JavaScript-Syntax, Script-/Asset-Referenzen, Load-Order, 
 
 Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind:
 - frischer Start und Charaktererstellung
+- vollständiges Erst-Onboarding in Taverne und Heldentab
+- keine Tutorials für noch gesperrte Systeme
+- Händler-Tutorial beim ersten Betreten ab Stufe 3
+- Schmiede- und Arena-Tutorials beim ersten Betreten ab Stufe 5
+- Reinkarnations-/Vermächtnis-Tutorial erst auf Stufe 50
+- Tutorial-Fortsetzung nach Reload/PWA-Neustart und separates Überspringen einzelner Kapitel
 - Level-/Skill-Progression bis 50
 - alle Questtypen inklusive Ereigniswahrscheinlichkeiten
 - Klassenressource: Sichtbarkeit nur im Kampf, Verbrauch und Reset je Kampf
