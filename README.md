@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App. Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Smartphone-Lesbarkeit.
 
-**Aktueller Release Candidate:** v0.15.14  
+**Aktueller Release Candidate:** v0.15.19  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.14 ist der aktuelle Release Candidate für den definierten Launch-Scope. Vor einer öffentlichen Veröffentlichung bleibt ein vollständiger manueller Geräte- und Regressionstest erforderlich. Der Kernloop von Charaktererstellung über Quests, Katakomben, Arena, Item-Progression und Schmiede bis Stufe 50, Reinkarnation und Vermächtnis ist spielbar.
+v0.15.19 ist der aktuelle Release Candidate für den definierten Launch-Scope. Der Build befindet sich im Release-Hardening: keine neuen Kernsysteme bis zur v1.0-Freigabe, stattdessen Runtime-Konsolidierung, Regressionstests, Save/PWA-Stabilität, mobile QA und Balance. Der Kernloop von Charaktererstellung über Quests, Katakomben, Arena, Item-Progression und Schmiede bis Stufe 50, Reinkarnation und Vermächtnis ist spielbar.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -105,7 +105,7 @@ Gegner besitzen Build-Archetypen:
 - **Arkan** – Burst; Defensive reduziert die Gefahr
 - **Blutklinge** – Raserei bei niedrigen HP; Defensive schwächt den Enrage
 
-Ausrüstung, Attribute, Haltung, Skillrotation und Klassenressource laufen im selben Kampfpfad. Verursachter und erlittener Schaden, Krits, Ausweichen und Konter werden während des Kampfes direkt erfasst und im Ergebnisdialog ausgewertet.
+Ausrüstung, Attribute, Haltung, Skillrotation und Klassenressource laufen im selben Kampfpfad. Verursachter und erlittener Schaden, Krits, Ausweichen und Konter werden während des Kampfes direkt erfasst und im Ergebnisdialog ausgewertet. Seit v0.15.19 besitzt `arena-v2.js` selbst die vollständige Arena-Darstellung einschließlich Kampfportraits und Klassenressourcenleiste; frühere Repair-Renderer wurden entfernt.
 
 ## Stadt und Ahnenschmiede
 
@@ -159,7 +159,9 @@ Das Projekt ist eine frameworkfreie PWA. Verbindliche Regeln:
 - destruktive Meta-Aktionen besitzen Recovery-Snapshots
 - bei jeder relevanten Änderung werden Versionsnummer und README gemeinsam aktualisiert
 
-GitHub Actions prüfen JavaScript-Syntax, Runtime-/Asset-Referenzen, Load-Order, Build-Version und kritische öffentliche APIs. `index.html` darf ausschließlich tatsächlich vorhandene Runtime-Dateien referenzieren.
+Die verbindliche Runtime-Ownership ist in `docs/RUNTIME-ARCHITECTURE.md` dokumentiert. Mit v0.15.19 wurden die separaten Arena-Repair-Runtimes sowie die Hero-Tutorial-/Visibility-Bridges aus dem Produktionsgraph entfernt und in `arena-v2.js` bzw. `hero-dashboard-v8.js` konsolidiert.
+
+GitHub Actions prüfen JavaScript-Syntax, Runtime-/Asset-Referenzen, Load-Order, Build-Version, kritische öffentliche APIs sowie zentrale Ownership- und Reinkarnations-Invarianten. `index.html` darf ausschließlich tatsächlich vorhandene Runtime-Dateien referenzieren.
 
 ## Release-Test
 
