@@ -146,3 +146,35 @@ jobs:
               raise SystemExit('Critical API regression:\n' + '\n'.join(missing))
           print('Critical public APIs are present.')
           PY
+
+      - name: Guard reincarnation invariants
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          canonical = Path('reincarnation-v1.js').read_text(encoding='utf-8')
+          adapter = Path('shrine-runtime-v2.js').read_text(encoding='utf-8')
+          failures = []
+
+          required = [
+              'createRecoverySnapshot',
+              'keys:0',
+              "emit?.('reincarnated'",
+              'requestReincarnation',
+          ]
+          for needle in required:
+              if needle not in canonical:
+                  failures.append(f'reincarnation-v1.js missing invariant: {needle}')
+
+          if 'api.requestReincarnation' not in adapter:
+              failures.append('shrine-runtime-v2.js must delegate reincarnation to the canonical API')
+          for forbidden in ['Object.keys(S).forEach', 'keys:S.keys', 'keys:S.keys||', 'S.keys||0']:
+              if forbidden in adapter:
+                  failures.append(f'shrine-runtime-v2.js reintroduces duplicate reset authority: {forbidden}')
+          if 'api.bonuses?.(S)' not in adapter:
+              failures.append('shrine-runtime-v2.js must consume the complete canonical legacy bonus set')
+
+          if failures:
+              raise SystemExit('Reincarnation invariant regression:\n' + '\n'.join(failures))
+          print('Reincarnation reset, key wipe and legacy authority invariants are intact.')
+          PY
