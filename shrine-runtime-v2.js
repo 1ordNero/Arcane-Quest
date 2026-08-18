@@ -19,7 +19,20 @@ function reincarnate(){
  // owns snapshots, reset rules, permanent progression, keys and onboarding.
  return api.requestReincarnation?.()??false;
 }
-function applyLegacyStats(){const base=window.getFinalStats;if(typeof base!=='function'||base.__rc2)return;const wrapped=function(){const s=base.apply(this,arguments),l=meta().legacy||{};if(l.power1)s.damage=Math.round((s.damage||0)*1.02);if(l.power2)s.crit=(s.crit||0)+2;if(l.survival1)s.hp=Math.round((s.hp||0)*1.03);if(l.survival2)s.armor=Math.round((s.armor||0)*1.03);if(l.survival3){s.block=(s.block||0)+2;s.dodge=(s.dodge||0)+2}return s};wrapped.__rc2=true;window.getFinalStats=wrapped}
+function applyLegacyStats(){
+ const base=window.getFinalStats;if(typeof base!=='function'||base.__rc2)return;
+ const wrapped=function(){
+  const s=base.apply(this,arguments),b=api.bonuses?.(S)||{};
+  s.damage=Math.round((Number(s.damage)||0)*(1+(Number(b.damagePct)||0)));
+  s.crit=(Number(s.crit)||0)+(Number(b.crit)||0);
+  s.hp=Math.round((Number(s.hp)||0)*(1+(Number(b.hpPct)||0)));
+  s.armor=Math.round((Number(s.armor)||0)*(1+(Number(b.armorPct)||0)));
+  s.block=(Number(s.block)||0)+(Number(b.block)||0);
+  s.dodge=(Number(s.dodge)||0)+(Number(b.dodge)||0);
+  return s;
+ };
+ wrapped.__rc2=true;window.getFinalStats=wrapped;
+}
 const oldView=window.shrineView;window.shrineView=function(){let html=oldView?oldView():api.view(S),i=0;html=html.replace(/<button disabled class="rc13-node">/g,()=>{const n=nodes[i++];return `<button class="rc13-node" onclick="rc2Buy('${n?.id||''}')">`}).replace('Käufe noch deaktiviert','Seelensteine investieren').replace('Die Knoten sind bereits als Kosten-/Effektmodell definiert, geben aber noch keine Boni und verbrauchen keine Seelensteine. So können wir Balance und Reihenfolge vor der Aktivierung prüfen.','Freigeschaltete Vermächtnisse bleiben über alle zukünftigen Reinkarnationen erhalten.');for(const n of nodes){if(meta().legacy?.[n.id])html=html.replace(`<b>${n.name}</b>`,`<b>${n.name} ✓</b>`)}const p=api.preview(S);const action=p.gain?.eligible?`<button class="rc2-reincarnate" onclick="rc2Reincarnate()">Reinkarnieren · +${p.gain.total} Seelensteine</button>`:`<button class="rc2-reincarnate" disabled>Reinkarnation ab Stufe ${p.unlockLevel}</button>`;return html.replace('</section>',`${action}</section>`)};
 window.rc2Buy=buy;window.rc2Reincarnate=reincarnate;applyLegacyStats();const st=document.createElement('style');st.textContent='.rc13-node:disabled{opacity:.45!important}.rc13-node:not(:disabled){cursor:pointer}.rc2-reincarnate{width:100%;min-height:52px;margin-top:12px;font-size:13px;background:linear-gradient(180deg,#8f62df,#6540a4)}';document.head.appendChild(st);
 })();
