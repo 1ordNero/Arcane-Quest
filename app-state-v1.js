@@ -3,7 +3,7 @@
 const root=window.Arcane=window.Arcane||{};
 const storage=root.storage||window.ARCANE_STORAGE||null;
 let offlineSettled=false;
-const DEFAULT_STATE=Object.freeze({screen:'home',name:'Aventurier',race:'Mensch',cls:'Krieger',bg:'Tavernen-Stammgast',lvl:1,xp:0,gold:120,al:100,maxAl:100,hp:120,maxHp:120,str:8,agi:8,int:8,items:[{name:'Rostiges Schwert',slot:'Haupthand',power:4,rarity:'common'}],eq:{},invCap:15,forgeDust:0,essence:0,souls:0,reincarnation:{count:0,bestLevel:1,lifetimeSouls:0,lastAt:0},keys:0,quests:0,wins:0,arena:0,skills:['Hieb','Schildwall','Mächtiger Schlag'],combat:null,log:['Willkommen in der Arcane Tavern.']});
+const DEFAULT_STATE=Object.freeze({screen:'home',name:'Aventurier',race:'Mensch',cls:'Krieger',bg:'Tavernen-Stammgast',lvl:1,xp:0,gold:120,al:100,maxAl:100,hp:120,maxHp:120,str:8,agi:8,int:8,items:[{name:'Rostiges Schwert',slot:'Haupthand',power:4,rarity:'common'}],eq:{},invCap:15,forgeDust:0,essence:0,souls:0,reincarnation:{count:0,bestLevel:1,lifetimeSouls:0,lastAt:0},keys:0,quests:0,wins:0,arena:0,skills:['Hieb','Schildwall','Mächtiger Schlag'],combat:null,onboarding:{version:1,completed:{},progress:{},dismissed:{},startedAt:0},log:['Willkommen in der Arcane Tavern.']});
 function cloneDefault(){return typeof structuredClone==='function'?structuredClone(DEFAULT_STATE):JSON.parse(JSON.stringify(DEFAULT_STATE))}
 function fallbackRead(){try{const value=JSON.parse(localStorage.getItem('arcaneBeta')||'null');return value&&typeof value==='object'&&!Array.isArray(value)?value:null}catch{return null}}
 function load(){const saved=storage?.read?.()||fallbackRead();return saved||cloneDefault()}
