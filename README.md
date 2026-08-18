@@ -2,7 +2,7 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit einer klaren, stilisierten Warcraft-artigen Lesbarkeit.
 
-**Aktuelle Beta-Version:** v0.14.57  
+**Aktuelle Beta-Version:** v0.14.58  
 **Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
 
 ## Aktueller Entwicklungsstand
@@ -158,12 +158,14 @@ Die Schmiede besitzt mehrere Progressionspfade:
 - Verwerten in Staub und Essenz
 - Ahnenwerk / Legendär-Progression
 - **Veredeln** für das Affix-System
+- erfolgreiche Aufwertungen erhalten einen eigenen Ergebnisdialog mit Itemgrafik, alter/neuer Schmiedestufe, Machtänderung und verbrauchten Ressourcen
+- die Veredelung nutzt eine kompakte Itemauswahl mit tatsächlichen Itemgrafiken, sichtbarer Rollqualität und anschließendem separatem Arbeitsbereich für Sperren, Neuwürfeln und Qualitätsverbesserung
 
 Beim Veredeln können Affixe neu gewürfelt, einzelne Affixe gesperrt und Roll-Qualitäten gezielt bis 100 % verbessert werden. Die Affix-Neuberechnung entfernt alte Affix-Beiträge vor dem Neuaufbau, damit wiederholtes Veredeln keine Stats mehrfach aufaddiert.
 
 ### UI / UX
 - appweites mobiles Design-System
-- kompakte Header und möglichst große nutzbare Spielfläche
+- kompakter globaler Header mit Bereich, Stufe, Ressourcen und XP ohne redundante zweite Bereichsüberschrift in Stadt-Unterbereichen
 - fünfteilige symmetrische Fußnavigation
 - zentraler Held-Button mit Charakterportrait
 - Skill-Wahl-Badge direkt im Footer
@@ -299,7 +301,7 @@ Besonders wichtig für aktuelle Tests sind:
 - Verlassen-Sperre während aktiver Katakombenkämpfe
 - Equipment-Migration älterer Saves
 - korrektes Helden-/Ausrüstungslayout auf unterschiedlichen Smartphone-Größen
-- Schmiede-Veredelung und Affix-Neuberechnung
+- Schmiede-Veredelung, Upgrade-Ergebnisdialog und Affix-Neuberechnung
 - aktuelle Grafiken nach Deployment/Reload
 - verbleibende Emoji-/Legacy-Platzhalter
 - Arena-Build-Matchups, Haltungskonter und korrekte Ergebnisanalyse
