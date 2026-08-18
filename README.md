@@ -2,7 +2,7 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit einer klaren, stilisierten Warcraft-artigen Lesbarkeit.
 
-**Aktuelle Beta-Version:** v0.14.56  
+**Aktuelle Beta-Version:** v0.14.57  
 **Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
 
 ## Aktueller Entwicklungsstand
@@ -102,6 +102,9 @@ Damit ist die Skillreihenfolge nicht nur eine Anzeige im Heldenscreen, sondern e
 - automatische Kämpfe mit HP-Balken und Kampfprotokoll
 - vorbereitete Skillrotation bestimmt die eingesetzten Fähigkeiten
 - Ruhm, Ruhmesmünzen und Liga-Progression von Bronze bis Legende
+- kompakter Ergebnisdialog mit eindeutiger Liga-Bezeichnung und vollständiger Überlagerung der globalen Navigation
+- Kampfmetriken für verursachten/erlittenen Schaden, Krits, Ausweichen und Konter werden direkt im Arenakampf erfasst
+- die Kampfanalyse verwendet lokalisierte Haltungstexte und erklärt Siege/Niederlagen anhand der tatsächlichen Kampfwerte
 
 Arena-Gegner besitzen zusätzlich Build-Archetypen:
 - **Bollwerk** – wird bevorzugt aggressiv gekontert
@@ -218,6 +221,7 @@ Zuletzt wurden unter anderem:
 - Skill-Freischaltung und Skillrotation als gemeinsame Systeme ausgebaut
 - Katakomben-Autokampf mit dem öffentlichen Skill-/Combat-Pfad verbunden, damit automatische Kämpfe die Rotation nicht umgehen
 - Screen-spezifische Icon-Geometrie bleibt beim jeweiligen UX-Modul; die allgemeine Icon-Runtime übernimmt nur Asset-Zuordnung und Hydration
+- Arena-Kampfstatistiken werden im Kampfsystem selbst erfasst statt nachträglich aus gekürzten Logzeilen rekonstruiert
 
 Ziel ist, schrittweise weniger konkurrierende Runtime-Wrapper zu besitzen und zentrale Systeme als eindeutige Source of Truth zu verwenden.
 
@@ -298,7 +302,7 @@ Besonders wichtig für aktuelle Tests sind:
 - Schmiede-Veredelung und Affix-Neuberechnung
 - aktuelle Grafiken nach Deployment/Reload
 - verbleibende Emoji-/Legacy-Platzhalter
-- Arena-Build-Matchups und Haltungskonter
+- Arena-Build-Matchups, Haltungskonter und korrekte Ergebnisanalyse
 - Ahnenschrein und Reinkarnations-Vorschau
 
 ## Plattform
