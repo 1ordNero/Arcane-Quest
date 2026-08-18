@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktueller Release Candidate:** v0.15.0  
+**Aktueller Release Candidate:** v0.15.2  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.0 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis.
+v0.15.2 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -47,6 +47,8 @@ Der Held besitzt neun aktive Ausrüstungsslots:
 Ring 2, Gürtel und Handschuhe gehören nicht zum aktuellen kanonischen Equipment-Modell. Alte Spielstände werden auf die aktuelle Struktur migriert.
 
 Jede Klasse verfügt über eigene Skills. Freigeschaltete Fertigkeiten werden zu einer vorbereiteten Rotation mit bis zu vier Slots zusammengestellt. Diese Rotation ist nicht nur Darstellung, sondern wird in Arena, Katakomben und Kopfgeldkämpfen tatsächlich ausgeführt. Angriff, Heilung, Lebensraub, Buffs, defensive Effekte und Statusschaden laufen über den gemeinsamen Skill-Pfad.
+
+Der Heldentab zeigt zusätzlich den dauerhaften Reinkarnationsfortschritt als Prestige-Merkmal. Jeder abgeschlossene Lebenszyklus erhöht die sichtbare Reinkarnationszahl und vergibt einen neuen Titel, beispielsweise **Wiedergeborener**, **Seelenwanderer** oder **Ahnenberührter**. Höhere Lebenszyklen führen die Titelprogression fort und bleiben unabhängig vom normalen Level sichtbar.
 
 Vier Build-Affinitäten ergänzen das Equipment:
 - **Bollwerk** – Defensive, Rüstung und Block
@@ -124,7 +126,7 @@ Die Seelenstein-Belohnung setzt sich aus Stufe-50-Basis, Quest-Meilensteinen, Ar
 Bei einer Reinkarnation bleiben erhalten:
 - Name, Volk, Geschlecht, Klasse und Hintergrund
 - Seelensteine und freigeschaltetes Vermächtnis
-- Reinkarnationshistorie
+- Reinkarnationshistorie und Prestige-Titel
 - legendäre Gegenstände
 - Ruhmesmünzen
 - freigeschaltete Inventar-/Bankkapazität
@@ -133,10 +135,13 @@ Zurückgesetzt werden:
 - Stufe und XP
 - Gold
 - normale Ausrüstung und normale Inventargegenstände
-- Schmiedestaub, Essenzen, Ahnenrelikte und Schlüssel
+- Schmiedestaub, Essenzen und Ahnenrelikte
+- **sämtliche Katakombenschlüssel**
 - Quest-/Arena-Ruhm-Fortschritt
 - aktive Runs und Kampfzustände
 - aktuelle Skill-Freischaltungen/Rotation des Lebenszyklus
+
+Der kanonische Katakombenschlüssel-Bestand ist `S.keys` und wird beim Reinkarnationsreset explizit auf `0` gesetzt.
 
 Der Vermächtnisbaum besitzt drei Zweige mit sequenziell freischaltbaren Knoten:
 - **Macht:** Gesamtschaden und Krit
@@ -156,6 +161,7 @@ Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrollie
 - kompakter globaler Header mit Bereich, Ressourcen und XP
 - fünfteilige mobile Fußnavigation
 - zentraler Held-Button mit Portrait
+- sichtbares Reinkarnations-Prestige mit Lebenszyklus-Titeln im Heldentab
 - Smartphone-Safe-Areas
 - einheitliche Item-Pop-ups und Dialoge
 - hochwertige Quest-, Arena-, Forge- und Reward-Präsentation
@@ -184,7 +190,7 @@ Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besond
 - kompletter Katakombenrun inklusive Boss und Verlassen-Sperre
 - Arena mit allen Haltungen/Build-Archetypen
 - Equipment, Bank, Händler und alle Schmiede-Tabs
-- Reinkarnation, Vermächtniskauf und Wiederherstellung des Vor-Reinkarnations-Snapshots
+- Reinkarnation, Vermächtniskauf, Schlüsselreset und Wiederherstellung des Vor-Reinkarnations-Snapshots
 - Save/Reload/PWA-Neustart während und nach Aktivitäten
 - Layout auf kleinen und großen Smartphone-Displays
 
