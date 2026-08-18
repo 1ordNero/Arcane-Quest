@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktueller Release Candidate:** v0.15.2  
+**Aktueller Release Candidate:** v0.15.3  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.2 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis.
+v0.15.3 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -48,6 +48,8 @@ Ring 2, Gürtel und Handschuhe gehören nicht zum aktuellen kanonischen Equipmen
 
 Jede Klasse verfügt über eigene Skills. Freigeschaltete Fertigkeiten werden zu einer vorbereiteten Rotation mit bis zu vier Slots zusammengestellt. Diese Rotation ist nicht nur Darstellung, sondern wird in Arena, Katakomben und Kopfgeldkämpfen tatsächlich ausgeführt. Angriff, Heilung, Lebensraub, Buffs, defensive Effekte und Statusschaden laufen über den gemeinsamen Skill-Pfad.
 
+Jede Klasse besitzt eine eigene **kampfgebundene Klassenressource**. Diese Ressource ist nur während eines aktiven Kampfes relevant und sichtbar, startet zu Beginn jedes einzelnen Kampfes wieder auf dem Maximalwert und wird nicht als persistente Meta-Ressource im globalen Header geführt. Skills verbrauchen die Ressource; wenn kein vorbereiteter Skill bezahlbar ist, wird ein schwächerer Basisangriff verwendet, der Ressource regeneriert.
+
 Der Heldentab zeigt zusätzlich den dauerhaften Reinkarnationsfortschritt als Prestige-Merkmal. Jeder abgeschlossene Lebenszyklus erhöht die sichtbare Reinkarnationszahl und vergibt einen neuen Titel, beispielsweise **Wiedergeborener**, **Seelenwanderer** oder **Ahnenberührter**. Höhere Lebenszyklen führen die Titelprogression fort und bleiben unabhängig vom normalen Level sichtbar.
 
 Vier Build-Affinitäten ergänzen das Equipment:
@@ -68,6 +70,8 @@ Die vier Hintergründe besitzen echte Gameplay-Auswirkungen:
 
 Die Taverne enthält Standard-, Ereignis-, Risiko- und Kopfgeldaktivitäten. Abenteuerlust wird beim tatsächlichen Start verbraucht. Questbelohnungen verwenden die gemeinsame Itemdarstellung und zeigen einen fokussierten Abschluss-/Loot-Screen.
 
+Ereignisquests sind auf eine neutrale frühe Erfolgswahrscheinlichkeit von ungefähr **50 %** kalibriert. Passende Attribute, Klasse und Volk verschieben diese Chance anschließend nach oben; hohe Erfolgsquoten müssen dadurch erst über Charakterentwicklung und passende Builds verdient werden.
+
 Besondere Kämpfe:
 - **Knochenwache:** automatischer Miniboss
 - **Der Knochenhauer:** taktisches Premium-Kopfgeld mit Angriffs-/Verteidigungsentscheidungen
@@ -78,6 +82,7 @@ Die Katakomben bestehen aus zehn aufeinanderfolgenden Räumen mit Ereignissen, K
 
 Wichtige Regeln:
 - automatische Kämpfe nutzen die vorbereitete Skillrotation
+- Klassenressource wird für jeden Kampf neu initialisiert
 - Skill- und Statusschaden werden berücksichtigt
 - ein aktiver Kampf kann nicht durch Verlassen umgangen werden
 - Endboss besitzt Phasen-/Enrage-Mechaniken
@@ -158,7 +163,8 @@ Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrollie
 
 ## UI / UX
 
-- kompakter globaler Header mit Bereich, Ressourcen und XP
+- kompakter globaler Header mit Bereich, persistenten Ressourcen und XP
+- Kampfressourcen ausschließlich im aktiven Kampf
 - fünfteilige mobile Fußnavigation
 - zentraler Held-Button mit Portrait
 - sichtbares Reinkarnations-Prestige mit Lebenszyklus-Titeln im Heldentab
@@ -186,7 +192,8 @@ GitHub Actions prüfen JavaScript-Syntax, Script-/Asset-Referenzen, Load-Order, 
 Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind:
 - frischer Start und Charaktererstellung
 - Level-/Skill-Progression bis 50
-- alle Questtypen
+- alle Questtypen inklusive Ereigniswahrscheinlichkeiten
+- Klassenressource: Sichtbarkeit nur im Kampf, Verbrauch und Reset je Kampf
 - kompletter Katakombenrun inklusive Boss und Verlassen-Sperre
 - Arena mit allen Haltungen/Build-Archetypen
 - Equipment, Bank, Händler und alle Schmiede-Tabs
