@@ -1,314 +1,197 @@
-# Arcane Tavern & Quest – Android Beta
+# Arcane Tavern & Quest
 
-Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit einer klaren, stilisierten Warcraft-artigen Lesbarkeit.
+Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktuelle Beta-Version:** v0.14.58  
-**Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
+**Aktueller Release Candidate:** v0.15.0  
+**Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
-## Aktueller Entwicklungsstand
+> Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
-### Kern-Loop
-- Charakter erstellen und über Quests, Katakomben und Arena entwickeln
-- Gold, XP, Ausrüstung und Schmiederessourcen verdienen
-- Ausrüstung, Builds und eine vorbereitete Skillrotation optimieren
-- Stadt als Hub für Händler, Ahnen-Schmiede, Bank und Ahnenschrein
-- fünf mobile Hauptbereiche: **Taverne · Katakomben · Held · Stadt · Arena**
+## Release-Status
 
-### Charakter
-- aktueller Beta-Editor: Mensch mit 4 spielbaren Klassen und 4 Hintergründen
-- langfristiges Ziel: alle 6 Völker und alle 6 Klassen spielbar machen
-- dynamische Heldengeschichte und Charakterzusammenfassung
-- Charakterwerte und Ausrüstung beeinflussen Proben und Kämpfe
-- lokale persistente Spielstände mit Recovery-/Backup-Mechanismen
-- aktuelles Maximallevel: **Stufe 50**
+v0.15.0 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis.
 
-### Held & Ausrüstung
-Der Held-Screen ist als kompaktes mobiles Dashboard mit den Bereichen **Ausrüstung · Skills · Inventar** aufgebaut.
+Aktueller Launch-Scope der Charaktererstellung:
+- Volk: **Mensch**
+- Klassen: **Krieger, Magier, Hexenmeister, Druide**
+- Hintergründe: **Tavernen-Stammgast, Gefallener Adeliger, Runenschmied-Lehrling, Schatten-Ausreißer**
 
-Aktuell gibt es **9 aktive Ausrüstungsslots**:
-- Rüstung: Kopf, Schulter, Brust, Beine, Stiefel
-- Accessoires: Amulett, Ring
-- Waffen: Haupthand, Zweithand
+Waldläufer, Totenbeschwörer und die weiteren fünf Völker existieren teilweise bereits in Daten-/Systemschichten, werden aber erst nach vollständigen Art-, Balance- und QA-Pässen für die Charaktererstellung freigegeben. Langfristiges Ziel bleiben alle sechs Klassen und sechs Völker.
 
-Bewusst entfernt wurden Ring 2, Gürtel und Handschuhe. Alte Saves werden auf die aktuelle Slot-Struktur migriert; nicht mehr verwendete ausgerüstete Gegenstände werden dabei möglichst verlustfrei ins Inventar überführt.
+## Kernloop
 
-Die Ausrüstungsansicht verwendet das zentrale Heldenlayout:
-- Heldengrafik zentral in der Ausrüstungskarte
-- alle Ausrüstungsslots um den Helden angeordnet
-- HP, Schaden, Rüstung sowie STR, AGI, INT, Krit, Ausweichen und Block kompakt am Helden
-- Itemdetails als Pop-up statt unterhalb langer Itemlisten
-- zentrale eigene Slot-/Itemgrafiken statt paralleler Legacy-Darstellungen
+1. Charakter erstellen.
+2. In der Taverne Quests, Ereignisse, Risikoaufträge und Kopfgelder spielen.
+3. Katakomben als riskante 10-Raum-Expedition absolvieren.
+4. In der Arena gegen skalierende Gegner und Build-Archetypen kämpfen.
+5. Ausrüstung, Affixe, Skills und vorbereitete Rotation optimieren.
+6. Händler und Ahnenschmiede für Wirtschaft und Item-Progression nutzen.
+7. Stufe 50 erreichen und am Ahnenschrein reinkarnieren.
+8. Seelensteine in dauerhaftes Vermächtnis investieren und einen neuen Lebenszyklus starten.
 
-### Item-, Loot- & Build-System
-- Item-Level entsprechend dem Charakterlevel beim Fund
-- Seltenheit, Item-Level, Schmiedestufe und Roll-Qualität beeinflussen die Stärke
-- variable Affixe und unterschiedliche Roll-Stärken erzeugen Item-Varianz
-- hochwertige Gegenstände können mehrere Affixe besitzen
-- Itemvergleich zeigt Verbesserungen bzw. Verschlechterungen gegenüber der aktuellen Ausrüstung
-- gemeinsame Itemdarstellung für Questbelohnungen, Inventar, Händler, Bank und weitere Loot-Flows
+Das reguläre Maximallevel ist **Stufe 50**.
 
-Vier Build-Affinitäten erzeugen zusätzliche Ausrüstungsidentität:
-- **Bollwerk** – Rüstung, Block und Überleben
-- **Schatten** – AGI, Ausweichen und kritische Treffer
-- **Arkan** – INT, Krit und Burst
-- **Blutklinge** – STR, direkter Schaden und Krit
+## Charakter, Skills und Builds
 
-Bei 2 bzw. 4 ausgerüsteten Teilen einer Affinität werden Resonanzboni aktiv. Mythische und legendäre Gegenstände können zusätzliche Keystone-Eigenschaften besitzen, die Kampfregeln verändern statt ausschließlich numerische Stats zu erhöhen.
+Der Held besitzt neun aktive Ausrüstungsslots:
+- Kopf
+- Schulter
+- Brust
+- Beine
+- Stiefel
+- Amulett
+- Ring
+- Haupthand
+- Zweithand
 
-### Skill-System & Kampfrotation
-- jede der sechs Klassen besitzt eigene Fertigkeiten
-- neue Skills werden über Level-Meilensteine dauerhaft für die aktuelle Klassenlaufbahn freigeschaltet
-- bei einer offenen Skill-Wahl erscheint ein sichtbarer Hinweis direkt am **Held-Button im Footer**
-- der Skillscreen zeigt Freischaltfortschritt und nächste Skill-Meilensteine
-- vorbereitete Rotation aus bis zu vier Skills
-- Reihenfolge der Slots beeinflusst die tatsächliche Reihenfolge der eingesetzten Fähigkeiten
-- Ressourcenverbrauch, Angriff, Heilung, Lebensraub, Buffs, defensive Fähigkeiten und Status-Effekte werden vom gemeinsamen Skillsystem verarbeitet
-- Status-Effekte erneuern ihre Dauer statt unbegrenzt zu stapeln
+Ring 2, Gürtel und Handschuhe gehören nicht zum aktuellen kanonischen Equipment-Modell. Alte Spielstände werden auf die aktuelle Struktur migriert.
 
-Die vorbereitete Rotation ist inzwischen in die zentralen Kampfpunkte integriert:
-- **Arena** – vollständig skillgetriebener automatischer Kampf
-- **Katakomben** – automatischer Kampf läuft durch die vorbereitete Skillrotation
-- **Kopfgeld / Knochenhauer** – die taktische Kampfstruktur bleibt erhalten, verwendet zusätzlich die vorbereitete Rotation für Skill-Effekte
+Jede Klasse verfügt über eigene Skills. Freigeschaltete Fertigkeiten werden zu einer vorbereiteten Rotation mit bis zu vier Slots zusammengestellt. Diese Rotation ist nicht nur Darstellung, sondern wird in Arena, Katakomben und Kopfgeldkämpfen tatsächlich ausgeführt. Angriff, Heilung, Lebensraub, Buffs, defensive Effekte und Statusschaden laufen über den gemeinsamen Skill-Pfad.
 
-Damit ist die Skillreihenfolge nicht nur eine Anzeige im Heldenscreen, sondern ein tatsächlicher Bestandteil der Kampfoptimierung.
+Vier Build-Affinitäten ergänzen das Equipment:
+- **Bollwerk** – Defensive, Rüstung und Block
+- **Schatten** – Geschick, Ausweichen und Krit
+- **Arkan** – Intelligenz, Krit und Burst
+- **Blutklinge** – Stärke, Schaden und offensiver Druck
 
-### Taverne & Quests
-- Standard-, Ereignis-, Kopfgeld- und Risikoquests
-- kompakte Questkarten mit Details auf Abruf
-- Abenteuerlust wird beim tatsächlichen Start eines Auftrags abgezogen
-- automatischer Miniboss **Knochenwache**
-- **Der Knochenhauer** als Premium-Kopfgeld mit taktischem Angriff-/Verteidigungs-Kampf
-- Kopfgeld mit Verwundbarkeitsfenstern, Fokus, begrenzten Aktionen und Abschlusswertung
-- Skillrotation wirkt inzwischen auch im Kopfgeldkampf
-- Questbelohnungen verwenden die aktuelle Loot-/Itemdarstellung ohne doppelte Legacy-Itemanzeige
-- der Quest-Abschluss ist als kompakter Reward-Moment aufgebaut: größere Questgrafik, verdichtete Ergebnis-/Varianteninfos und eine dominante Loot-Karte mit dem tatsächlichen Item-/Slot-Artwork
+## Persönliche Geschichten
 
-### Katakomben
-- 10 aufeinanderfolgende Räume
-- Ereignisse, Kämpfe, Schrein, Schatzkammer, Elite und Endboss
-- automatische Dungeon-Kämpfe mit HP-Balken und Kampfprotokoll
-- automatische Kämpfe verwenden die vorbereitete Skillrotation
-- Skill-Effekte und Statusschaden werden im Kampf berücksichtigt und protokolliert
-- ungesicherte Beute und freiwilliger Ausstieg als Risiko-/Belohnungssystem
-- während eines aktiven Kampfes kann der Run nicht verlassen werden, um Niederlagen zu umgehen
-- Endboss mit Phasenschild und Enrage
-- kompakter mobiler Header und Run-Status, um möglichst viel Gameplay ohne Scrollen sichtbar zu halten
-- selbstheilende Auto-Combat-Sperre gegen festhängende Kämpfe nach Reload/Unterbrechung
-- eigene Katakomben-, Schlüssel-, Item- und semantische UI-Assets ersetzen zunehmend Emoji-Platzhalter
+Die vier Hintergründe besitzen echte Gameplay-Auswirkungen:
+- **Tavernen-Stammgast:** rund 15 % geringere Abenteuerlust-Kosten
+- **Gefallener Adeliger:** +10 % auf positive Goldgewinne
+- **Runenschmied-Lehrling:** +10 Prozentpunkte Aufwertungschance
+- **Schatten-Ausreißer:** zusätzliche 5-%-Chance, zufällige Beute um eine Seltenheitsstufe aufzuwerten
 
-### Arena 2.0
-- drei Schwierigkeitsstufen bei der Gegnerwahl
-- Kampfhaltungen: Aggressiv, Defensiv und Konter
-- automatische Kämpfe mit HP-Balken und Kampfprotokoll
-- vorbereitete Skillrotation bestimmt die eingesetzten Fähigkeiten
-- Ruhm, Ruhmesmünzen und Liga-Progression von Bronze bis Legende
-- kompakter Ergebnisdialog mit eindeutiger Liga-Bezeichnung und vollständiger Überlagerung der globalen Navigation
-- Kampfmetriken für verursachten/erlittenen Schaden, Krits, Ausweichen und Konter werden direkt im Arenakampf erfasst
-- die Kampfanalyse verwendet lokalisierte Haltungstexte und erklärt Siege/Niederlagen anhand der tatsächlichen Kampfwerte
+## Taverne und Quests
 
-Arena-Gegner besitzen zusätzlich Build-Archetypen:
+Die Taverne enthält Standard-, Ereignis-, Risiko- und Kopfgeldaktivitäten. Abenteuerlust wird beim tatsächlichen Start verbraucht. Questbelohnungen verwenden die gemeinsame Itemdarstellung und zeigen einen fokussierten Abschluss-/Loot-Screen.
+
+Besondere Kämpfe:
+- **Knochenwache:** automatischer Miniboss
+- **Der Knochenhauer:** taktisches Premium-Kopfgeld mit Angriffs-/Verteidigungsentscheidungen
+
+## Katakomben
+
+Die Katakomben bestehen aus zehn aufeinanderfolgenden Räumen mit Ereignissen, Kämpfen, Schrein, Schatzkammer, Elite und Endboss. Beute bleibt während des Runs ungesichert und erzeugt eine Risiko-/Belohnungsentscheidung.
+
+Wichtige Regeln:
+- automatische Kämpfe nutzen die vorbereitete Skillrotation
+- Skill- und Statusschaden werden berücksichtigt
+- ein aktiver Kampf kann nicht durch Verlassen umgangen werden
+- Endboss besitzt Phasen-/Enrage-Mechaniken
+- Run-Zustände werden für Reload/PWA-Unterbrechungen abgesichert
+
+## Arena
+
+Die Arena bietet drei Gegner-Schwierigkeitsstufen, die Haltungen **Aggressiv**, **Defensiv** und **Konter** sowie Liga-Progression von Bronze bis Legende.
+
+Gegner besitzen Build-Archetypen:
 - **Bollwerk** – wird bevorzugt aggressiv gekontert
 - **Schatten** – Hinterhalt; Konter ist besonders effektiv
-- **Arkan** – hoher Burst; Defensive reduziert die Gefahr
+- **Arkan** – Burst; Defensive reduziert die Gefahr
 - **Blutklinge** – Raserei bei niedrigen HP; Defensive schwächt den Enrage
 
-Die Arena zeigt Archetyp, Verhalten und empfohlenen Konter vor dem Kampf.
+Die Skillrotation und Arena-Build-Logik laufen im selben Kampfpfad. Verursachter und erlittener Schaden, Krits, Ausweichen und Konter werden während des Kampfes direkt erfasst und im Ergebnisdialog ausgewertet.
 
-### Stadt
-Die Stadt ist der zentrale Verwaltungs- und Meta-Progressions-Hub:
+## Stadt
+
+Die Stadt ist der Meta-/Verwaltungshub:
 - Händler ab Stufe 3
-- Ahnen-Schmiede ab Stufe 5
+- Ahnenschmiede ab Stufe 5
 - Bank ab Stufe 10
-- **Ahnenschrein** als eigener Bereich für Reinkarnation und zukünftige Vermächtnis-Systeme
-- gesperrte Gebäude zeigen ihre Freischaltstufe
-- einheitliche Breadcrumb-/Zurücknavigation in den Unterbereichen
-- kompakte, bildstarke Gebäudekarten mit klarer Typografie, direkter Navigationsanzeige und eigener visueller Hervorhebung des Ahnenschreins
+- Ahnenschrein für Reinkarnation und Vermächtnis
 
-Der frühere Trainer-Platzhalter wurde entfernt. Seine geplanten Funktionen werden nicht als eigener Stadtbereich weitergeführt.
+Der globale Header und die Stadt-Unterbereiche sind auf kompakte Smartphone-Nutzung ausgelegt und vermeiden redundante Überschriften/Ressourcenleisten.
 
-### Ahnenschrein & Reinkarnation
-Der Ahnenschrein enthält aktuell die nicht-destruktive Foundation und Vorschau für das zukünftige Reinkarnationssystem.
+## Ahnenschmiede
 
-Vorhanden bzw. vorgesehen:
-- Reinkarnation ab **Stufe 50**
-- Belohnung in **Seelensteinen**
-- Seelensteine als Meta-Ressource, unter anderem für legendäre Ahnenwerke
-- persistente Reinkarnationshistorie mit Anzahl, bestem Level, Lifetime-Seelensteinen und letzter Reinkarnation
-- Vorschau der voraussichtlichen Seelenstein-Belohnung
-- Vorschau der späteren Reset-/Behalten-Regeln
+Die Ahnenschmiede unterstützt:
+- Aufwerten bis +10 mit steigenden Kosten und Erfolgschance
+- Verwerten in Schmiedestaub und Essenz
+- Affix-Veredelung
+- Legendäres Ahnenwerk
 
-Der tatsächliche irreversible Reinkarnations-Reset bleibt bis zur vollständigen Absicherung deaktiviert.
+Erfolgreiche Aufwertungen erhalten einen eigenen Ergebnisdialog mit Itemgrafik, alter/neuer Schmiedestufe, Machtänderung und verbrauchten Ressourcen.
 
-### Händler & Bank
-**Händler**
-- levelskalierte Ausrüstungsangebote
-- Gegenstände können aus dem Inventar verkauft werden
-- Itemdetails und Kauf-/Verkaufsaktionen öffnen in einem gemeinsamen Pop-up
+Bei der Veredelung können Affixe neu gewürfelt, ein Affix gesperrt und die Rollqualität verbessert werden. Affix-Beiträge werden vor der Neuberechnung entfernt, damit keine Werte mehrfach aufaddiert werden.
 
-**Bank**
-- 100 feste Tresorplätze
-- Gegenstände können zwischen Rucksack und Bank verschoben werden
-- Darstellung folgt dem gemeinsamen Item-Pop-up-Konzept
+## Reinkarnation und Vermächtnis
 
-### Ahnen-Schmiede
-Die Schmiede besitzt mehrere Progressionspfade:
-- Aufwerten von +1 bis +10
-- exponentiell steigende Kosten
-- höhere Stufen benötigen zusätzliche Schmiede-Essenz
-- Verwerten in Staub und Essenz
-- Ahnenwerk / Legendär-Progression
-- **Veredeln** für das Affix-System
-- erfolgreiche Aufwertungen erhalten einen eigenen Ergebnisdialog mit Itemgrafik, alter/neuer Schmiedestufe, Machtänderung und verbrauchten Ressourcen
-- die Veredelung nutzt eine kompakte Itemauswahl mit tatsächlichen Itemgrafiken, sichtbarer Rollqualität und anschließendem separatem Arbeitsbereich für Sperren, Neuwürfeln und Qualitätsverbesserung
+Reinkarnation ist ab **Stufe 50** aktiv. Vor jedem irreversiblen Reset wird automatisch eine separate Wiederherstellungskopie des Spielstands geschrieben. Der Vorgang besitzt eine doppelte Bestätigung und wird blockiert, solange eine kritische Aktivität läuft.
 
-Beim Veredeln können Affixe neu gewürfelt, einzelne Affixe gesperrt und Roll-Qualitäten gezielt bis 100 % verbessert werden. Die Affix-Neuberechnung entfernt alte Affix-Beiträge vor dem Neuaufbau, damit wiederholtes Veredeln keine Stats mehrfach aufaddiert.
+Die Seelenstein-Belohnung setzt sich aus Stufe-50-Basis, Quest-Meilensteinen, Arena-Siegen und Vermächtnisbonus zusammen.
 
-### UI / UX
-- appweites mobiles Design-System
-- kompakter globaler Header mit Bereich, Stufe, Ressourcen und XP ohne redundante zweite Bereichsüberschrift in Stadt-Unterbereichen
-- fünfteilige symmetrische Fußnavigation
-- zentraler Held-Button mit Charakterportrait
-- Skill-Wahl-Badge direkt im Footer
-- semantische Farbverwendung für Aktion, Belohnung, Erfolg und Gefahr
-- reduzierte Kartenverschachtelung und Schatten
-- Smartphone-Safe-Areas werden berücksichtigt
-- wichtige Spielinformationen verwenden mobil lesbare Schriftgrößen
-- gemeinsames Modal-/Pop-up-Muster für Itemdetails
-- Arcane-Fantasy-Ladescreen während des App-Boots
-- Katakomben- und Kampfansichten werden gezielt auf möglichst wenig Scrollbedarf optimiert
-- Stadt-Gebäudekarten nutzen vorhandene Artworks stärker, ohne die mobile Übersicht unnötig zu verlängern
+Bei einer Reinkarnation bleiben erhalten:
+- Name, Volk, Geschlecht, Klasse und Hintergrund
+- Seelensteine und freigeschaltetes Vermächtnis
+- Reinkarnationshistorie
+- legendäre Gegenstände
+- Ruhmesmünzen
+- freigeschaltete Inventar-/Bankkapazität
 
-### Eigene Grafiken & Icons
-Die UI wird schrittweise vollständig von Emoji-/Legacy-Platzhaltern auf eigene Dark-Arcane-Fantasy-Assets umgestellt.
+Zurückgesetzt werden:
+- Stufe und XP
+- Gold
+- normale Ausrüstung und normale Inventargegenstände
+- Schmiedestaub, Essenzen, Ahnenrelikte und Schlüssel
+- Quest-/Arena-Ruhm-Fortschritt
+- aktive Runs und Kampfzustände
+- aktuelle Skill-Freischaltungen/Rotation des Lebenszyklus
 
-Unter anderem vorhanden bzw. integriert:
-- eigene Navigation-/Bereichsicons
-- Charakter-/Heldengrafiken
-- Ausrüstungs- und Itemgrafiken
-- eigene Schulter-/Equipment-Assets
-- Katakomben-Raum- und Gegnergrafiken
-- eigener Katakombenschlüssel
-- eigenes allgemeines Items-/Loot-Icon
-- Kampfhaltungen unter `assets/icons/ui`
-- Auswahlicons für Kraft/Kampf, Geschick und Wissen
-- Arena-Challenger-Artworks für die Build-Archetypen
-- Stadt-, Händler-, Bank-, Schmiede-, Ressourcen- und Stat-Icons
+Der Vermächtnisbaum besitzt drei Zweige mit sequenziell freischaltbaren Knoten:
+- **Macht:** Gesamtschaden und Krit
+- **Überleben:** maximales Leben, Rüstung, Block und Ausweichen
+- **Arkana:** XP, Gold, Beuteglück und Seelenstein-Bonus
 
-Verbliebene Emoji-Platzhalter werden weiterhin systematisch geprüft und durch eigene Assets ersetzt, sobald ein passendes semantisches Icon vorhanden ist.
+Die Boni wirken direkt auf die zugehörigen Progressions-, Loot-, Stat- und Kampfsysteme.
 
-Die Asset-Runtime lädt kritische Bilder zuerst und wärmt weitere Assets anschließend im Hintergrund vor. Bildassets verwenden einen getrennten langlebigen Cache, damit App-Updates nicht bei jedem Release sämtliche Grafiken neu laden müssen.
+## Save, Recovery und PWA
 
-### Beta, PWA & Cache-Verhalten
-- installierbare PWA über GitHub Pages
-- kritische Assets werden beim Start priorisiert
-- weniger wichtige Grafiken werden nach dem ersten stabilen Render im Hintergrund vorgeladen
-- Code- und Bildcache sind getrennt
-- aktive Spielsitzungen sollen nicht durch einen Asset-Wechsel während eines Deployments beschädigt werden
-- Beta-Grafiken können gezielt neu geladen werden
-- Reset-/Recovery-Code wird früh im Bootprozess geladen
-- Script-Versionen werden bei relevanten Änderungen angehoben, um veralteten Browser-/PWA-Code zu vermeiden
+Der Spielstand wird lokal gespeichert und versioniert migriert. Aktuell gilt Save-Schema **v4**. Zusätzlich zum normalen Backup gibt es einen dedizierten Reinkarnations-Snapshot, damit der letzte Lebenszyklus bei einem technischen Fehler wiederhergestellt werden kann.
 
-Der Beta-Reset ist dafür vorgesehen, lokalen Spielstand, Backups und Session-Daten zu entfernen und anschließend wieder die Charaktererstellung zu öffnen. Dieser Bereich bleibt ein besonders zu testender Beta-Pfad.
+Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrolliert und hält kritische Assets beim Start priorisiert. Unterbrochene Aktivitäten werden beim Neustart in einen sicheren Zustand gebracht.
 
-### Technische Architektur / Konsolidierung
-Das Projekt ist historisch aus mehreren Runtime-/Patch-Modulen gewachsen. Die technische Konsolidierung läuft aktiv weiter.
+## UI / UX
 
-Zuletzt wurden unter anderem:
-- zentrale Render- und Navigation-Authority gestärkt
-- Boot-Reihenfolgen deterministischer gemacht
-- Item-/Hero-System auf das kanonische 9-Slot-Modell vereinheitlicht
-- redundante und obsolete Render-/Compatibility-Wrapper reduziert
-- Versions- und Asset-Laufzeit stärker zentralisiert
-- Footer-Navigation als stabiler eigener Renderpfad etabliert
-- Skill-Freischaltung und Skillrotation als gemeinsame Systeme ausgebaut
-- Katakomben-Autokampf mit dem öffentlichen Skill-/Combat-Pfad verbunden, damit automatische Kämpfe die Rotation nicht umgehen
-- Screen-spezifische Icon-Geometrie bleibt beim jeweiligen UX-Modul; die allgemeine Icon-Runtime übernimmt nur Asset-Zuordnung und Hydration
-- Arena-Kampfstatistiken werden im Kampfsystem selbst erfasst statt nachträglich aus gekürzten Logzeilen rekonstruiert
+- kompakter globaler Header mit Bereich, Ressourcen und XP
+- fünfteilige mobile Fußnavigation
+- zentraler Held-Button mit Portrait
+- Smartphone-Safe-Areas
+- einheitliche Item-Pop-ups und Dialoge
+- hochwertige Quest-, Arena-, Forge- und Reward-Präsentation
+- eigene Dark-Arcane-Fantasy-Assets für zentrale Navigation, Räume, Ressourcen, Gebäude, Gegner und Equipment
+- Reduced-Motion-Unterstützung
+- dezente Touch-Haptik auf unterstützten Geräten
 
-Ziel ist, schrittweise weniger konkurrierende Runtime-Wrapper zu besitzen und zentrale Systeme als eindeutige Source of Truth zu verwenden.
+## Technische Architektur
 
-## Roadmap – nächste größere Entwicklungsblöcke
+Das Projekt ist eine frameworkfreie PWA. Die technische Richtung ist verbindlich:
+- genau eine State-/Save-Authority
+- genau eine Render-/Navigation-Authority
+- Screen-spezifische Layout-Ownership
+- globale Runtime-Module liefern Daten, APIs und Design-Tokens statt konkurrierende Screen-Geometrie
+- keine neuen Patch-Ketten für Probleme, die an der eigentlichen Source of Truth behoben werden können
+- Save-Migrationen sind vorwärtskompatibel und destruktive Meta-Aktionen erhalten Recovery-Snapshots
 
-### Phase 1 – Ahnenschrein & Vermächtnis-Fundament
-**Ziel:** Den Ahnenschrein zum zentralen Meta-Progressionsort des Spiels ausbauen.
+GitHub Actions prüfen JavaScript-Syntax, Script-/Asset-Referenzen, Load-Order, Runtime-Ownership und zentrale API-Guards.
 
-- Reinkarnations-Vorschau weiter verfeinern
-- finale Regeln für erhaltene und zurückgesetzte Ressourcen definieren
-- Seelenstein-Belohnungsformel balancieren
-- Vermächtnisbaum als Vorschau integrieren
-- Entwicklungsrichtungen **Macht**, **Überleben** und **Arkana** ausarbeiten
-- Kosten- und Freischaltstruktur permanenter Knoten definieren
+## Release-Test
 
-### Phase 2 – Sicheres Reinkarnationssystem
-**Ziel:** Reinkarnation als echte, irreversible Spielaktion aktivieren.
+Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind:
+- frischer Start und Charaktererstellung
+- Level-/Skill-Progression bis 50
+- alle Questtypen
+- kompletter Katakombenrun inklusive Boss und Verlassen-Sperre
+- Arena mit allen Haltungen/Build-Archetypen
+- Equipment, Bank, Händler und alle Schmiede-Tabs
+- Reinkarnation, Vermächtniskauf und Wiederherstellung des Vor-Reinkarnations-Snapshots
+- Save/Reload/PWA-Neustart während und nach Aktivitäten
+- Layout auf kleinen und großen Smartphone-Displays
 
-Vor Aktivierung müssen insbesondere vorhanden sein:
-- vollständige Vorher-/Nachher-Vorschau
-- doppelte Bestätigung
-- automatisches Savegame-Backup unmittelbar vor dem Reset
-- Wiederherstellungsmöglichkeit bei fehlgeschlagenen oder unterbrochenen Vorgängen
-- atomare Aktualisierung des Meta-Fortschritts
-- Tests für Reload, PWA-Neustart und unterbrochene Speichervorgänge
+## Entwicklerwerkzeuge
 
-### Phase 3 – Reinkarnation mit dem bestehenden Spiel verzahnen
-**Ziel:** Reinkarnation soll neue Spielmöglichkeiten eröffnen und nicht nur einen schnelleren Zahlen-Reset darstellen.
-
-Geplant sind unter anderem skalierende Katakomben, neue Elite-/Bossvarianten, zusätzliche Arenaebenen, Endgame-Affixe, Meta-Freischaltungen für Schmiede und Ahnenwerk sowie seltene Reinkarnationsereignisse.
-
-### Phase 4 – Endgame-Loop
-**Ziel:** Nach der ersten Reinkarnation einen langfristig skalierenden Kernloop schaffen.
-
-Mögliche Systeme:
-- skalierende **Arkane Prüfungen** als Endlos-/Challenge-Modus
-- zunehmende Katakombentiefe
-- persönliche Bestwerte
-- Elite-Modifikatoren und kombinierte Gegneraffixe
-- Endgame-spezifische Materialien
-- zusätzliche legendäre und mythische Keystone-Effekte
-
-### Phase 5 – Klassen, Skills & Build-Tiefe
-**Ziel:** Die sechs Klassen spielmechanisch noch deutlicher voneinander abgrenzen.
-
-- Skillsets weiter ausbauen und balancieren
-- zusätzliche Rotations-, Ressourcen- und Synergieentscheidungen
-- klassenspezifische Keystone-/Legendär-Effekte
-- Builds stärker mit Ausrüstung, Vermächtnis und Kampfsystem verzahnen
-- Kampfhaltungen und Gegner-Archetypen weiter ausbauen
-
-### Phase 6 – Content-Ausbau
-- zusätzliche Questketten und seltene Ereignisse
-- neue Katakombenräume und Bossbegegnungen
-- zusätzliche Händler-/Schmiede-Angebote
-- neue Itemfamilien, Affixe und legendäre Gegenstände
-- mehr persönliche Story- und Hintergrundereignisse
-
-### Phase 7 – Technische Konsolidierung & Release-Vorbereitung
-Dieser Block läuft parallel zu allen Gameplay-Phasen weiter:
-- monolithische Runtime-Dateien weiter in System-, State- und View-Schichten aufteilen
-- obsolete Compatibility-Shims und Legacy-Code entfernen
-- zentrale Item-, Asset-, Dialog-, Combat- und Navigationsschnittstellen vereinheitlichen
-- automatisierte Regressionstests für Save/Load, Equipment, Skills, Reinkarnation und Kampfzustände aufbauen
-- Performance und Speicherverbrauch auf mobilen Geräten messen
-- PWA-Updatepfad und Offline-/Cache-Verhalten weiter härten
-- README und GDD regelmäßig mit dem tatsächlichen `main`-Stand synchronisieren
-
-## Beta-Schwerpunkte
-Besonders wichtig für aktuelle Tests sind:
-- Skill-Freischaltung auf den vorgesehenen Level-Meilensteinen
-- Footer-Hinweis bei noch nicht gewähltem Skill
-- tatsächliche Rotationsreihenfolge und Ressourcenverbrauch in Arena, Katakomben und Kopfgeld
-- Katakomben-Autokampf über längere Runs und nach Reloads
-- Verlassen-Sperre während aktiver Katakombenkämpfe
-- Equipment-Migration älterer Saves
-- korrektes Helden-/Ausrüstungslayout auf unterschiedlichen Smartphone-Größen
-- Schmiede-Veredelung, Upgrade-Ergebnisdialog und Affix-Neuberechnung
-- aktuelle Grafiken nach Deployment/Reload
-- verbleibende Emoji-/Legacy-Platzhalter
-- Arena-Build-Matchups, Haltungskonter und korrekte Ergebnisanalyse
-- Ahnenschrein und Reinkarnations-Vorschau
-
-## Plattform
-Die aktuelle Beta läuft als mobile PWA über GitHub Pages und ist primär für Smartphone-Bedienung optimiert.
+Die internen Testwerkzeuge sind im normalen Release-Build unsichtbar. Für gezielte QA können sie über `?beta=1` oder `?debug=1` aktiviert werden. Dort stehen Testressourcen, Level-Steuerung sowie Save-Export/-Import und Recovery-Aktionen zur Verfügung.
 
 ## Entwicklungsregel
-Nach neuen spielbaren Features, Änderungen an Kernsystemen oder relevanten technischen Änderungen wird diese README mit dem tatsächlichen Stand von `main` abgeglichen. Größere neue Systeme sollten zusätzlich gegen die Roadmap geprüft und dort nach Abschluss aktualisiert werden.
+
+README und sichtbare Versionsnummer werden bei relevanten Änderungen gemeinsam mit `main` aktualisiert. Diese README ist die aktuelle Produkt-/Design-Referenz; ältere GDD-Regeln gelten nur, soweit sie dem aktuellen README nicht widersprechen.
