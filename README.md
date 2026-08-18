@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Lesbarkeit für Smartphones.
 
-**Aktueller Release Candidate:** v0.15.4  
+**Aktueller Release Candidate:** v0.15.5  
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.4 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
+v0.15.5 ist der funktional vollständige Release Candidate für den aktuellen Launch-Scope. Vor einer öffentlichen Veröffentlichung ist noch ein manueller Geräte-/Regressionstest vorgesehen. Der Release Candidate enthält den vollständigen Kernloop von Charaktererstellung bis Reinkarnation und Vermächtnis sowie ein persistentes, progressives Onboarding.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -46,6 +46,7 @@ Grundregeln:
 - Jeder Bereich speichert seinen eigenen Tutorial-Fortschritt und wird nach Reload/PWA-Neustart korrekt fortgesetzt.
 - Jedes Kapitel kann separat übersprungen werden, ohne andere spätere Tutorials zu deaktivieren.
 - Reinkarnation startet das Anfänger-Onboarding nicht erneut.
+- Nach einer frischen Charaktererstellung wird das Tavernen-Kapitel explizit als ausstehend markiert und über die kanonische State-Authority gestartet.
 
 Für QA stellt `Arcane.onboarding` Status-, Reset- und Open-Funktionen bereit, damit einzelne Kapitel gezielt erneut getestet werden können.
 
@@ -177,7 +178,7 @@ Die Boni wirken direkt auf die zugehörigen Progressions-, Loot-, Stat- und Kamp
 
 Der Spielstand wird lokal gespeichert und versioniert migriert. Aktuell gilt Save-Schema **v4**. Zusätzlich zum normalen Backup gibt es einen dedizierten Reinkarnations-Snapshot, damit der letzte Lebenszyklus bei einem technischen Fehler wiederhergestellt werden kann.
 
-Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrolliert und hält kritische Assets beim Start priorisiert. Unterbrochene Aktivitäten werden beim Neustart in einen sicheren Zustand gebracht.
+Die PWA trennt Code- und Asset-Cache, aktualisiert den Service Worker kontrolliert und hält kritische Assets beim Start priorisiert. Unterbrochene Aktivitäten werden beim Neustart in einen sicheren Zustand gebracht. Service-Worker-Wechsel erzwingen während einer laufenden Sitzung keinen automatischen Seiten-Reload mehr; eine vorbereitete Version wird beim nächsten regulären App-Start vollständig verwendet.
 
 ## UI / UX
 
@@ -209,7 +210,7 @@ GitHub Actions prüfen JavaScript-Syntax, Script-/Asset-Referenzen, Load-Order, 
 ## Release-Test
 
 Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind:
-- frischer Start und Charaktererstellung
+- frischer Start und Charaktererstellung ohne unerwarteten zweiten Seiten-Reload
 - vollständiges Erst-Onboarding in Taverne und Heldentab
 - keine Tutorials für noch gesperrte Systeme
 - Händler-Tutorial beim ersten Betreten ab Stufe 3
