@@ -43,19 +43,17 @@ jobs:
               'forge-v4.js', 'tavern-view-v5.js', 'tavern-polish-v6.js',
               'passive-runtime-fix-v2.js', 'compact-ui-v1.js',
               'ui-polish-v2.js', 'icon-polish-v1.js', 'merchant-bank-v2.js',
+              'arena-render-fix-v1.js', 'arena-view-repair-v1.js',
+              'hero-tutorial-bridge-v1.js', 'hero-skill-visibility-v1.js',
           }
           stale = sorted(forbidden.intersection(scripts))
           if stale:
               raise SystemExit('Obsolete runtime references still loaded: ' + ', '.join(stale))
 
           loaded = [Path(src) for src in scripts]
-          placeholder_hits = []
-          for path in loaded:
-              text = path.read_text(encoding='utf-8')
-              if text.strip() in {'PLACEHOLDER', 'TODO', 'TBD'}:
-                  placeholder_hits.append(str(path))
-          if placeholder_hits:
-              raise SystemExit('Placeholder runtime files: ' + ', '.join(placeholder_hits))
+          placeholders = [str(path) for path in loaded if path.read_text(encoding='utf-8').strip() in {'PLACEHOLDER', 'TODO', 'TBD'}]
+          if placeholders:
+              raise SystemExit('Placeholder runtime files: ' + ', '.join(placeholders))
 
           asset_pattern = re.compile(r"assets/[A-Za-z0-9_./\-]+\.(?:webp|png|jpe?g|gif|svg)", re.I)
           asset_missing = set()
@@ -78,7 +76,9 @@ jobs:
               ('quest-cost-runtime-v1.js', 'quest-system-v1.js'),
               ('quest-system-v1.js', 'tavern.js'),
               ('forge-v5.js', 'forge-affix-v1.js'),
+              ('arena-system-v1.js', 'arena-v2.js'),
               ('arena-v2.js', 'arena-ux-v3.js'),
+              ('hero-layout-v7.js', 'hero-dashboard-v8.js'),
               ('content-variation-v1.js', 'interaction-stability-v1.js'),
           ]
           bad_order = [f'{a} must load before {b}' for a, b in required_order if a in positions and b in positions and positions[a] > positions[b]]
@@ -105,7 +105,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-
           html = Path('index.html').read_text(encoding='utf-8')
           release = Path('release-runtime-v1.js').read_text(encoding='utf-8')
           app_version = Path('app-version-v1.js').read_text(encoding='utf-8')
@@ -123,7 +122,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-
           checks = {
               'core-runtime-v1.js': ['window.render', 'window.tab', 'root.on', 'root.emit'],
               'state-runtime-v1.js': ['window.save', 'window.ARCANE_STATE'],
@@ -132,13 +130,14 @@ jobs:
               'tavern.js': ['window.home', 'window.tavern'],
               'dungeon-v7.js': ['window.dungeonV1', 'window.d1Start', 'window.d7Leave'],
               'forge-v5.js': ['window.forgeView', 'window.fv4Upgrade', 'window.fv4Legendary'],
-              'arena-v2.js': ['window.arena'],
+              'arena-v2.js': ['window.arena', 'window.Arcane.views.arena', 'av2-resource'],
               'merchant-v3.js': ['window.merchantView', 'window.merchantBuy', 'window.merchantSell'],
+              'hero-dashboard-v8.js': ['hd8-dashboard', 'hc1-summary', 'data-item-id', 'hero-inventory-tab'],
               'interaction-stability-v1.js': ['window.qSelect', 'window.arenaV2Stance'],
           }
-          missing = []
+          missing=[]
           for file, needles in checks.items():
-              text = Path(file).read_text(encoding='utf-8')
+              text=Path(file).read_text(encoding='utf-8')
               for needle in needles:
                   if needle not in text:
                       missing.append(f'{file}: {needle}')
@@ -147,34 +146,55 @@ jobs:
           print('Critical public APIs are present.')
           PY
 
+      - name: Guard release runtime ownership
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('index.html').read_text(encoding='utf-8')
+          scripts=[src.split('?',1)[0] for src in re.findall(r'<script\s+src="([^"]+)"',html)]
+          failures=[]
+          owners={
+              'arena':['arena-v2.js'],
+              'hero-dashboard':['hero-dashboard-v8.js'],
+              'reincarnation':['reincarnation-v1.js','shrine-runtime-v2.js'],
+          }
+          for name,required in owners.items():
+              for file in required:
+                  if file not in scripts:
+                      failures.append(f'{name}: missing owner {file}')
+          for obsolete in ['arena-render-fix-v1.js','arena-view-repair-v1.js','hero-tutorial-bridge-v1.js','hero-skill-visibility-v1.js']:
+              if obsolete in scripts:
+                  failures.append(f'obsolete repair runtime loaded: {obsolete}')
+          arena=Path('arena-v2.js').read_text(encoding='utf-8')
+          if arena.count('window.arena=') != 1:
+              failures.append('arena-v2.js must publish exactly one canonical window.arena renderer')
+          hero=Path('hero-dashboard-v8.js').read_text(encoding='utf-8')
+          if 'removeDuplicateSkills' not in hero or 'normalizeTabs' not in hero:
+              failures.append('hero-dashboard-v8.js must own tab and duplicate-skill normalization')
+          if failures:
+              raise SystemExit('Runtime ownership regression:\n'+'\n'.join(failures))
+          print('Release runtime ownership is consolidated.')
+          PY
+
       - name: Guard reincarnation invariants
         run: |
           python - <<'PY'
           from pathlib import Path
-
-          canonical = Path('reincarnation-v1.js').read_text(encoding='utf-8')
-          adapter = Path('shrine-runtime-v2.js').read_text(encoding='utf-8')
-          failures = []
-
-          required = [
-              'createRecoverySnapshot',
-              'keys:0',
-              "emit?.('reincarnated'",
-              'requestReincarnation',
-          ]
-          for needle in required:
+          canonical=Path('reincarnation-v1.js').read_text(encoding='utf-8')
+          adapter=Path('shrine-runtime-v2.js').read_text(encoding='utf-8')
+          failures=[]
+          for needle in ['createRecoverySnapshot','keys:0',"emit?.('reincarnated'",'requestReincarnation']:
               if needle not in canonical:
                   failures.append(f'reincarnation-v1.js missing invariant: {needle}')
-
           if 'api.requestReincarnation' not in adapter:
-              failures.append('shrine-runtime-v2.js must delegate reincarnation to the canonical API')
-          for forbidden in ['Object.keys(S).forEach', 'keys:S.keys', 'keys:S.keys||', 'S.keys||0']:
+              failures.append('shrine-runtime-v2.js must delegate reincarnation to canonical API')
+          for forbidden in ['Object.keys(S).forEach','keys:S.keys','keys:S.keys||','S.keys||0']:
               if forbidden in adapter:
                   failures.append(f'shrine-runtime-v2.js reintroduces duplicate reset authority: {forbidden}')
           if 'api.bonuses?.(S)' not in adapter:
-              failures.append('shrine-runtime-v2.js must consume the complete canonical legacy bonus set')
-
+              failures.append('shrine-runtime-v2.js must consume complete canonical legacy bonuses')
           if failures:
-              raise SystemExit('Reincarnation invariant regression:\n' + '\n'.join(failures))
-          print('Reincarnation reset, key wipe and legacy authority invariants are intact.')
+              raise SystemExit('Reincarnation invariant regression:\n'+'\n'.join(failures))
+          print('Reincarnation invariants are intact.')
           PY
