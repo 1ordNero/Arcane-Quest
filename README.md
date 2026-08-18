@@ -2,7 +2,7 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA). Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit einer klaren, stilisierten Warcraft-artigen Lesbarkeit.
 
-**Aktuelle Beta-Version:** v0.14.45  
+**Aktuelle Beta-Version:** v0.14.54  
 **Live-Beta:** https://1ordnero.github.io/Arcane-Quest/
 
 ## Aktueller Entwicklungsstand
@@ -15,10 +15,12 @@ Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App (PWA
 - fünf mobile Hauptbereiche: **Taverne · Katakomben · Held · Stadt · Arena**
 
 ### Charakter
-- Charaktereditor mit 6 Völkern, 6 Klassen und 4 Hintergründen
+- aktueller Beta-Editor: Mensch mit 4 spielbaren Klassen und 4 Hintergründen
+- langfristiges Ziel: alle 6 Völker und alle 6 Klassen spielbar machen
 - dynamische Heldengeschichte und Charakterzusammenfassung
 - Charakterwerte und Ausrüstung beeinflussen Proben und Kämpfe
 - lokale persistente Spielstände mit Recovery-/Backup-Mechanismen
+- aktuelles Maximallevel: **Stufe 50**
 
 ### Held & Ausrüstung
 Der Held-Screen ist als kompaktes mobiles Dashboard mit den Bereichen **Ausrüstung · Skills · Inventar** aufgebaut.
@@ -116,6 +118,7 @@ Die Stadt ist der zentrale Verwaltungs- und Meta-Progressions-Hub:
 - **Ahnenschrein** als eigener Bereich für Reinkarnation und zukünftige Vermächtnis-Systeme
 - gesperrte Gebäude zeigen ihre Freischaltstufe
 - einheitliche Breadcrumb-/Zurücknavigation in den Unterbereichen
+- kompakte, bildstarke Gebäudekarten mit klarer Typografie, direkter Navigationsanzeige und eigener visueller Hervorhebung des Ahnenschreins
 
 Der frühere Trainer-Platzhalter wurde entfernt. Seine geplanten Funktionen werden nicht als eigener Stadtbereich weitergeführt.
 
@@ -123,7 +126,7 @@ Der frühere Trainer-Platzhalter wurde entfernt. Seine geplanten Funktionen werd
 Der Ahnenschrein enthält aktuell die nicht-destruktive Foundation und Vorschau für das zukünftige Reinkarnationssystem.
 
 Vorhanden bzw. vorgesehen:
-- Reinkarnation ab Stufe 100
+- Reinkarnation ab **Stufe 50**
 - Belohnung in **Seelensteinen**
 - Seelensteine als Meta-Ressource, unter anderem für legendäre Ahnenwerke
 - persistente Reinkarnationshistorie mit Anzahl, bestem Level, Lifetime-Seelensteinen und letzter Reinkarnation
@@ -167,6 +170,7 @@ Beim Veredeln können Affixe neu gewürfelt, einzelne Affixe gesperrt und Roll-Q
 - gemeinsames Modal-/Pop-up-Muster für Itemdetails
 - Arcane-Fantasy-Ladescreen während des App-Boots
 - Katakomben- und Kampfansichten werden gezielt auf möglichst wenig Scrollbedarf optimiert
+- Stadt-Gebäudekarten nutzen vorhandene Artworks stärker, ohne die mobile Übersicht unnötig zu verlängern
 
 ### Eigene Grafiken & Icons
 Die UI wird schrittweise vollständig von Emoji-/Legacy-Platzhaltern auf eigene Dark-Arcane-Fantasy-Assets umgestellt.
