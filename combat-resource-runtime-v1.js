@@ -1,47 +1,22 @@
 (()=>{
 'use strict';
 const root=window.Arcane=window.Arcane||{};
+const PROFILES={Krieger:{name:'Wut',color:'#d8755c'},Magier:{name:'Mana',color:'#5e9cff'},Druide:{name:'Naturfokus',color:'#65c987'},Waldläufer:{name:'Energie',color:'#d9b95d'},Hexenmeister:{name:'Seelenfragmente',color:'#a875ff'},Totenbeschwörer:{name:'Essenz des Todes',color:'#72c9cf'}};
 let activeKey=null;
-function skillState(){
- const ss=window.S?.skillSystem;
- return ss&&ss.cls===S.cls?ss:null;
-}
-function reset(){
- const ss=skillState();
- if(!ss)return false;
- ss.maxResource=Math.max(1,Number(ss.maxResource)||100);
- ss.resource=ss.maxResource;
- ss.rotation=0;
- return true;
-}
-function combatKey(){
- const s=window.S;
- if(!s)return null;
- const arena=s.arenaV2?.fight;
- if(arena&&!arena.done)return `arena:${arena.o?.id||arena.o?.name||'fight'}`;
- const bounty=s.bountyCombat4;
- if(bounty)return `bounty:${bounty.startedAt||bounty.start||bounty.bossMaxHp||118}`;
- const mini=s.autoMiniBattle;
- if(mini)return `mini:${mini.startedAt||mini.name||'Knochenwache'}`;
- const dungeon=s.dungeonV1;
- const enemy=dungeon?.enemy;
- if(enemy&&enemy.hp>0){
-  const room=dungeon.room??dungeon.roomIndex??dungeon.step??dungeon.pos??0;
-  return `dungeon:${room}:${enemy.id||enemy.name||'enemy'}:${enemy.max||enemy.maxHp||0}`;
- }
- return null;
-}
-function sync(){
- const key=combatKey();
- if(key===activeKey)return;
- activeKey=key;
- if(reset()){
-  try{save?.()}catch{}
- }
-}
-root.combatResource={reset,sync,get activeKey(){return activeKey}};
-root.on?.('bootReady',sync);
-root.on?.('beforeRender',sync);
-root.on?.('afterRenderSettled',sync);
-queueMicrotask(sync);
+function skillState(){const ss=window.S?.skillSystem;return ss&&ss.cls===S.cls?ss:null}
+function profile(){return PROFILES[S?.cls]||{name:'Klassenressource',color:'#a875ff'}}
+function values(){const ss=skillState(),max=Math.max(1,Number(ss?.maxResource)||100),value=Math.max(0,Math.min(max,Number(ss?.resource)||0));return{...profile(),max,value,pct:Math.round(value/max*100)}}
+function bar(){const r=values();return `<div class="acr-resource" style="--acr-resource:${r.color}"><div class="acr-label"><span>${r.name}</span><b>${Math.round(r.value)}/${Math.round(r.max)}</b></div><i class="acr-track"><u style="width:${r.pct}%"></u></i></div>`}
+function reset(){const ss=skillState();if(!ss)return false;ss.maxResource=Math.max(1,Number(ss.maxResource)||100);ss.resource=ss.maxResource;ss.rotation=0;return true}
+function combatKey(){const s=window.S;if(!s)return null;const arena=s.arenaV2?.fight;if(arena&&!arena.done)return `arena:${arena.o?.id||arena.o?.name||'fight'}`;const bounty=s.bountyCombat4;if(bounty)return `bounty:${bounty.startedAt||bounty.start||bounty.bossMaxHp||118}`;const mini=s.autoMiniBattle;if(mini)return `mini:${mini.startedAt||mini.name||'Knochenwache'}`;const dungeon=s.dungeonV1,enemy=dungeon?.enemy;if(enemy&&enemy.hp>0){const room=dungeon.room??dungeon.roomIndex??dungeon.step??dungeon.pos??0;return `dungeon:${room}:${enemy.id||enemy.name||'enemy'}:${enemy.max||enemy.maxHp||0}`}return null}
+function sync(){const key=combatKey();if(key===activeKey)return;activeKey=key;if(reset()){try{save?.()}catch{}}}
+function injectAfter(selector){const host=document.querySelector(selector);if(!host||host.querySelector('.acr-resource'))return false;host.insertAdjacentHTML('beforeend',bar());return true}
+function decorate(){if(!combatKey())return;if(S.autoMiniBattle){document.querySelector('.tam4-resource')?.remove();injectAfter('.tam4-bars>div:last-child')}if(S.bountyCombat4)injectAfter('.bc4-bars>div:last-child');if(S.dungeonV1?.enemy&&S.dungeonV1.state==='combat')injectAfter('.dv7-bars>div:first-child')}
+root.combatResource={reset,sync,bar,values,get activeKey(){return activeKey}};
+root.on?.('bootReady',sync);root.on?.('beforeRender',sync);root.on?.('afterRenderSettled',()=>{sync();decorate()});queueMicrotask(()=>{sync();decorate()});
+const style=document.createElement('style');style.textContent=`
+.acr-resource{display:grid!important;gap:5px!important;margin-top:8px!important;padding-top:8px!important;border-top:1px solid #ffffff0a!important}.acr-label{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;font-size:8px!important;line-height:1!important}.acr-label span{color:var(--acr-resource)!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.055em!important}.acr-label b{font-size:8px!important;color:#eee8f1!important}.acr-track{display:block!important;width:100%!important;height:10px!important;padding:1px!important;border-radius:999px!important;overflow:hidden!important;background:linear-gradient(180deg,#09070d,#17101e)!important;border:1px solid #ffffff12!important;box-shadow:inset 0 1px 3px #000b!important}.acr-track u{display:block!important;height:100%!important;border-radius:inherit!important;background:linear-gradient(90deg,color-mix(in srgb,var(--acr-resource) 78%,#fff 4%),var(--acr-resource))!important;box-shadow:0 0 12px color-mix(in srgb,var(--acr-resource) 38%,transparent)!important;transition:width .28s ease!important}
+.tam4-bars i,.bc4-bars i,.dv7-bars i,.av2-hp{height:12px!important;padding:1px!important;border-radius:999px!important;background:linear-gradient(180deg,#09070d,#17101e)!important;border:1px solid #ffffff12!important;box-shadow:inset 0 1px 3px #000b!important;overflow:hidden!important}.tam4-bars i>u,.bc4-bars i>u,.dv7-bars i>u,.av2-hp>u{height:100%!important;border-radius:inherit!important;box-shadow:inset 0 1px #ffffff22,0 0 10px #0005!important;transition:width .28s ease!important}.tam4-bars>div:first-child i>u,.bc4-bars>div:first-child i>u,.dv7-bars>div:last-child i>u,.av2-combatant.enemy .av2-hp>u{background:linear-gradient(90deg,#9b3049,#ef6a7e)!important}.tam4-bars>div:last-child>i>u,.bc4-bars>div:last-child>i>u,.dv7-bars>div:first-child>i>u,.av2-combatant:not(.enemy)>.av2-hp>u{background:linear-gradient(90deg,#3eae79,#76dda3)!important}
+@media(max-width:430px){.acr-resource{margin-top:7px!important;padding-top:7px!important}.acr-track,.tam4-bars i,.bc4-bars i,.dv7-bars i,.av2-hp{height:11px!important}}
+`;document.head.appendChild(style);
 })();
