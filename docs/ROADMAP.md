@@ -17,14 +17,17 @@
    - `release-runtime-v1.js` for build version.
 2. `index.html` still loads a long flat chain of classic scripts. This is workable for release hardening, but script order remains a major regression risk.
 3. Some older patch patterns remain:
-   - `dungeon-presentation-v1.js` and `tavern-presentation-v1.js` still wrap `window.render`.
-   - Several modules still read `window.S`; because `S` is a global lexical binding, this can fail silently.
+   - `dungeon-presentation-v1.js` and `tavern-presentation-v1.js` now use the `Arcane` render lifecycle instead of direct `window.render` wrappers.
+   - Runtime `window.S` reads have been replaced with `Arcane.state.get()` / lexical `S` fallbacks.
    - Direct `localStorage` writes remain in editor, onboarding, telemetry, reset and compatibility paths.
 4. CI exists and is useful:
    - `.github/workflows/code-health.yml` checks JavaScript syntax, runtime graph, asset references, load order, authority violations, critical public APIs and reincarnation invariants.
 5. PWA foundation exists:
    - `manifest.webmanifest`, `sw.js`, app icons and installable metadata are present.
    - Release checklist already requires Android browser and installed PWA testing.
+6. Test baseline exists:
+   - `package.json`, `playwright.config.js` and `tests/mobile-pwa-smoke.spec.js` define a first mobile/PWA smoke scaffold.
+   - `docs/MOBILE-PWA-RUNBOOK.md` defines the manual Android/PWA QA pass.
 
 ## Release Strategy
 
@@ -37,19 +40,20 @@
 
 ### Phase 1 - Runtime Hardening
 
-- Move remaining post-render decorators from direct `window.render` wrappers to `Arcane.on('afterRenderSettled', ...)`.
-- Replace `window.S` reads with `S` where lexical access is valid, or `Arcane.state.get()` where module-safe access is needed.
+- Done: move dungeon and tavern post-render decorators from direct `window.render` wrappers to `Arcane.on('afterRenderSettled', ...)`.
+- Done: replace runtime `window.S` reads with `Arcane.state.get()` / lexical `S` fallbacks.
 - Route character creation and tutorial persistence through the state/storage authority.
 - Keep the current static PWA architecture until v1.0 unless a specific blocker requires bundling.
 
 ### Phase 2 - Mobile/PWA Quality
 
-- Add a minimal Playwright smoke suite for:
+- Done: add a minimal Playwright smoke scaffold for:
   - fresh boot and character creation,
   - reload persistence,
   - footer navigation on 360px, 390px and 430px widths,
   - modal/tutorial button reachability,
   - service worker registration.
+- Run the Playwright smoke suite in an environment with Node/npm available and record failures.
 - Test real Android through the phone harness when available.
 - Add asset-size and missing-alt checks before expanding graphics further.
 
@@ -84,11 +88,11 @@
 
 1. Done: align release documentation with `release-runtime-v1.js`.
 2. Run GitHub Actions Code Health and capture failing checks, if any.
-3. Convert `dungeon-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
-4. Convert `tavern-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
-5. Replace high-risk `window.S` reads in combat/resource and story modules.
+3. Done: convert `dungeon-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
+4. Done: convert `tavern-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
+5. Done: replace runtime `window.S` reads with `Arcane.state.get()` / lexical `S` fallbacks.
 6. Move character creation save writes behind `state-runtime-v1.js`.
-7. Add Playwright smoke test scaffold.
-8. Add mobile viewport smoke tests for footer, dialogs and onboarding.
-9. Create `docs/ART_DIRECTION.md`.
-10. Draft backend data model for cloud saves, leaderboards, guilds and cosmetics.
+7. Done: add Playwright smoke test scaffold.
+8. Done: add mobile/PWA QA runbook; next run smoke tests on a Node/npm environment.
+9. Done: create `docs/ART_DIRECTION.md`.
+10. Done: draft backend data model for cloud saves, leaderboards, guilds and cosmetics.

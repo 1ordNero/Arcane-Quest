@@ -23,9 +23,9 @@ Primary mission:
 
 Immediate tasks:
 - Keep future release documentation synchronized with `release-runtime-v1.js`.
-- Convert remaining `window.render` wrappers into `Arcane` lifecycle hooks.
-- Reduce `window.S` and direct `localStorage` usage.
-- Add automated smoke tests for boot, save, navigation and mobile layout.
+- Keep direct `window.render` ownership inside `core-runtime-v1.js`; use `Arcane` lifecycle hooks for decorators.
+- Continue reducing direct `localStorage` usage.
+- Run and harden the new Playwright smoke scaffold for boot, PWA basics, navigation and mobile layout.
 
 Rules:
 - Do not migrate to a framework until v1.0 hardening risks are lower.

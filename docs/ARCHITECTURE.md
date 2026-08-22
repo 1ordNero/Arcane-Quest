@@ -21,10 +21,7 @@ The page currently loads a long sequence of classic scripts from `index.html`.
 
 `app.js` declares `let S`. In a classic script this is globally visible to later scripts by identifier, but it is not a property of `window`. Code must use `S` (or, after the core is wired in, `Arcane.state.get()`) rather than `window.S`.
 
-Known loaded modules using `window.S` should be migrated because those checks can silently fail:
-
-- `activity-lock-v1.js`
-- `beta-navigation-guards-v1.js`
+Runtime `window.S` reads have been migrated outside documentation. New modules should keep using `Arcane.state.get()` where module-safe access is needed.
 
 ### Save ownership
 
@@ -39,18 +36,9 @@ Target: one storage module owns save, backup, migration, reset and recovery. Fea
 
 ### Render ownership
 
-`app.js` owns the base `render()` function. Multiple loaded modules later replace `window.render` with wrappers and call the previous implementation. This creates ordering dependencies and makes a later-loaded module able to accidentally bypass or undo another module.
+`app.js` owns the bootstrap render, and `core-runtime-v1.js` installs the runtime render lifecycle. A current code search finds direct `window.render =` ownership only in `core-runtime-v1.js`.
 
-A code search currently finds direct render-wrapper implementations in at least:
-
-- `activity-lock-v1.js`
-- `beta-navigation-guards-v1.js`
-- `compact-ui-v1.js`
-- `icon-polish-v1.js`
-- `catacomb-room5-fix-v1.js`
-- `xp-arena-stamina-v1.js`
-
-Target: keep one render entry point and migrate post-render work to explicit lifecycle hooks (`Arcane.on('afterRender', ...)`).
+Target: keep one render entry point and route post-render work through explicit lifecycle hooks (`Arcane.on('afterRenderSettled', ...)`).
 
 ### Navigation/activity ownership
 
@@ -77,7 +65,7 @@ Initial hook names:
 - `screenChange`
 - `bootReady`
 
-The scaffold is intentionally **not loaded by `index.html` in phase 1**. This keeps the audit commit behavior-neutral. Phase 2 will wire it into the boot order at the same time the first storage/boot owner is migrated to it.
+The scaffold is loaded by `index.html` after `app.js` and before later runtime modules. It now owns render lifecycle hooks, shell rendering and navigation authority.
 
 ## Refactor sequence
 
@@ -99,10 +87,10 @@ The scaffold is intentionally **not loaded by `index.html` in phase 1**. This ke
 
 ### Phase 3 — render / navigation
 
-- add one render dispatcher
-- replace chained render wrappers with `afterRender` hooks
+- done: add one render dispatcher
+- done: replace dungeon and tavern chained render wrappers with lifecycle hooks
 - consolidate activity locks/navigation guards
-- remove `window.S` checks
+- done: remove runtime `window.S` checks outside documentation
 
 ### Phase 4 — feature consolidation
 

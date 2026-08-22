@@ -5,7 +5,7 @@ This document tracks release-relevant risks that should be reduced before v1.0.
 ## Runtime Authority
 
 - `index.html` still loads a long flat chain of classic scripts. Script order remains a regression risk.
-- Remaining direct render wrappers should be migrated to `Arcane` lifecycle hooks.
+- Direct `window.render` ownership is now centralized in `core-runtime-v1.js`; future decorators should continue using `Arcane` lifecycle hooks.
 - Screen-specific behavior should stay in the documented source-of-truth files instead of new repair runtimes.
 
 ## State and Persistence
@@ -16,8 +16,8 @@ This document tracks release-relevant risks that should be reduced before v1.0.
 
 ## Global State Access
 
-- Some modules still read `window.S`. Because `S` is a global lexical binding, these checks can silently fail.
-- Prefer direct lexical `S` where valid, or `Arcane.state.get()` for module-safe access.
+- Runtime `window.S` reads have been removed outside documentation.
+- New modules should use `Arcane.state.get()` for module-safe access, or direct lexical `S` only where the classic-script scope is intentional.
 
 ## Mobile and PWA
 
