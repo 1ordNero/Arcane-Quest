@@ -1,7 +1,9 @@
 (()=>{
 'use strict';
-const handled=new Set(JSON.parse(localStorage.getItem('arcaneLootHandled')||'[]'));
-function saveHandled(){localStorage.setItem('arcaneLootHandled',JSON.stringify([...handled].slice(-50)))}
+const storage=()=>window.ARCANE_STORAGE||window.Arcane?.storage||null,HANDLED_KEY='arcaneLootHandled';
+function readHandled(){const raw=storage()?.readText?.(HANDLED_KEY)??(()=>{try{return localStorage.getItem(HANDLED_KEY)}catch{return null}})();try{const value=JSON.parse(raw||'[]');return Array.isArray(value)?value:[]}catch{return[]}}
+const handled=new Set(readHandled());
+function saveHandled(){const value=JSON.stringify([...handled].slice(-50));if(storage()?.writeText)storage().writeText(HANDLED_KEY,value);else try{localStorage.setItem(HANDLED_KEY,value)}catch{}}
 function rarityFor(kind){const roll=Math.random()*100;if(kind==='risk'){if(roll<4)return'legendary';if(roll<12)return'mythic';if(roll<42)return'rare';return'magic'}if(kind==='event'){if(roll<2)return'legendary';if(roll<7)return'mythic';if(roll<28)return'rare';return'magic'}return roll<18?'rare':'magic'}
 function questLootKind(result){if(result?.name==='Das flüsternde Siegel'&&result.item)return['event','Arkane Siegelfragmente'];if(result?.name==='Die versunkene Krypta'&&result.item)return['risk','Kryptenfund'];return null}
 function removePlaceholder(name){const index=(S.items||[]).findIndex(item=>item?.name===name);if(index>=0)S.items.splice(index,1)}

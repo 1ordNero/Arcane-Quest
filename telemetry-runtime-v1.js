@@ -2,9 +2,10 @@
 'use strict';
 const KEY='arcaneTelemetryV1',LIMIT=500;
 const now=()=>Date.now();
-function read(){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');return v&&typeof v==='object'?v:{version:1,events:[]}}catch{return{version:1,events:[]}}}
+const storage=()=>window.ARCANE_STORAGE||window.Arcane?.storage||null;
+function read(){const v=storage()?.read?.(KEY)||(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch{return null}})();return v&&typeof v==='object'?v:{version:1,events:[]}}
 let store=read(),writePending=false,idleHandle=null;
-function flush(){if(!writePending)return;writePending=false;idleHandle=null;try{localStorage.setItem(KEY,JSON.stringify(store))}catch{}}
+function flush(){if(!writePending)return;writePending=false;idleHandle=null;if(storage()?.writeObject)storage().writeObject(store,{key:KEY,backup:false});else try{localStorage.setItem(KEY,JSON.stringify(store))}catch{}}
 function scheduleWrite(){if(writePending)return;writePending=true;if('requestIdleCallback'in window)idleHandle=requestIdleCallback(flush,{timeout:1500});else idleHandle=setTimeout(flush,600)}
 function record(type,data={}){const event={t:now(),type,screen:S?.screen||'unknown',lvl:Number(S?.lvl)||1,...data};store.events.push(event);if(store.events.length>LIMIT)store.events.splice(0,store.events.length-LIMIT);scheduleWrite();return event}
 function rarityCounts(){const out={};for(const it of [...(S?.items||[]),...Object.values(S?.eq||{}).filter(Boolean)]){const r=it?.rarity||'unknown';out[r]=(out[r]||0)+1}return out}
