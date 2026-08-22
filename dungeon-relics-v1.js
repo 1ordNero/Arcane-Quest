@@ -1,5 +1,5 @@
 (()=>{
-const D=()=>window.S?.dungeonV1,ROOT='assets/icons/ui/';
+const state=()=>window.Arcane?.state?.get?.()||(typeof S!=='undefined'?S:null),D=()=>state()?.dungeonV1,ROOT='assets/icons/ui/';
 const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
 const icon=(r,cls='dr1-img')=>`<img class="${cls}" src="${ROOT}${r.asset}" alt="${esc(r.name)}">`;
 const ALTARS={1:{title:'Altar der Echos',text:'Die Katakomben bieten Macht, doch jede Gabe fordert einen Preis.'},4:{title:'Schrein der Gebundenen',text:'Ein zweites Relikt kann deinen Run formen – und seine Schwäche vertiefen.'},7:{title:'Das schwarze Reliquiar',text:'Vor den tiefsten Kammern wartet eine letzte verbotene Gabe.'}};
