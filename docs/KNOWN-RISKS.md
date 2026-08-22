@@ -10,8 +10,8 @@ This document tracks release-relevant risks that should be reduced before v1.0.
 
 ## State and Persistence
 
-- Direct `localStorage` writes still exist in several compatibility and editor paths.
-- Character creation, reset, recovery and tutorial state should continue moving behind the canonical storage authority.
+- Direct `localStorage` writes still exist in several compatibility, reset, onboarding and telemetry paths.
+- Reset, recovery and tutorial state should continue moving behind the canonical storage authority.
 - Save migration changes must stay forward-compatible and recovery-capable.
 
 ## Global State Access

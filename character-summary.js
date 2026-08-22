@@ -1,5 +1,8 @@
 (()=>{
-let o=JSON.parse(localStorage.getItem('arcaneBeta')||'null')||{},draft={name:o.name||'',race:o.race||'Mensch',gender:o.gender==='female'?'female':'male',cls:o.cls||'Krieger',bg:o.bg||'Tavernen-Stammgast'};
+const storage=window.ARCANE_STORAGE||window.Arcane?.storage||null;
+const readSave=()=>storage?.read?.()||(()=>{try{return JSON.parse(localStorage.getItem('arcaneBeta')||'null')||{}}catch{return{}}})();
+const writeSave=s=>storage?.writeObject?storage.writeObject(s,{backup:true}):(()=>{try{localStorage.setItem('arcaneBeta',JSON.stringify(s));return true}catch{return false}})();
+let o=readSave(),draft={name:o.name||'',race:o.race||'Mensch',gender:o.gender==='female'?'female':'male',cls:o.cls||'Krieger',bg:o.bg||'Tavernen-Stammgast'};
 const oldName=window.cgName,oldGender=window.cgGender,oldClass=window.cgClass,oldBg=window.cgBg,oldNext=window.cgNext;
 if(!oldNext)return;
 function sync(){if(window.getCharacterDraft)draft={...draft,...getCharacterDraft()}}
@@ -25,8 +28,8 @@ function commitDraftToLiveState(){
   if(typeof S!=='undefined'&&S&&typeof S==='object')Object.assign(S,chosen);
  }catch(e){console.warn('[Character Summary] live state sync',e)}
  try{
-  const stored=JSON.parse(localStorage.getItem('arcaneBeta')||'null')||{};
-  localStorage.setItem('arcaneBeta',JSON.stringify({...stored,...chosen}));
+  const stored=readSave();
+  if(!writeSave({...stored,...chosen}))console.warn('[Character Summary] storage sync failed');
  }catch(e){console.warn('[Character Summary] storage sync',e)}
 }
 let confirming=false;

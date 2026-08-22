@@ -19,7 +19,7 @@
 3. Some older patch patterns remain:
    - `dungeon-presentation-v1.js` and `tavern-presentation-v1.js` now use the `Arcane` render lifecycle instead of direct `window.render` wrappers.
    - Runtime `window.S` reads have been replaced with `Arcane.state.get()` / lexical `S` fallbacks.
-   - Direct `localStorage` writes remain in editor, onboarding, telemetry, reset and compatibility paths.
+   - Direct `localStorage` writes remain in onboarding, telemetry, reset and compatibility paths.
 4. CI exists and is useful:
    - `.github/workflows/code-health.yml` checks JavaScript syntax, runtime graph, asset references, load order, authority violations, critical public APIs and reincarnation invariants.
 5. PWA foundation exists:
@@ -42,7 +42,8 @@
 
 - Done: move dungeon and tavern post-render decorators from direct `window.render` wrappers to `Arcane.on('afterRenderSettled', ...)`.
 - Done: replace runtime `window.S` reads with `Arcane.state.get()` / lexical `S` fallbacks.
-- Route character creation and tutorial persistence through the state/storage authority.
+- Done: route character creation save writes through the state/storage authority.
+- Route tutorial persistence through the state/storage authority.
 - Keep the current static PWA architecture until v1.0 unless a specific blocker requires bundling.
 
 ### Phase 2 - Mobile/PWA Quality
@@ -91,7 +92,7 @@
 3. Done: convert `dungeon-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
 4. Done: convert `tavern-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
 5. Done: replace runtime `window.S` reads with `Arcane.state.get()` / lexical `S` fallbacks.
-6. Move character creation save writes behind `state-runtime-v1.js`.
+6. Done: move character creation save writes behind the storage/state authority.
 7. Done: add Playwright smoke test scaffold.
 8. Done: add mobile/PWA QA runbook; next run smoke tests on a Node/npm environment.
 9. Done: create `docs/ART_DIRECTION.md`.
