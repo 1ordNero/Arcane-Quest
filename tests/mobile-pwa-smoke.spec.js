@@ -41,7 +41,12 @@ async function seedCharacter(page) {
       essence: 0,
       legendaryEssence: 0,
       ancestorRelics: 0,
-      onboarding: { version: 1, completed: {}, progress: {}, dismissed: {} }
+      onboarding: {
+        version: 6,
+        completed: { home: Date.now(), char: Date.now() },
+        progress: {},
+        dismissed: {}
+      }
     };
     localStorage.setItem('arcaneBeta', JSON.stringify(save));
     localStorage.setItem('arcaneCharacterCreated', '1');
