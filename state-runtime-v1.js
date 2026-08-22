@@ -68,32 +68,30 @@ function persist(force=false){
   const nextFingerprint=fingerprint(S);
   if(!force&&nextFingerprint&&nextFingerprint===lastFingerprint)return true;
   S.saveMeta.updatedAt=Date.now();
-  let ok=false;
-  if(storage?.writeObject)ok=storage.writeObject(S,{backup:true});
-  else try{const next=JSON.stringify(S),previous=localStorage.getItem(SAVE_KEY);if(previous&&previous!==next&&parse(previous))localStorage.setItem(BACKUP_KEY,previous);localStorage.setItem(SAVE_KEY,next);ok=true}catch(err){console.error('[Arcane Save] Speichern fehlgeschlagen',err)}
+  const ok=storage?.writeObject?storage.writeObject(S,{backup:true}):false;
   if(ok){lastFingerprint=nextFingerprint||fingerprint(S);window.Arcane?.emit?.('afterSave',S)}
   return ok;
 }
 function restoreObject(value){
   if(!validObject(value))return false;
   normalize(value);
-  const ok=storage?.writeObject?storage.writeObject(value,{backup:true}):(()=>{try{localStorage.setItem(SAVE_KEY,JSON.stringify(value));return true}catch{return false}})();
+  const ok=storage?.writeObject?storage.writeObject(value,{backup:true}):false;
   if(ok)location.reload();
   return ok;
 }
-function restoreBackup(){const b=storage?.read?storage.read(BACKUP_KEY):parse(localStorage.getItem(BACKUP_KEY));return restoreObject(b)}
+function restoreBackup(){const b=storage?.read?storage.read(BACKUP_KEY):null;return restoreObject(b)}
 function createRecoverySnapshot(key=REINCARNATION_BACKUP_KEY){
   normalize(S);
-  try{return storage?.writeObject?storage.writeObject(S,{key,backup:false}):(localStorage.setItem(key,JSON.stringify(S)),true)}catch(err){console.error('[Arcane Save] Recovery-Snapshot fehlgeschlagen',err);return false}
+  try{return storage?.writeObject?storage.writeObject(S,{key,backup:false}):false}catch(err){console.error('[Arcane Save] Recovery-Snapshot fehlgeschlagen',err);return false}
 }
-function restoreRecoverySnapshot(key=REINCARNATION_BACKUP_KEY){const value=storage?.read?storage.read(key):parse(localStorage.getItem(key));return restoreObject(value)}
+function restoreRecoverySnapshot(key=REINCARNATION_BACKUP_KEY){const value=storage?.read?storage.read(key):null;return restoreObject(value)}
 function exportSave(){normalize(S);return JSON.stringify(S)}
 function importSave(raw){const value=typeof raw==='string'?parse(raw):raw;if(!validObject(value))return false;return restoreObject(value)}
 function installCharacterCommit(){
   if(typeof window.cgConfirmHero!=='function'||typeof window.getCharacterDraft!=='function')return;
   const classes=new Set(window.HERO_BETA_CLASSES||['Krieger','Magier','Hexenmeister','Druide']);
   const stories=new Set(['Tavernen-Stammgast','Gefallener Adeliger','Runenschmied-Lehrling','Schatten-Ausreißer']);
-  window.cgConfirmHero=function(){const d=window.getCharacterDraft?.()||{},name=String(d.name||'').trim().slice(0,24);if(!name)return alert('Bitte gib deinem Helden einen Namen.');const chosen={name,race:'Mensch',gender:d.gender==='female'?'female':'male',cls:classes.has(d.cls)?d.cls:'Krieger',bg:stories.has(d.bg)?d.bg:'Tavernen-Stammgast',screen:'home'};Object.assign(S,chosen);if(!persist(true))return alert('Der Spielstand konnte nicht gespeichert werden. Bitte versuche es erneut.');const createdKey=storage?.keys?.created||'arcaneCharacterCreated';const marked=storage?.writeText?storage.writeText(createdKey,'1'):(()=>{try{localStorage.setItem(createdKey,'1');return true}catch{return false}})();if(!marked)return alert('Der Charakter konnte nicht abgeschlossen werden. Bitte versuche es erneut.');document.getElementById('character-gate')?.remove();location.reload()}
+  window.cgConfirmHero=function(){const d=window.getCharacterDraft?.()||{},name=String(d.name||'').trim().slice(0,24);if(!name)return alert('Bitte gib deinem Helden einen Namen.');const chosen={name,race:'Mensch',gender:d.gender==='female'?'female':'male',cls:classes.has(d.cls)?d.cls:'Krieger',bg:stories.has(d.bg)?d.bg:'Tavernen-Stammgast',screen:'home'};Object.assign(S,chosen);if(!persist(true))return alert('Der Spielstand konnte nicht gespeichert werden. Bitte versuche es erneut.');const createdKey=storage?.keys?.created||'arcaneCharacterCreated';const marked=storage?.writeText?storage.writeText(createdKey,'1'):false;if(!marked)return alert('Der Charakter konnte nicht abgeschlossen werden. Bitte versuche es erneut.');document.getElementById('character-gate')?.remove();location.reload()}
 }
 normalize(S);lastFingerprint=fingerprint(S);
 window.ARCANE_STATE={key:SAVE_KEY,backupKey:BACKUP_KEY,reincarnationBackupKey:REINCARNATION_BACKUP_KEY,version:VERSION,normalize,migrate,persist,restoreBackup,createRecoverySnapshot,restoreRecoverySnapshot,exportSave,importSave,fingerprint};
