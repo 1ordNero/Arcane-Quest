@@ -1,0 +1,12 @@
+{
+  "name": "arcane-quest",
+  "version": "0.15.20",
+  "private": true,
+  "scripts": {
+    "test:smoke": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.46.0",
+    "http-server": "^14.1.1"
+  }
+}
