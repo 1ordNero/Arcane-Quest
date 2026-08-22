@@ -6,7 +6,7 @@
 - Current stack: static, framework-free HTML/CSS/JavaScript PWA.
 - Product target: Web/PWA first, Android after that.
 - Monetization direction: cosmetics only.
-- Current public build docs describe `v0.15.19`; `release-runtime-v1.js` currently publishes `v0.15.20`.
+- Current public build docs and `release-runtime-v1.js` publish `v0.15.20`.
 
 ## Technical Findings
 
@@ -30,7 +30,7 @@
 
 ### Phase 0 - Freeze and Audit
 
-- Confirm whether `v0.15.20` is intended and update README/release checklist accordingly.
+- Keep release documentation synchronized with `release-runtime-v1.js`.
 - Run GitHub Actions on `main` and treat red Code Health as release-blocking.
 - Open or import the existing GitHub issues into the planning board.
 - Maintain `docs/KNOWN-RISKS.md` for remaining authority and storage debt.
@@ -82,7 +82,7 @@
 
 ## First 10 Engineering Tickets
 
-1. Align README release version with `release-runtime-v1.js`.
+1. Done: align release documentation with `release-runtime-v1.js`.
 2. Run GitHub Actions Code Health and capture failing checks, if any.
 3. Convert `dungeon-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.
 4. Convert `tavern-presentation-v1.js` render wrapper to an `Arcane` lifecycle hook.

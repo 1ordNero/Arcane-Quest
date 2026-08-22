@@ -22,7 +22,7 @@ Primary mission:
 - Own Code Health failures, PWA stability, mobile performance and refactors.
 
 Immediate tasks:
-- Verify `v0.15.19` vs `v0.15.20` release version mismatch.
+- Keep future release documentation synchronized with `release-runtime-v1.js`.
 - Convert remaining `window.render` wrappers into `Arcane` lifecycle hooks.
 - Reduce `window.S` and direct `localStorage` usage.
 - Add automated smoke tests for boot, save, navigation and mobile layout.
