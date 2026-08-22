@@ -1,7 +1,7 @@
 (()=>{
-const storage=window.ARCANE_STORAGE||window.Arcane?.storage||null;
-const readSave=()=>storage?.read?.()||(()=>{try{return JSON.parse(localStorage.getItem('arcaneBeta')||'null')||{}}catch{return{}}})();
-const writeSave=s=>storage?.writeObject?storage.writeObject(s,{backup:true}):(()=>{try{localStorage.setItem('arcaneBeta',JSON.stringify(s));return true}catch{return false}})();
+const storage=()=>window.ARCANE_STORAGE||window.Arcane?.storage||null;
+const readSave=()=>storage()?.read?.()||{};
+const writeSave=s=>storage()?.writeObject?storage().writeObject(s,{backup:true}):false;
 let o=readSave(),draft={name:o.name||'',race:o.race||'Mensch',gender:o.gender==='female'?'female':'male',cls:o.cls||'Krieger',bg:o.bg||'Tavernen-Stammgast'};
 const oldName=window.cgName,oldGender=window.cgGender,oldClass=window.cgClass,oldBg=window.cgBg,oldNext=window.cgNext;
 if(!oldNext)return;
