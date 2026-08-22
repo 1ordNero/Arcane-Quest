@@ -1,5 +1,5 @@
 (()=>{
-const D=()=>window.S?.dungeonV1,ROOT='assets/icons/ui/';
+const D=()=>window.Arcane?.state?.get?.()?.dungeonV1,ROOT='assets/icons/ui/';
 const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
 const defs=[{id:'aegis',asset:'resonance_bulwark.webp',name:'Bollwerk-Resonanz',needs:['wardstone','ward'],desc:'Wächterstein + Wächterpfad',detail:'Nach Kämpfen zusätzliche Heilung. Der Hüter verstärkt dafür sein Phasenschild.'},{id:'blood',asset:'resonance_blood_pact.webp',name:'Blutpakt',needs:['gravecoin','greed'],desc:'Grabmünze + Blutpfad',detail:'Mehr Gold aus Elite/Boss. Der Hüter schlägt härter.'},{id:'arcane',asset:'resonance_arcane_fracture.webp',name:'Arkane Brechung',needs:['runemirror','arcane'],desc:'Runenspiegel + Arkaner Pfad',detail:'Mehr XP und der Hüter verliert einen Teil seines Phasenschilds.'},{id:'thorn',asset:'resonance_thornlight.webp',name:'Dornenlicht',needs:['thornidol','lantern'],desc:'Dornenidol + Seelenlaterne',detail:'Gegner starten geschwächt; Siege stellen zusätzlich HP wieder her.'}];
 const ico=x=>`<img class="dres-icon" src="${ROOT}${x.asset}" alt="">`;

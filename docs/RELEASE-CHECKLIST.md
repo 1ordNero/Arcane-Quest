@@ -1,4 +1,4 @@
-# Arcane Quest – Release Checklist v0.15.19
+# Arcane Quest – Release Checklist v0.15.23
 
 Diese Checkliste ist für den manuellen Geräte-/Regressionstest des Release Candidates vorgesehen. Jeder Punkt soll mindestens auf einem aktuellen Android-Smartphone im Browser und als installierte PWA geprüft werden. Vor einer v1.0-Freigabe muss zusätzlich der GitHub-Actions-Workflow **Code Health** vollständig grün sein.
 

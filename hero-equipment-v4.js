@@ -8,7 +8,7 @@ function norm(s){return s==='Schultern'?'Schulter':s==='Nebenhand'?'Zweithand':s
 function score(it){if(!it)return 0;const b=it.bonus||{};return (Number(it.power)||0)*5+(b.damage||0)*7+(b.armor||0)*6+(b.hp||0)*.7+(b.str||0)*5+(b.agi||0)*5+(b.int||0)*5+(b.crit||0)*4+(b.dodge||0)*4+(b.block||0)*4}
 function targetSlot(it){return norm(it.slot)}
 function autoEquip(){S.eq=S.eq||{};S.items=S.items||[];let changed=0;for(let i=S.items.length-1;i>=0;i--){const it=S.items[i];const s=targetSlot(it);if(!SLOTS.includes(s)||S.eq[s])continue;S.items.splice(i,1);it.slot=s;S.eq[s]=it;changed++}if(changed&&window.syncEquipmentStats)syncEquipmentStats();return changed}
-const baseSave=window.save;if(baseSave)window.save=function(){autoEquip();return baseSave.apply(this,arguments)};
+window.Arcane?.on?.('beforeSave',autoEquip);
 window.autoEquipFreeSlots=autoEquip;
 function find(id){return [...(S.items||[]),...Object.values(S.eq||{}).filter(Boolean)].find(x=>x.id===id)}
 function equippedFor(it){return S.eq?.[targetSlot(it)]||null}

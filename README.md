@@ -2,14 +2,14 @@
 
 Mobile-first Dark-Arcane-Fantasy-RPG als installierbare Progressive Web App. Die visuelle Richtung verbindet düstere Diablo-artige Fantasy mit klarer, stilisierter Smartphone-Lesbarkeit.
 
-**Aktueller Release Candidate:** v0.15.19  
+**Aktueller Release Candidate:** v0.15.23<br>
 **Live-Build:** https://1ordnero.github.io/Arcane-Quest/
 
 > Diese README beschreibt den tatsächlich freigegebenen Stand von `main` und hat bei Widersprüchen Vorrang vor älteren GDD-Vorgaben.
 
 ## Release-Status
 
-v0.15.19 ist der aktuelle Release Candidate für den definierten Launch-Scope. Der Build befindet sich im Release-Hardening: keine neuen Kernsysteme bis zur v1.0-Freigabe, stattdessen Runtime-Konsolidierung, Regressionstests, Save/PWA-Stabilität, mobile QA und Balance. Der Kernloop von Charaktererstellung über Quests, Katakomben, Arena, Item-Progression und Schmiede bis Stufe 50, Reinkarnation und Vermächtnis ist spielbar.
+v0.15.23 ist der aktuelle Release Candidate für den definierten Launch-Scope. Der Build befindet sich im Release-Hardening: keine neuen Kernsysteme bis zur v1.0-Freigabe, stattdessen Runtime-Konsolidierung, Regressionstests, Save/PWA-Stabilität, mobile QA und Balance. Der Kernloop von Charaktererstellung über Quests, Katakomben, Arena, Item-Progression und Schmiede bis Stufe 50, Reinkarnation und Vermächtnis ist spielbar.
 
 Aktueller Launch-Scope der Charaktererstellung:
 - Volk: **Mensch**
@@ -166,6 +166,8 @@ GitHub Actions prüfen JavaScript-Syntax, Runtime-/Asset-Referenzen, Load-Order,
 ## Release-Test
 
 Der manuelle Release-Test ist in `docs/RELEASE-CHECKLIST.md` beschrieben. Besonders relevant sind Charaktererstellung, progressives Onboarding, alle Questtypen, Klassenressourcen in jedem Kampfpfad, vollständiger Katakombenrun, Arena, Held/Inventar/Item-Popups, Händler, Bank, alle Schmiede-Tabs, Reinkarnation/Vermächtnis, Save/Reload/PWA-Neustart und Layouttests auf kleinen wie großen Smartphones.
+
+Der aktuelle automatisierte und manuelle Freigabestatus wird in `docs/RELEASE-READINESS.md` geführt. `pnpm test` prüft State-/Recovery-Invarianten sowie die wichtigsten mobilen Nutzerpfade in Chromium und WebKit.
 
 ## Entwicklerwerkzeuge
 

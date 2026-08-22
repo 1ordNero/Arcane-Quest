@@ -1,0 +1,14 @@
+{
+  "name": "arcane-quest",
+  "version": "0.15.23",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "test": "node tests/runtime-state.test.cjs && playwright test",
+    "test:runtime": "node tests/runtime-state.test.cjs",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

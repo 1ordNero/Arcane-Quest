@@ -9,7 +9,7 @@ const ASSETS={
 };
 function markup(src,name){return `<img class="arc-skill-icon" src="${src}" alt="${name||''}" loading="lazy" decoding="async">`}
 function bind(){const data=window.SKILL_DATA||{};Object.entries(ASSETS).forEach(([cls,map])=>{(data[cls]||[]).forEach(skill=>{const file=map[skill.id];if(!file)return;const src=BASE+file;skill.iconAsset=src;skill.icon=markup(src,skill.name)})})}
-function mountCombatIcons(){const feedback=window.S?.dungeonV1?.feedback,box=document.querySelector('.dv7-action');if(box&&feedback?.iconAsset){let img=box.querySelector(':scope > img.arc-skill-feedback-icon');if(!img){img=document.createElement('img');img.className='arc-skill-feedback-icon';box.prepend(img)}if(img.src!==new URL(feedback.iconAsset,location.href).href)img.src=feedback.iconAsset;img.alt=feedback.title||'Skill'}document.querySelectorAll('.dv7-action').forEach(el=>{if(!feedback?.iconAsset)el.querySelector(':scope > img.arc-skill-feedback-icon')?.remove()})}
+function mountCombatIcons(){const feedback=window.Arcane?.state?.get?.()?.dungeonV1?.feedback,box=document.querySelector('.dv7-action');if(box&&feedback?.iconAsset){let img=box.querySelector(':scope > img.arc-skill-feedback-icon');if(!img){img=document.createElement('img');img.className='arc-skill-feedback-icon';box.prepend(img)}if(img.src!==new URL(feedback.iconAsset,location.href).href)img.src=feedback.iconAsset;img.alt=feedback.title||'Skill'}document.querySelectorAll('.dv7-action').forEach(el=>{if(!feedback?.iconAsset)el.querySelector(':scope > img.arc-skill-feedback-icon')?.remove()})}
 bind();
 Object.values(ASSETS).flatMap(x=>Object.values(x)).forEach(file=>{const img=new Image();img.src=BASE+file});
 const css=document.createElement('style');css.textContent=`

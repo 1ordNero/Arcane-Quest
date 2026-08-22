@@ -1,5 +1,5 @@
 (()=>{
-const D=()=>window.S?.dungeonV1,ROOT='assets/icons/ui/';
+const D=()=>window.Arcane?.state?.get?.()?.dungeonV1,ROOT='assets/icons/ui/';
 const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
 const PATHS={ward:{asset:'dungeon_path_ward.webp',label:'Wächterpfad'},greed:{asset:'dungeon_path_blood.webp',label:'Blutpfad'},arcane:{asset:'dungeon_path_arcane.webp',label:'Arkaner Pfad'}};
 const ico=(id,c='dd1-icon')=>`<img class="${c}" src="${ROOT}${PATHS[id].asset}" alt="">`;

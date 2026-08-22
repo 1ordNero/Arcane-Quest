@@ -14,6 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install test dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Check JavaScript syntax
         shell: bash
         run: |
@@ -90,6 +100,10 @@ jobs:
               if path.name == 'core-runtime-v1.js':
                   continue
               text = path.read_text(encoding='utf-8')
+              if re.search(r'window\.S(?:\W|$)', text):
+                  authority_violations.append(f'{path}: accesses lexical state through window.S')
+              if path.name != 'state-runtime-v1.js' and re.search(r'window\.save\s*=(?!=)', text):
+                  authority_violations.append(f'{path}: replaces canonical window.save')
               if re.search(r'window\.render\s*=', text):
                   authority_violations.append(f'{path}: replaces window.render')
               if re.search(r'window\.tab\s*=', text):
@@ -124,7 +138,7 @@ jobs:
           from pathlib import Path
           checks = {
               'core-runtime-v1.js': ['window.render', 'window.tab', 'root.on', 'root.emit'],
-              'state-runtime-v1.js': ['window.save', 'window.ARCANE_STATE'],
+              'state-runtime-v1.js': ['window.save', 'window.ARCANE_STATE', 'window.__ARCANE_INTENTIONAL_RESET=false'],
               'quest-cost-runtime-v1.js': ['window.getEffectiveQuestCost'],
               'quest-system-v1.js': ['window.qStart', 'window.qSelect', 'setSelected'],
               'tavern.js': ['window.home', 'window.tavern'],
@@ -198,3 +212,9 @@ jobs:
               raise SystemExit('Reincarnation invariant regression:\n'+'\n'.join(failures))
           print('Reincarnation invariants are intact.')
           PY
+
+      - name: Install browser test engines
+        run: pnpm exec playwright install --with-deps chromium webkit
+
+      - name: Run runtime and mobile browser regressions
+        run: pnpm test

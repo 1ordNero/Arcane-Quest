@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const D=()=>window.S?.dungeonV1,BUILD=()=>window.ARCANE_ITEM_BUILDS,ROOT='assets/icons/ui/';
+const D=()=>window.Arcane?.state?.get?.()?.dungeonV1,BUILD=()=>window.ARCANE_ITEM_BUILDS,ROOT='assets/icons/ui/';
 const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
 const POWERS={ward:{id:'lastlight',asset:'keystone_last_light.webp',name:'Letztes Licht',text:'Unter 45% HP heilt dich der Beginn eines Kampfes einmalig um 18% deiner maximalen HP.'},shadow:{id:'ambush',asset:'keystone_shadow_ambush.webp',name:'Schattenhinterhalt',text:'Gegner beginnen Kämpfe mit 12% weniger Lebenspunkten.'},arcane:{id:'wardbreak',asset:'keystone_rune_break.webp',name:'Runenbruch',text:'Gegnerische Schilde starten mit 35% weniger Stärke.'},reaver:{id:'execution',asset:'keystone_blood_judgement.webp',name:'Bluturteil',text:'Sinkt ein Gegner unter 15% HP, wird er einmalig auf 1 HP verwundet.'}};
 const ico=(p,c='ik1-icon')=>`<img class="${c}" src="${ROOT}${p.asset}" alt="">`;
