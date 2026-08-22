@@ -3,15 +3,16 @@
 const root=window.Arcane=window.Arcane||{};
 const PROFILES={Krieger:{name:'Wut',color:'#d8755c'},Magier:{name:'Mana',color:'#5e9cff'},Druide:{name:'Naturfokus',color:'#65c987'},Waldläufer:{name:'Energie',color:'#d9b95d'},Hexenmeister:{name:'Seelenfragmente',color:'#a875ff'},Totenbeschwörer:{name:'Essenz des Todes',color:'#72c9cf'}};
 let activeKey=null;
-function skillState(){const ss=window.S?.skillSystem;return ss&&ss.cls===S.cls?ss:null}
-function profile(){return PROFILES[S?.cls]||{name:'Klassenressource',color:'#a875ff'}}
+function state(){return root.state?.get?.()||(typeof S!=='undefined'?S:null)}
+function skillState(){const s=state(),ss=s?.skillSystem;return ss&&ss.cls===s.cls?ss:null}
+function profile(){const s=state();return PROFILES[s?.cls]||{name:'Klassenressource',color:'#a875ff'}}
 function values(){const ss=skillState(),max=Math.max(1,Number(ss?.maxResource)||100),value=Math.max(0,Math.min(max,Number(ss?.resource)||0));return{...profile(),max,value,pct:Math.round(value/max*100)}}
 function bar(){const r=values();return `<div class="acr-resource" style="--acr-resource:${r.color}"><div class="acr-label"><span>${r.name}</span><b>${Math.round(r.value)}/${Math.round(r.max)}</b></div><i class="acr-track"><u style="width:${r.pct}%"></u></i></div>`}
 function reset(){const ss=skillState();if(!ss)return false;ss.maxResource=Math.max(1,Number(ss.maxResource)||100);ss.resource=ss.maxResource;ss.rotation=0;return true}
-function combatKey(){const s=window.S;if(!s)return null;const arena=s.arenaV2?.fight;if(arena&&!arena.done)return `arena:${arena.o?.id||arena.o?.name||'fight'}`;const bounty=s.bountyCombat4;if(bounty)return `bounty:${bounty.startedAt||bounty.start||bounty.bossMaxHp||118}`;const mini=s.autoMiniBattle;if(mini)return `mini:${mini.startedAt||mini.name||'Knochenwache'}`;const dungeon=s.dungeonV1,enemy=dungeon?.enemy;if(enemy&&enemy.hp>0){const room=dungeon.room??dungeon.roomIndex??dungeon.step??dungeon.pos??0;return `dungeon:${room}:${enemy.id||enemy.name||'enemy'}:${enemy.max||enemy.maxHp||0}`}return null}
+function combatKey(){const s=state();if(!s)return null;const arena=s.arenaV2?.fight;if(arena&&!arena.done)return `arena:${arena.o?.id||arena.o?.name||'fight'}`;const bounty=s.bountyCombat4;if(bounty)return `bounty:${bounty.startedAt||bounty.start||bounty.bossMaxHp||118}`;const mini=s.autoMiniBattle;if(mini)return `mini:${mini.startedAt||mini.name||'Knochenwache'}`;const dungeon=s.dungeonV1,enemy=dungeon?.enemy;if(enemy&&enemy.hp>0){const room=dungeon.room??dungeon.roomIndex??dungeon.step??dungeon.pos??0;return `dungeon:${room}:${enemy.id||enemy.name||'enemy'}:${enemy.max||enemy.maxHp||0}`}return null}
 function sync(){const key=combatKey();if(key===activeKey)return;activeKey=key;if(reset()){try{save?.()}catch{}}}
 function injectAfter(selector){const host=document.querySelector(selector);if(!host||host.querySelector('.acr-resource'))return false;host.insertAdjacentHTML('beforeend',bar());return true}
-function decorate(){if(!combatKey())return;if(S.autoMiniBattle){document.querySelector('.tam4-resource')?.remove();injectAfter('.tam4-bars>div:last-child')}if(S.bountyCombat4)injectAfter('.bc4-bars>div:last-child');if(S.dungeonV1?.enemy&&S.dungeonV1.state==='combat')injectAfter('.dv7-bars>div:first-child')}
+function decorate(){const s=state();if(!s||!combatKey())return;if(s.autoMiniBattle){document.querySelector('.tam4-resource')?.remove();injectAfter('.tam4-bars>div:last-child')}if(s.bountyCombat4)injectAfter('.bc4-bars>div:last-child');if(s.dungeonV1?.enemy&&s.dungeonV1.state==='combat')injectAfter('.dv7-bars>div:first-child')}
 root.combatResource={reset,sync,bar,values,get activeKey(){return activeKey}};
 root.on?.('bootReady',sync);root.on?.('beforeRender',sync);root.on?.('afterRenderSettled',()=>{sync();decorate()});queueMicrotask(()=>{sync();decorate()});
 const style=document.createElement('style');style.textContent=`
