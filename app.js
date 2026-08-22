@@ -11,7 +11,7 @@ function unlock(level){return (Number(S.lvl)||1)>=level?'':` 🔒 ab Stufe ${lev
 function log(message){if(!Array.isArray(S.log))S.log=[];S.log.unshift(String(message));S.log=S.log.slice(0,14)}
 function toast(message){if(window.Arcane?.dialogs?.toast)return window.Arcane.dialogs.toast(message);alert(message)}
 function offline(){return window.ARCANE_APP_STATE?.settleOffline?.()||false}
-function reset(){if(confirm('Beta-Spielstand wirklich löschen?')){localStorage.removeItem('arcaneBeta');location.reload()}}
+function reset(){if(confirm('Beta-Spielstand wirklich löschen?')){const storage=window.ARCANE_STORAGE||window.Arcane?.storage;if(storage?.clearGameData)storage.clearGameData();else try{localStorage.removeItem('arcaneBeta')}catch{}location.reload()}}
 function tab(name){S.screen=name;render()}
 function setName(value){S.name=String(value||'').slice(0,24)||'Aventurier'}
 function chooseRace(value){if(RACES[value])S.race=value;render()}

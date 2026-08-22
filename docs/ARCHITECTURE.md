@@ -9,8 +9,8 @@ This document describes the current runtime structure and the migration path tow
 The page currently loads a long sequence of classic scripts from `index.html`.
 
 1. Reset/recovery boot scripts run before the game state exists.
-2. Character editor scripts may read/write the save directly.
-3. `app.js` creates the global lexical state `S`, defines the original `save()` and `render()`, and performs the first render.
+2. Character editor scripts use the storage authority for save/text markers, with defensive fallbacks for early boot.
+3. `app.js` creates the global lexical state `S`, delegates save/reset to the storage/state authorities and defines the bootstrap `render()`.
 4. `state-runtime-v1.js` replaces `window.save` with the versioned persistence implementation and registers page lifecycle autosaves.
 5. Feature modules add gameplay systems.
 6. UX, guard, visual, PWA and balance modules repeatedly wrap existing global functions such as `render`, `tab`, quest starts and combat starts.
@@ -25,12 +25,12 @@ Runtime `window.S` reads have been migrated outside documentation. New modules s
 
 ### Save ownership
 
-There are currently multiple save concepts:
+Storage ownership is now centralized:
 
-- `app.js` defines the original `save()` using `localStorage.setItem`.
+- `reset-boot-v1.js` publishes the shared `ARCANE_STORAGE` helper for save, backup, text markers, reset and recovery storage operations.
 - `state-runtime-v1.js` defines the authoritative versioned persistence function and assigns it to `window.save`.
-- boot/reset scripts manipulate the same storage keys independently.
-- character creation writes `arcaneBeta` directly.
+- `app.js` and character creation delegate persistence to the storage/state authorities.
+- defensive `localStorage` fallbacks may remain only for early boot or compatibility paths.
 
 Target: one storage module owns save, backup, migration, reset and recovery. Feature modules request persistence instead of writing save keys themselves.
 
@@ -79,9 +79,9 @@ The scaffold is loaded by `index.html` after `app.js` and before later runtime m
 ### Phase 2 — state / storage / boot
 
 - wire `core-runtime-v1.js` into the boot order
-- make a single storage implementation authoritative
-- move reset, backup and recovery behind it
-- remove duplicate raw save writes from character creation
+- done: make a single storage implementation authoritative
+- done: move reset, backup and recovery behind it
+- done: remove duplicate raw save writes from character creation
 - normalize intentional-reset lifecycle
 - migrate autosave to core lifecycle
 
