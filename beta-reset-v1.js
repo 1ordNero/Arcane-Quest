@@ -1,7 +1,8 @@
 (()=>{
 'use strict';
 const params=new URLSearchParams(location.search);
-const DEV_ENABLED=params.get('beta')==='1'||params.get('debug')==='1'||localStorage.getItem('arcaneDeveloperMode')==='1';
+const storage=()=>window.ARCANE_STORAGE||window.Arcane?.storage||null,readText=key=>{const s=storage();return s?.readText?.(key)??(()=>{try{return localStorage.getItem(key)}catch{return null}})()},writeText=(key,value)=>{const s=storage();return s?.writeText?s.writeText(key,value):(()=>{try{localStorage.setItem(key,String(value));return true}catch{return false}})()},writeSessionText=(key,value)=>{const s=storage();return s?.writeSessionText?s.writeSessionText(key,value):(()=>{try{sessionStorage.setItem(key,String(value));return true}catch{return false}})()};
+const DEV_ENABLED=params.get('beta')==='1'||params.get('debug')==='1'||readText('arcaneDeveloperMode')==='1';
 let menuOpen=false;
 const byId=id=>document.getElementById(id);
 const num=(v,f=0)=>Number.isFinite(Number(v))?Number(v):f;
@@ -12,7 +13,7 @@ function action(fn,msg,rerender=true){try{fn();persist(rerender);if(msg)notify(m
 function resetUrl(){return './reset.html?ts='+Date.now()}
 function confirmReset(){return confirm('Teststand vollständig zurücksetzen?\n\nSpielstand, Charakter, Sicherungen und lokaler Arcane-Quest-Cache werden gelöscht. Der Vorgang kann nicht rückgängig gemacht werden.')}
 function resetGame(){if(!confirmReset())return;window.__ARCANE_INTENTIONAL_RESET=true;location.replace(resetUrl())}
-async function refreshAssets(){if(window.Arcane?.assets?.forceRefresh){await window.Arcane.assets.forceRefresh();return}try{sessionStorage.setItem('arcaneAssetRefreshToken',String(Date.now()));navigator.serviceWorker?.controller?.postMessage('PURGE_ASSETS')}catch{}location.reload()}
+async function refreshAssets(){if(window.Arcane?.assets?.forceRefresh){await window.Arcane.assets.forceRefresh();return}writeSessionText('arcaneAssetRefreshToken',Date.now());try{navigator.serviceWorker?.controller?.postMessage('PURGE_ASSETS')}catch{}location.reload()}
 function addXP(n){const api=window.ARCANE_PROGRESSION||window.Arcane?.progression;if(api?.gain)api.gain(n,S);else if(typeof gainXP==='function')gainXP(n);else S.xp=num(S.xp)+n}
 function targetLevel(target){const api=window.ARCANE_PROGRESSION||window.Arcane?.progression;target=clamp(Math.floor(num(target,1)),1,api?.maxLevel||50);let guard=100;if(target>num(S.lvl,1)){while(num(S.lvl,1)<target&&guard--){const need=api?.xpNeedFor?.(S)||xpNeed?.()||100;addXP(Math.max(1,need-num(S.xp)))}return}S.lvl=target;S.xp=0;api?.normalize?.(S)}
 function customLevel(){const value=prompt('Stufe setzen (1–50):',String(num(S.lvl,1)));if(value===null)return;const n=Math.floor(Number(value));if(!Number.isFinite(n))return notify('Ungültige Stufe.');action(()=>targetLevel(n),`Stufe ${clamp(n,1,50)} gesetzt.`)}
@@ -22,7 +23,7 @@ function addRandomItem(){action(()=>{if((S.items||[]).length>=num(S.invCap,15))t
 function finishQuest(){if(S.quest?.ends){action(()=>S.quest.ends=Date.now()-1,'Aktive Quest abgeschlossen.');return}if(S.autoMiniBattle){action(()=>S.autoMiniBattle.nextAt=Date.now()-1,'Knochenwache beschleunigt.');return}notify('Keine aktive Quest gefunden.')}
 function testPack(){action(()=>{S.gold=num(S.gold)+10000;S.keys=num(S.keys)+10;S.al=num(S.maxAl,100);S.hp=num(S.maxHp,120);S.arenaStamina=5;S.arenaStaminaMax=5;S.forgeDust=num(S.forgeDust)+500;S.essence=num(S.essence)+200;S.souls=num(S.souls)+80;S.legendaryEssence=num(S.legendaryEssence)+150;S.ancestorRelics=num(S.ancestorRelics)+3},'Release-Testpaket hinzugefügt.')}
 function clearInventory(){if(!confirm('Inventar wirklich leeren? Ausgerüstete Gegenstände bleiben erhalten.'))return;action(()=>S.items=[],'Inventar geleert.')}
-function restartTutorial(){const onboarding=window.Arcane?.onboarding,storage=window.ARCANE_STORAGE||window.Arcane?.storage;if(!onboarding?.reset)return notify('Tutorial-System ist noch nicht bereit.');if(storage?.writeText)storage.writeText('arcaneOnboardingPending','home');else try{localStorage.setItem('arcaneOnboardingPending','home')}catch{}S.screen='home';onboarding.reset();persist(true);toggle(false);setTimeout(()=>onboarding.evaluate?.(),120);notify('Tutorial wurde vollständig zurückgesetzt.')}
+function restartTutorial(){const onboarding=window.Arcane?.onboarding;if(!onboarding?.reset)return notify('Tutorial-System ist noch nicht bereit.');writeText('arcaneOnboardingPending','home');S.screen='home';onboarding.reset();persist(true);toggle(false);setTimeout(()=>onboarding.evaluate?.(),120);notify('Tutorial wurde vollständig zurückgesetzt.')}
 function exportSave(){const raw=window.ARCANE_STATE?.exportSave?.();if(!raw)return notify('Spielstand konnte nicht exportiert werden.');const blob=new Blob([raw],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`arcane-quest-save-${Date.now()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function importSave(){const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{const file=input.files?.[0];if(!file)return;try{const raw=await file.text();if(!window.ARCANE_STATE?.importSave?.(raw))notify('Ungültiger Spielstand.')}catch(err){console.error(err);notify('Import fehlgeschlagen.')}};input.click()}
 function restoreBackup(){if(!confirm('Letzte automatische Sicherung wiederherstellen?'))return;window.ARCANE_STATE?.restoreBackup?.()||notify('Keine gültige Sicherung vorhanden.')}
