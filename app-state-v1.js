@@ -8,8 +8,8 @@ function cloneDefault(){return typeof structuredClone==='function'?structuredClo
 function fallbackRead(){try{const value=JSON.parse(localStorage.getItem('arcaneBeta')||'null');return value&&typeof value==='object'&&!Array.isArray(value)?value:null}catch{return null}}
 function load(){const saved=storage?.read?.()||fallbackRead();return saved||cloneDefault()}
 function save(state){if(!state||typeof state!=='object'||Array.isArray(state))return false;if(storage?.writeObject)return storage.writeObject(state);try{localStorage.setItem('arcaneBeta',JSON.stringify(state));return true}catch{return false}}
-function readLastActive(){try{return Number(localStorage.getItem(storage?.keys?.last||'arcaneLast'))||0}catch{return 0}}
-function writeLastActive(value=Date.now()){try{localStorage.setItem(storage?.keys?.last||'arcaneLast',String(value));return true}catch{return false}}
+function readLastActive(){return Number(storage?.readText?.(storage?.keys?.last||'arcaneLast')??(()=>{try{return localStorage.getItem(storage?.keys?.last||'arcaneLast')}catch{return null}})())||0}
+function writeLastActive(value=Date.now()){const key=storage?.keys?.last||'arcaneLast';return storage?.writeText?storage.writeText(key,value):(()=>{try{localStorage.setItem(key,String(value));return true}catch{return false}})()}
 function settleOffline(){if(offlineSettled||typeof S==='undefined'||!S)return false;offlineSettled=true;const last=readLastActive()||Date.now(),hours=Math.min(12,Math.max(0,(Date.now()-last)/3600000));let changed=false;if(hours>.03){const gold=Math.floor(hours*18),xp=Math.floor(hours*10);S.gold=(Number(S.gold)||0)+gold;if(typeof gainXP==='function')gainXP(xp);if(typeof log==='function')log(`Wachdienst: ${hours.toFixed(1)}h offline → +${gold} Gold, +${xp} XP.`);changed=true}writeLastActive();return changed}
 function installLegacyBridges(){window.offline=settleOffline}
 root.appState={DEFAULT_STATE,cloneDefault,load,save,readLastActive,writeLastActive,settleOffline,get offlineSettled(){return offlineSettled}};window.ARCANE_APP_STATE=root.appState;installLegacyBridges();
