@@ -10,8 +10,8 @@ This document tracks release-relevant risks that should be reduced before v1.0.
 
 ## State and Persistence
 
-- Direct `localStorage` writes still exist in several compatibility, reset, onboarding and telemetry paths.
-- Reset, recovery and tutorial state should continue moving behind the canonical storage authority.
+- Direct browser storage access should remain centralized in the storage authority, with defensive compatibility fallbacks only where needed for load order.
+- Reset, recovery and tutorial state should continue using canonical storage helpers instead of feature-local persistence.
 - Save migration changes must stay forward-compatible and recovery-capable.
 
 ## Global State Access

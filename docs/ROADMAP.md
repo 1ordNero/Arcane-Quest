@@ -19,7 +19,7 @@
 3. Some older patch patterns remain:
    - `dungeon-presentation-v1.js` and `tavern-presentation-v1.js` now use the `Arcane` render lifecycle instead of direct `window.render` wrappers.
    - Runtime `window.S` reads have been replaced with `Arcane.state.get()` / lexical `S` fallbacks.
-   - Direct `localStorage` writes remain in onboarding, telemetry, reset and compatibility paths.
+   - Direct `localStorage`/`sessionStorage` access is centralized behind the storage authority; remaining fallback access should stay defensive and compatibility-only.
 4. CI exists and is useful:
    - `.github/workflows/code-health.yml` checks JavaScript syntax, runtime graph, asset references, load order, authority violations, critical public APIs and reincarnation invariants.
 5. PWA foundation exists:
@@ -43,7 +43,7 @@
 - Done: move dungeon and tavern post-render decorators from direct `window.render` wrappers to `Arcane.on('afterRenderSettled', ...)`.
 - Done: replace runtime `window.S` reads with `Arcane.state.get()` / lexical `S` fallbacks.
 - Done: route character creation save writes through the state/storage authority.
-- Route tutorial persistence through the state/storage authority.
+- Done: route tutorial pending state through the storage authority.
 - Keep the current static PWA architecture until v1.0 unless a specific blocker requires bundling.
 
 ### Phase 2 - Mobile/PWA Quality

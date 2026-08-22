@@ -24,7 +24,7 @@ Primary mission:
 Immediate tasks:
 - Keep future release documentation synchronized with `release-runtime-v1.js`.
 - Keep direct `window.render` ownership inside `core-runtime-v1.js`; use `Arcane` lifecycle hooks for decorators.
-- Continue reducing direct `localStorage` usage.
+- Keep browser storage access routed through the storage authority; new feature modules should not add direct persistence.
 - Run and harden the new Playwright smoke scaffold for boot, PWA basics, navigation and mobile layout.
 
 Rules:
