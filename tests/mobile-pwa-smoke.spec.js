@@ -313,6 +313,10 @@ test('miniboss combat shows the class resource as a bar', async ({ page }) => {
 
   await expect(page.locator('.tam4')).toBeVisible();
   await expect(page.locator('.tam4-resource')).toHaveCount(0);
+  await expect(page.locator('.tam4-head > .rfix-combat-resource')).toHaveCount(0);
   await expect(page.locator('.tam4 .acr-resource')).toBeVisible();
   await expect(page.locator('.tam4 .acr-track')).toBeVisible();
+  await expect
+    .poll(() => page.locator('.tam4 .acr-track u').evaluate(el => el.getBoundingClientRect().width))
+    .toBeGreaterThan(0);
 });
