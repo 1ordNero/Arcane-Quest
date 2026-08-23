@@ -2,6 +2,71 @@
 
 Ziel fuer v1.0 ist Release-Hardening, keine grosse neue Grafikoffensive. Neue Assets sollen die vorhandene Struktur stabilisieren, Luecken gezielt schliessen und keine Stilwechsel einfuehren.
 
+## MVP Art-Direction-Basis
+
+Arcane Quest ist ein Web/PWA-first Dark-Fantasy-RPG: kompakte Mobile-UI, klare Lesbarkeit, duestere Stimmung und magische Akzente. Android wird spaeter vorbereitet, deshalb muessen Touch-Flaechen, Asset-Groessen und WebP-Ladeverhalten von Anfang an mobil robust sein. Kosmetische Monetarisierung darf sichtbar hochwertig wirken, aber nie Gameplay-Vorteile, Pay-to-win-Signale oder visuelle Verwirrung in Kampf/Progression erzeugen.
+
+### Visueller Stil
+
+- Dunkle, arkan-mittelalterliche Grundstimmung: Obsidian, altes Metall, Leder, Pergament, Knochen, Runenlicht.
+- Magie ist die Hauptlichtquelle: Kantenlicht, Glyphen, Splitter, Siegel und kurze Glow-Akzente statt heller Flaechen.
+- Silhouette vor Detail: Jedes Icon, Item und Portrait muss in kleinen Mobile-Groessen sofort erkennbar bleiben.
+- Wenige wiederkehrende Formen: Runenkreise, Dornen, Splitter, Ketten, Monde, Augen, Siegel und Risse.
+- Kein generisches Fantasy-Mischen: Neue Assets muessen zu Klasse, Fraktion, Element, Rarity oder UI-Funktion gehoeren.
+- Bestehende Asset-Familien erweitern statt neue Stilrichtungen starten.
+
+### Farbpalette
+
+| Zweck | Farbe | Einsatz |
+| --- | --- | --- |
+| Grundhintergrund | `#0c0812`, `#130f1a`, `#17111f` | App-Flachen, Panels, Modal-Hintergruende |
+| Erhoehtes Panel | `#1b1425`, `#21172d` | Karten, Sheets, Hero-/Forge-Flaechen |
+| Primaerer Arcane-Akzent | `#8d5cda`, `#a875ff`, `#c381ff` | Magie, aktive States, Shrine, Fokus |
+| Gold / Belohnung | `#f4c15d`, `#d9b95d` | Gold, Rewards, Rarity, positive Progression |
+| Blut / Gefahr | `#d8755c`, `#8e2f3d` | Krieger, Schaden, Warnungen, Blutklinge |
+| Natur / Gift | `#65c987`, `#7aa35a` | Druide, Heilung, Gift, Dornen |
+| Frost / Essenz | `#72c9cf`, `#5e9cff` | Mana, Essenz, kalte Magie |
+| Text primaer | `#f4edf8` | Wichtige Labels |
+| Text sekundar | `#b8a9c8` | Meta, Beschreibung, Kostenhinweise |
+
+Regel: Kein Screen soll als einfarbige Purple-Flache wirken. Arcane-Violett ist Akzent, nicht Vollflaeche. Gold bleibt Belohnung/Prestige vorbehalten.
+
+### UI-Komponenten-Stil
+
+- Mobile zuerst: interaktive Ziele mindestens `44x44px`, primaere Aktionen eher `48-52px` hoch.
+- Panels dunkel, flach und kompakt; keine grossen Marketing-Hero-Layouts im eigentlichen Spiel.
+- Karten nur fuer konkrete wiederholte Objekte: Quest, Item, Skill, Node, Gegner, Reward.
+- Buttons: klare Hierarchie durch Kontrast, Border und Glow; primaere Buttons arcane-violett, Belohnung/Prestige gold, Gefahr rot.
+- Icons in Buttons immer links oder zentral, nie als rein dekorativer Hintergrund.
+- Rarity, Status und Kosten muessen auch ohne Farbe erkennbar sein: Rahmen, Icon, Label oder Form ergaenzen.
+- Kosmetik-UI darf hochwertiger wirken, bleibt aber strikt getrennt von Power-/Progression-UI.
+
+### Icon-Richtung
+
+- Skill-Icons: action-first. Der Spieler muss Angriff, Schild, Heilung, Fluch, Bewegung oder Buff erkennen.
+- UI-Icons: symbol-first. Weniger Textur, staerkere Silhouette, klare Kante.
+- Resource-Icons: material-first. Gold, Seelensteine, Essenz und Staub muessen als Objekte unterscheidbar sein.
+- Kleine Groessen testen: `24px`, `32px`, `44px`, `64px`.
+- Kein Icon nur ueber Farbe unterscheiden; Form und Innenmotiv muessen variieren.
+- Neue Icons immer als Set denken: z.B. alle Rarity Frames, alle Consumables, alle Impact-Arten.
+
+### Charakter-, Gegner- und Item-Sprache
+
+- Heroes: Brustbild/Kopf-Schulter, 3/4-Ansicht, ruhige Pose, klares Klassenlicht.
+- Gegner: staerkere Silhouette, mehr Asymmetrie, Fraktionsmerkmal sichtbar; keine zufaellige Monster-Collage.
+- Items: isoliertes Objekt mit Alpha, leicht diagonale Praesentation, zentrale Silhouette, Material klar lesbar.
+- Waffen zeigen Richtung und Gewicht; Ruestungsteile zeigen Slot-Funktion; Schmuck zeigt magischen Kern.
+- Consumables brauchen eigene Formfamilie: Flasche, Siegel, Band/Farbe und Fluessigkeit definieren Wirkung.
+- Kosmetische Assets duerfen ornamental sein, duerfen aber nie wie staerkere Ausruestung oder Pflichtkauf wirken.
+
+### Konsistente Asset-Pipeline
+
+- Jede neue Grafik braucht vor Produktion: Kategorie, Zweck, Zielscreen, Dateiname, Zielgroesse und Mapping-Datei.
+- Erst ein Mini-Set bauen, dann skalieren: z.B. 3 Rarity Frames statt ein einzelner Legendary-Rahmen.
+- Keine finalen Assets ohne Repo-Pfad und Code-Anbindung planen.
+- Keine generierten Einzelbilder direkt ins Spiel werfen; zuerst gegen bestehende Assets, Mobile-Groesse und UI-Kontrast pruefen.
+- Source-Prompts, Referenzen und Varianten sollen nachvollziehbar bleiben, auch wenn nur das finale WebP committed wird.
+
 ## Bestehende Asset-Struktur
 
 Die aktuelle Pipeline nutzt WebP-Assets direkt aus dem Repo. Diese Ordner sind fuer neue Assets massgeblich:

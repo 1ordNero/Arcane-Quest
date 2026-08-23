@@ -176,6 +176,64 @@ test('seeded character survives reload without returning to character creation',
     .toBe('Reload Smoke');
 });
 
+test('corrupt primary save recovers from backup on boot', async ({ page }) => {
+  await page.addInitScript(() => {
+    const backup = {
+      saveVersion: 4,
+      name: 'Backup Smoke',
+      race: 'Mensch',
+      gender: 'female',
+      cls: 'Magier',
+      bg: 'Runenschmied-Lehrling',
+      screen: 'char',
+      lvl: 4,
+      xp: 12,
+      gold: 77,
+      hp: 110,
+      maxHp: 120,
+      al: 88,
+      maxAl: 100,
+      items: [{ name: 'Backup Ring', slot: 'Ring', power: 3, rarity: 'magic' }],
+      eq: {},
+      log: [],
+      skills: [],
+      bank: [],
+      invCap: 15,
+      bankCap: 100,
+      keys: 0,
+      souls: 0,
+      forgeDust: 0,
+      essence: 0,
+      legendaryEssence: 0,
+      ancestorRelics: 0,
+      onboarding: {
+        version: 6,
+        completed: { home: Date.now(), char: Date.now() },
+        progress: {},
+        dismissed: {}
+      }
+    };
+    localStorage.setItem('arcaneBeta', '{"broken":');
+    localStorage.setItem('arcaneBetaBackup', JSON.stringify(backup));
+    localStorage.setItem('arcaneCharacterCreated', '1');
+  });
+
+  await gotoFresh(page);
+
+  await expect(page.locator('#character-gate')).toHaveCount(0);
+  await expect
+    .poll(() => page.evaluate(() => ({
+      name: window.Arcane?.state?.get?.()?.name || null,
+      screen: window.Arcane?.state?.screen?.() || null,
+      restored: window.__ARCANE_BOOT_RECOVERY?.restored || false
+    })))
+    .toEqual(expect.objectContaining({
+      name: 'Backup Smoke',
+      screen: 'char',
+      restored: true
+    }));
+});
+
 test('sunken crypt reward sync creates only one real item across renders', async ({ page }) => {
   await seedCharacter(page);
   await gotoFresh(page);

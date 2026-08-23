@@ -3,6 +3,9 @@
   "version": "0.15.20",
   "private": true,
   "scripts": {
+    "start": "http-server . -p 4173 -c-1",
+    "build": "node -e \"console.log('Static app: no build step required')\"",
+    "test": "npm run test:smoke",
     "test:smoke": "playwright test"
   },
   "devDependencies": {
