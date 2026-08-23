@@ -2,7 +2,7 @@
 'use strict';
 const BUILD=window.ARCANE_BUILD||document.querySelector('meta[name="build"]')?.content||'dev';
 const UPDATE_INTERVAL_MS=30*60*1000,UPDATE_KEY='arcaneSwLastUpdateCheck';
-const storage=()=>window.ARCANE_STORAGE||window.Arcane?.storage||null,readText=key=>storage()?.readText?.(key)??(()=>{try{return localStorage.getItem(key)}catch{return null}})(),writeText=(key,value)=>storage()?.writeText?storage().writeText(key,value):(()=>{try{localStorage.setItem(key,String(value));return true}catch{return false}})();
+const storage=()=>window.ARCANE_STORAGE||window.Arcane?.storage||null,readText=key=>storage()?.readText?.(key)||null,writeText=(key,value)=>storage()?.writeText?.(key,value)||false;
 function notify(msg){if(typeof toast==='function')toast(msg);else console.info('[Arcane PWA]',msg)}
 function recoveryNotice(){const r=window.__ARCANE_BOOT_RECOVERY;if(!r)return;if(r.restored)queueMicrotask(()=>notify('Ein beschädigter Spielstand wurde aus der letzten Sicherung wiederhergestellt.'));else if(r.source==='corrupt')queueMicrotask(()=>notify('Der beschädigte Spielstand konnte nicht wiederhergestellt werden. Ein neuer Spielstand wurde gestartet.'))}
 function resumeArena(){const f=S.arenaV2?.fight;if(!f||f.done)return false;S.screen='arena';const id=f.o?.id;S.arenaV2.fight=null;const stamina=Number(S.arenaStamina);if(Number.isFinite(stamina))S.arenaStamina=Math.min(Number(S.arenaStaminaMax)||5,stamina+1);save?.();queueMicrotask(()=>{if(id&&S.arenaV2?.opponents?.some(o=>o.id===id)&&typeof arenaV2Start==='function'){arenaV2Start(id);return}log?.('Unterbrochener Arenakampf wurde sicher beendet.');render?.()});return true}
