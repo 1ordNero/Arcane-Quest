@@ -37,9 +37,9 @@
   {
     "file": "shield-knight.webp",
     "size": "512x512",
-    "transparent_pixels": 234626,
+    "transparent_pixels": 197213,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "armor-knight.webp",
@@ -121,16 +121,16 @@
   {
     "file": "gauntlets-knight.webp",
     "size": "512x512",
-    "transparent_pixels": 234699,
+    "transparent_pixels": 162085,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "gloves-druid.webp",
     "size": "512x512",
-    "transparent_pixels": 235354,
+    "transparent_pixels": 166593,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "boots-knight.webp",
@@ -149,23 +149,23 @@
   {
     "file": "belt-knight.webp",
     "size": "512x512",
-    "transparent_pixels": 232325,
+    "transparent_pixels": 157211,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "belt-druid.webp",
     "size": "512x512",
-    "transparent_pixels": 233597,
+    "transparent_pixels": 190188,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "amulet-arcane.webp",
     "size": "512x512",
-    "transparent_pixels": 244511,
+    "transparent_pixels": 191060,
     "alpha_min": 0,
-    "alpha_max": 253
+    "alpha_max": 255
   },
   {
     "file": "ring-arcane.webp",
