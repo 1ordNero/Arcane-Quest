@@ -123,3 +123,138 @@ test('seeded character can use footer navigation', async ({ page }) => {
     .poll(() => page.evaluate(() => window.Arcane?.state?.screen?.() || null))
     .toBe('char');
 });
+
+test('seeded character survives reload without returning to character creation', async ({ page }) => {
+  await gotoFresh(page);
+  await page.evaluate(() => {
+    const save = {
+      saveVersion: 4,
+      name: 'Reload Smoke',
+      race: 'Mensch',
+      gender: 'male',
+      cls: 'Krieger',
+      bg: 'Tavernen-Stammgast',
+      screen: 'home',
+      lvl: 3,
+      xp: 80,
+      gold: 25,
+      hp: 120,
+      maxHp: 120,
+      al: 100,
+      maxAl: 100,
+      items: [],
+      eq: {},
+      log: [],
+      skills: [],
+      bank: [],
+      invCap: 15,
+      bankCap: 100,
+      keys: 0,
+      souls: 0,
+      forgeDust: 0,
+      essence: 0,
+      legendaryEssence: 0,
+      ancestorRelics: 0,
+      onboarding: {
+        version: 6,
+        completed: { home: Date.now(), char: Date.now() },
+        progress: {},
+        dismissed: {}
+      }
+    };
+    localStorage.setItem('arcaneBeta', JSON.stringify(save));
+    localStorage.setItem('arcaneCharacterCreated', '1');
+  });
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForLoadState('networkidle').catch(() => {});
+
+  await expect(page.locator('#character-gate')).toHaveCount(0);
+  await expect(page.locator('nav.aq-footer, nav.tabs').first()).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => window.Arcane?.state?.get?.()?.name || window.S?.name || null))
+    .toBe('Reload Smoke');
+});
+
+test('sunken crypt reward sync creates only one real item across renders', async ({ page }) => {
+  await seedCharacter(page);
+  await gotoFresh(page);
+
+  await page.evaluate(() => {
+    const state = window.Arcane.state.get();
+    let nextId = 1;
+    window.createLoot = (kind, rarity, level) => ({
+      id: `smoke-loot-${nextId++}`,
+      name: `Smoke ${kind} Loot`,
+      slot: 'Ring',
+      rarity,
+      power: level
+    });
+    state.items = [{ name: 'Kryptenfund', slot: 'Beute', power: 4, rarity: 'magic' }];
+    state.questResult = {
+      name: 'Die versunkene Krypta',
+      icon: '',
+      cat: 'RAUBZUG · RISIKO',
+      gold: 150,
+      xp: 85,
+      item: 'Kryptenfund'
+    };
+    window.render();
+  });
+
+  await expect
+    .poll(() => page.evaluate(() => Boolean(window.Arcane.state.get().questResult?._catacombEconomyV1)))
+    .toBeTruthy();
+
+  const countAfterSync = await page.evaluate(() => window.Arcane.state.get().items.length);
+  expect(countAfterSync).toBeLessThanOrEqual(1);
+
+  for (let i = 0; i < 3; i += 1) {
+    await page.evaluate(() => window.render());
+  }
+
+  await expect
+    .poll(() => page.evaluate(() => ({
+      count: window.Arcane.state.get().items.length,
+      placeholderCount: window.Arcane.state.get().items.filter(item => item.name === 'Kryptenfund').length,
+      resultItem: window.Arcane.state.get().questResult?.item
+    })))
+    .toEqual(expect.objectContaining({
+      count: countAfterSync,
+      placeholderCount: 0
+    }));
+});
+
+test('miniboss combat shows the class resource as a bar', async ({ page }) => {
+  await seedCharacter(page);
+  await gotoFresh(page);
+
+  await page.evaluate(() => {
+    const state = window.Arcane.state.get();
+    state.skillSystem = {
+      cls: state.cls,
+      maxResource: 100,
+      resource: 45,
+      rotation: 0,
+      loadout: []
+    };
+    state.autoMiniBattle = {
+      name: 'Knochenwache',
+      hp: 70,
+      maxHp: 70,
+      playerHp: 120,
+      maxPlayerHp: 120,
+      round: 1,
+      autoLog: [],
+      busy: true,
+      skillStatuses: {}
+    };
+    state.screen = 'home';
+    window.render();
+  });
+
+  await expect(page.locator('.tam4')).toBeVisible();
+  await expect(page.locator('.tam4-resource')).toHaveCount(0);
+  await expect(page.locator('.tam4 .acr-resource')).toBeVisible();
+  await expect(page.locator('.tam4 .acr-track')).toBeVisible();
+});

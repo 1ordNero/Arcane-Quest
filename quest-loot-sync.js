@@ -5,7 +5,7 @@ function readHandled(){const raw=storage()?.readText?.(HANDLED_KEY)??(()=>{try{r
 const handled=new Set(readHandled());
 function saveHandled(){const value=JSON.stringify([...handled].slice(-50));if(storage()?.writeText)storage().writeText(HANDLED_KEY,value);else try{localStorage.setItem(HANDLED_KEY,value)}catch{}}
 function rarityFor(kind){const roll=Math.random()*100;if(kind==='risk'){if(roll<4)return'legendary';if(roll<12)return'mythic';if(roll<42)return'rare';return'magic'}if(kind==='event'){if(roll<2)return'legendary';if(roll<7)return'mythic';if(roll<28)return'rare';return'magic'}return roll<18?'rare':'magic'}
-function questLootKind(result){if(result?.name==='Das flüsternde Siegel'&&result.item)return['event','Arkane Siegelfragmente'];if(result?.name==='Die versunkene Krypta'&&result.item)return['risk','Kryptenfund'];return null}
+function questLootKind(result){if(result?.name==='Das flüsternde Siegel'&&result.item==='Arkane Siegelfragmente')return['event','Arkane Siegelfragmente'];if(result?.name==='Die versunkene Krypta'&&result.item==='Kryptenfund')return['risk','Kryptenfund'];return null}
 function removePlaceholder(name){const index=(S.items||[]).findIndex(item=>item?.name===name);if(index>=0)S.items.splice(index,1)}
 function assignRewardItem(result,item){result.item=item.name;result.itemId=item.id;result.itemSlot=item.slot;result.itemRarity=item.rarity;result.itemStats=window.itemBonusText?itemBonusText(item):''}
 function sync(){

@@ -5,6 +5,7 @@ Run the relevant checks after every refactor that changes runtime ownership, scr
 ## Boot and save
 
 - Existing valid save opens on the same screen with the same level, currencies, HP and inventory.
+- Automated coverage: seeded character reload remains outside character creation and preserves the saved character name.
 - Reload preserves character name, gender, class and background.
 - Character creation persists the selected portrait/class/name after reload.
 - Corrupt primary save falls back to the valid backup without crashing.
@@ -23,7 +24,9 @@ Run the relevant checks after every refactor that changes runtime ownership, scr
 - Quest card opens/closes correctly.
 - Starting a quest consumes the expected Abenteuerlust once.
 - Completed quest awards XP/gold/items once.
+- Automated coverage: Die versunkene Krypta reward sync cannot create additional items on later renders.
 - Miniboss/auto combat starts and resolves.
+- Automated coverage: Miniboss combat shows the class resource as a bar, not a text-only badge.
 - Quest item artwork is rendered once, not duplicated.
 
 ## Katakomben
