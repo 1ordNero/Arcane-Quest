@@ -173,5 +173,40 @@
     "transparent_pixels": 229261,
     "alpha_min": 0,
     "alpha_max": 254
+  },
+  {
+    "file": "potion-bloodroot-minor.webp",
+    "size": "512x512",
+    "transparent_pixels": 163366,
+    "alpha_min": 0,
+    "alpha_max": 255
+  },
+  {
+    "file": "weapon-sword-rune-initiate.webp",
+    "size": "512x512",
+    "transparent_pixels": 212556,
+    "alpha_min": 0,
+    "alpha_max": 255
+  },
+  {
+    "file": "ring-oath-ember.webp",
+    "size": "512x512",
+    "transparent_pixels": 149747,
+    "alpha_min": 0,
+    "alpha_max": 255
+  },
+  {
+    "file": "offhand-warlock-soul-lantern.webp",
+    "size": "512x512",
+    "transparent_pixels": 188546,
+    "alpha_min": 0,
+    "alpha_max": 255
+  },
+  {
+    "file": "amulet-catacomb-moon.webp",
+    "size": "512x512",
+    "transparent_pixels": 180612,
+    "alpha_min": 0,
+    "alpha_max": 255
   }
 ]

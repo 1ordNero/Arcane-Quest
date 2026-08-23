@@ -1,6 +1,7 @@
 (()=>{
 const ROOT='assets/items/';
 const NEW={warriorShoulders:'shoulders-warrior2.webp',warriorLegs:'legs-warrior.webp',mageOffhand:'offhand-mage.webp',mageLegs:'legs-mage.webp',mageBoots:'boots-mage.webp',warlockOffhand:'offhand-warlock.webp',warlockBoots:'boots-warlock.webp',druidOffhand:'offhand-druid.webp'};
+const SPECIAL=[[/bloodroot|heiltrank|trank/,'potion-bloodroot-minor.webp'],[/runenschwert|rune initiate|initiate sword/,'weapon-sword-rune-initiate.webp'],[/glutring|oath ember|eid.*glut/,'ring-oath-ember.webp'],[/seelenlaterne|soul lantern/,'offhand-warlock-soul-lantern.webp'],[/katakomben.*mond|mondamulett|catacomb moon/,'amulet-catacomb-moon.webp']];
 const norm=s=>s==='Schultern'?'Schulter':s==='Nebenhand'?'Zweithand':s==='Ring 1'||s==='Ring 2'?'Ring':s;
 const file=f=>ROOT+f;
 function byClass(slot){const c=S.cls||'Krieger';slot=norm(slot);
@@ -12,7 +13,7 @@ function byClass(slot){const c=S.cls||'Krieger';slot=norm(slot);
  if(slot==='Beine')return c==='Krieger'?NEW.warriorLegs:c==='Magier'?NEW.mageLegs:c==='Druide'?'legs-druid-01.webp':'legs-warlock-01.webp';
  if(slot==='Stiefel')return c==='Magier'?NEW.mageBoots:c==='Hexenmeister'?NEW.warlockBoots:c==='Druide'?'boots-druid.webp':'boots-knight.webp';
  if(slot==='Amulett')return'amulet-arcane.webp';if(slot==='Ring')return'ring-arcane.webp';return null}
-function asset(it,slot){const n=String(it?.name||'').toLowerCase();slot=norm(slot||it?.slot||'');if(/ring/.test(n))return file('ring-arcane.webp');if(/amulett/.test(n))return file('amulet-arcane.webp');if(/schild/.test(n)&&slot==='Zweithand'&&S.cls==='Krieger')return file('shield-knight.webp');if(/axt/.test(n)&&S.cls==='Krieger')return file('weapon-axe-warrior.webp');if(/klinge|schwert/.test(n)&&S.cls==='Krieger')return file('weapon-sword-knight.webp');const f=byClass(slot);return f?file(f):null}
+function asset(it,slot){const n=String(it?.name||'').toLowerCase();slot=norm(slot||it?.slot||'');const special=SPECIAL.find(([re])=>re.test(n));if(special)return file(special[1]);if(/ring/.test(n))return file('ring-arcane.webp');if(/amulett/.test(n))return file('amulet-arcane.webp');if(/schild/.test(n)&&slot==='Zweithand'&&S.cls==='Krieger')return file('shield-knight.webp');if(/axt/.test(n)&&S.cls==='Krieger')return file('weapon-axe-warrior.webp');if(/klinge|schwert/.test(n)&&S.cls==='Krieger')return file('weapon-sword-knight.webp');const f=byClass(slot);return f?file(f):null}
 function esc(v){return String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]))}
 function tag(it,slot,cls='item-art'){const src=asset(it,slot);return src?`<img class="${cls}" src="${src}" alt="${esc(it?.name||slot||'Ausrüstung')}" loading="lazy" decoding="async" fetchpriority="low">`:'◆'}
 window.getItemAsset=asset;window.itemAssetTag=tag;window.ARCANE_CLASS_ITEM_ART=Object.freeze({...NEW});
