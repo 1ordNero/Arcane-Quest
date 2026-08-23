@@ -4,7 +4,7 @@ const Arcane=window.Arcane=window.Arcane||{};
 const BUILD=window.ARCANE_BUILD||document.querySelector('meta[name="build"]')?.content||'dev';
 const REFRESH_KEY='arcaneAssetRefreshToken';
 const cache=new Map(),preloadCache=new Map();
-const storage=()=>window.ARCANE_STORAGE||Arcane.storage||null,readSessionText=key=>storage()?.readSessionText?.(key)??(()=>{try{return sessionStorage.getItem(key)}catch{return null}})(),writeSessionText=(key,value)=>storage()?.writeSessionText?storage().writeSessionText(key,value):(()=>{try{sessionStorage.setItem(key,String(value));return true}catch{return false}})(),removeSessionText=key=>storage()?.removeSessionText?storage().removeSessionText(key):(()=>{try{sessionStorage.removeItem(key);return true}catch{return false}})();
+const storage=()=>window.ARCANE_STORAGE||Arcane.storage||null,readSessionText=key=>storage()?.readSessionText?.(key)||null,writeSessionText=(key,value)=>storage()?.writeSessionText?.(key,value)||false,removeSessionText=key=>storage()?.removeSessionText?.(key)||false;
 let refreshToken=readSessionText(REFRESH_KEY)||'';
 const params=new URLSearchParams(location.search);if(params.get('refreshAssets')==='1'){refreshToken=String(Date.now());writeSessionText(REFRESH_KEY,refreshToken);params.delete('refreshAssets');const q=params.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash)}
 function networkUrl(src){const u=new URL(src,location.href);u.searchParams.set('assetBuild',BUILD);if(refreshToken)u.searchParams.set('assetRefresh',refreshToken);return u.href}
