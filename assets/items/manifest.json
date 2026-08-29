@@ -86,9 +86,9 @@
   {
     "file": "helmet-knight.webp",
     "size": "512x512",
-    "transparent_pixels": 232123,
+    "transparent_pixels": 124721,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "helmet-demon.webp",
@@ -107,16 +107,16 @@
   {
     "file": "helmet-shadow.webp",
     "size": "512x512",
-    "transparent_pixels": 232510,
+    "transparent_pixels": 117211,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "helmet-paladin.webp",
     "size": "512x512",
-    "transparent_pixels": 233670,
+    "transparent_pixels": 124867,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "gauntlets-knight.webp",
@@ -135,16 +135,16 @@
   {
     "file": "boots-knight.webp",
     "size": "512x512",
-    "transparent_pixels": 230647,
+    "transparent_pixels": 115537,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "boots-druid.webp",
     "size": "512x512",
-    "transparent_pixels": 228900,
+    "transparent_pixels": 100001,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "belt-knight.webp",
@@ -170,9 +170,9 @@
   {
     "file": "ring-arcane.webp",
     "size": "512x512",
-    "transparent_pixels": 229261,
+    "transparent_pixels": 107516,
     "alpha_min": 0,
-    "alpha_max": 254
+    "alpha_max": 255
   },
   {
     "file": "potion-bloodroot-minor.webp",
